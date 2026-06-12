@@ -5,7 +5,10 @@ import {
   LandingPage, 
   BrowserProductPage, 
   DetailPage,
-  CartPage
+  CartPage,
+
+
+  SignIn,
 } from './pages'
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
@@ -27,6 +30,12 @@ const router = createBrowserRouter([
     path: '/cart',
     element: <CartPage/>
   }, 
+
+  // AUTH
+  {
+    path: '/sign-in',
+    element: <SignIn/>
+  }
   
   // {
     // element: </>,
