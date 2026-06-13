@@ -9,6 +9,11 @@ import {
 
 
   SignIn,
+  SignUpPage,
+
+  CheckoutAddress, 
+  CheckoutPaymentPage,
+  CheckoutConfirmPage,
 
 
   MyProfile,
@@ -18,6 +23,7 @@ import {
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { ProfileLayout } from './components/layouts'
+import CheckoutLayout from './components/layouts/checkout.layout'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -41,6 +47,31 @@ const router = createBrowserRouter([
     path: '/sign-in',
     element: <SignIn/>
   },
+
+  {
+    path: '/sign-up', 
+    element: <SignUpPage/>
+  },
+
+  { 
+    path: "/checkout",
+    element: <CheckoutLayout/>, 
+    children: [ 
+      { 
+        path: 'address', 
+        element: <CheckoutAddress />
+      }, 
+      { 
+        path: 'payment', 
+        element: <CheckoutPaymentPage/>
+      },
+      {
+        path: 'confirm', 
+        element: <CheckoutConfirmPage/>
+      }
+    ]
+  }, 
+
   {
     path: "/profile",
     element: <ProfileLayout/>,
@@ -58,7 +89,6 @@ const router = createBrowserRouter([
         element: <ProfileSetting/>
       }
     ]
-
   }
 ])
 
