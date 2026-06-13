@@ -11,16 +11,18 @@ import {
   SignIn,
 
 
-  MyProfile
+  MyProfile,
+  ProfileAddress,
+  ProfileSetting
 } from './pages'
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { ProfileLayout } from './components/layouts'
 const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
   },
-
   {
     path: '/browser-product',
     element: <BrowserProductPage/>
@@ -41,11 +43,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/profile",
-    element: <MyProfile/>,
+    element: <ProfileLayout/>,
     children: [
       {
-        path: 'address',
+        index: true, 
         element: <MyProfile/>
+      },
+      {
+        path: 'address',
+        element: <ProfileAddress/>
+      }, 
+      {
+        path: 'setting', 
+        element: <ProfileSetting/>
       }
     ]
 
