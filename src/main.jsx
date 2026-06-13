@@ -6,6 +6,7 @@ import {
   BrowserProductPage, 
   DetailPage,
   CartPage,
+  Product,
 
 
   SignIn,
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
     path: '/cart',
     element: <CartPage/>
   }, 
+  {
+    path: '/product/:name',
+    element: <Product/>
+  },
 
   // AUTH
   {
