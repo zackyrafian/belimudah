@@ -41,6 +41,8 @@ const AuthService = {
       const form = new FormData(e.target); 
       const data = Object.fromEntries(form.entries());
 
+      if (!data.email || !data.password) throw new Error("Harap dimasukan semua")
+
       const existing = listAccounts.find((account) => account.email === data.email); 
       if (!existing) { 
         throw new Error("Email tidak terdaftar"); 
@@ -55,7 +57,7 @@ const AuthService = {
       localStorage.setItem("user", JSON.stringify(existing))
       window.location.href = '/';
     } catch (error) { 
-      alert(error.messsage);
+      alert(error.message);
     }
   }
 }
