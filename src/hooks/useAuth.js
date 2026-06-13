@@ -1,3 +1,5 @@
+import { UserStorage } from "../services/user.service";
+
 const handleRegister = (e) => {
   try {
     e.preventDefault();
@@ -31,9 +33,35 @@ const handleRegister = (e) => {
   }
 };
 
+const handleLogin = (e) => { 
+  try { 
+    e.preventDefault(); 
+    const listAccounts = UserStorage.getAccounts();
+    const form = new FormData(e.target); 
+    const data = Object.fromEntries(form.entries());
+
+    const existing = listAccounts.find((account) => account.email === data.email); 
+    if (!existing) { 
+      throw new Error("Email tidak terdaftar"); 
+    }
+
+    if (existing.password !== data.password) { 
+      throw new Error("Password salah"); 
+    }
+
+    UserStorage.syncUser(); 
+    console.log("Account tersedia dan berhasil masuk."); 
+    localStorage.setItem("user", JSON.stringify(existing))
+    window.location.href = '/';
+  } catch (error) { 
+    alert(error.messsage);
+  }
+}
+
 
 export function useAuth() { 
   return {
     handleRegister,
+    handleLogin,
   }
 }
