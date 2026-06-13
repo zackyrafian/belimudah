@@ -9,6 +9,9 @@ import {
 
 
   SignIn,
+
+
+  MyProfile
 } from './pages'
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
@@ -35,16 +38,18 @@ const router = createBrowserRouter([
   {
     path: '/sign-in',
     element: <SignIn/>
+  },
+  {
+    path: "/profile",
+    element: <MyProfile/>,
+    children: [
+      {
+        path: 'address',
+        element: <MyProfile/>
+      }
+    ]
+
   }
-  
-  // {
-    // element: </>,
-    // path: "/contact",
-  // },
-  // {
-    // element: <About />,
-    // path: "/about",
-  // },
 ])
 
 createRoot(document.getElementById('root')).render(
