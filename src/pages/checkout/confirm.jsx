@@ -35,8 +35,8 @@ export default function CheckoutConfirmPage () {
       </div>
 
       <div className="flex gap-4">
-        <div className="border w-30 text-center p-2 rounded-xl">Kembali</div>
-        <div className="flex items-center border flex-1 justify-center p-2 rounded-xl">Bayar Rp 450.000 Sekarang</div>
+        <button className="border w-30 text-center p-2 rounded-xl">Kembali</button>
+        <button className="flex items-center border flex-1 justify-center p-2 rounded-xl">Bayar Rp 450.000 Sekarang</button>
       </div>
     </div>
   )
