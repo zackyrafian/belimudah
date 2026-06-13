@@ -1,28 +1,71 @@
 import { Mail } from "lucide-react"
 import { Link } from "react-router"
+import { AuthService } from "@/services/auth.service";
+
 export default function SignIn () { 
   return ( 
-    <div className="flex">
-      <div className="flex flex-col w-1/2"></div>
-      <div className="flex flex-col w-1/2 gap-4 bg-white">
+    <div className="flex min-h-screen">
+      <div className="flex w-1/2 h-screen">
+        <div className="relative w-full">
+          <img
+            src="/auth/she-flexing.jpg"
+            alt="wanita-flexing"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-linear-to-t from-[#1A73E8]/70 to-[#193CB8]/70" />
+          <div className="absolute inset-0 z-10 p-12 text-white">
+            <div className="flex flex-col justify-between h-full">
+                <div className="flex items-center gap-4">
+                <div className="bg-white/20 w-9 h-9 rounded-xl flex items-center justify-center">B</div>
+                <span className="font-bold">BeliMudah</span>
+              </div>
+
+              <div className="w-xs flex flex-col gap-6">
+                <div className="font-bold text-[32px]">Belanja lebih mudah, hidup lebih praktis</div>
+                <div className="text-lg">Ribuan produk pilihan dengan harga terbaik, pengiriman cepat, dan <br />pembayaran yang aman.</div>
+                <div className="flex gap-8">
+                  <div>
+                    <div className="text-xl font-bold">10Rb+</div>
+                    <span className="text-xs">Produk</span>
+                  </div>
+
+                  <div>
+                    <div className="text-xl font-bold">500Rb+</div>
+                    <span className="text-xs">Pelanggan</span>
+                  </div>
+
+                  <div>
+                    <div className="text-xl font-bold">4.8★</div>
+                    <span className="text-xs">Rating</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>© 2026 BeliMudah. Seluruh hak cipta dilindungi.</div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col w-1/2 gap-4 bg-white lg:p-50 md:p-10 md:pt-50 sm:p-10">
         <div>
           <h1 className="font-bold text-2xl">Masuk ke Akun</h1>
           <span>Belum punya akun? <Link>Daftar gratis</Link></span>
         </div>
 
-        <div className="flex bg-green-500 gap-4">
-          <div className="rounded border p-4 flex-1 border-black/20 text-center">Google</div>
-          <div className="rounded border p-4 flex-1 border-black/20 text-center">Facebook</div>
+        <div className="flex gap-4">
+          <div className="rounded-xl border p-4 flex-1 border-black/20 text-center">Google</div>
+          <div className="rounded-xl border p-4 flex-1 border-black/20 text-center">Facebook</div>
         </div>
         
 
         {/* FORM */}
-        <form className="flex flex-col gap-4">
+        <form onSubmit={AuthService.handleLogin} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <label htmlFor="">Email</label>
+            <label htmlFor="email">Email</label>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
               <Mail size={20}/>
-              <input className="w-full h-full" type="text" placeholder="email@contoh.com"/>
+              <input name="email" className="w-full h-full outline-none" type="text" placeholder="email@contoh.com"/>
             </div>
           </div>
 
@@ -33,7 +76,7 @@ export default function SignIn () {
             </div>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
               <Mail size={20}/>
-              <input className="w-full h-full" type="text" placeholder="Masukan kata sandi"/>
+              <input name="password" className="w-full h-full outline-none" type="text" placeholder="Masukan kata sandi"/>
             </div>
           </div>
           
