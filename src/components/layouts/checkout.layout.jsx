@@ -5,7 +5,7 @@ import MainLayout from "./main.layout";
 export default function CheckoutLayout ()  { 
   return (
     <MainLayout>
-      <div className="flex gap-4" >
+      <div className="flex gap-4 items-start" >
         <Card className="flex-1">
           <Outlet/>
         </Card>
