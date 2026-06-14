@@ -1,6 +1,6 @@
-import { ArrowRight, Heart } from "lucide-react"
+import { ArrowRight, Heart, MapPin, Settings } from "lucide-react"
 import { MainLayout } from "../../components/layouts"
-import { Link } from "react-router"
+import { Link, Outlet } from "react-router"
 
 
 const listElement = [
@@ -15,13 +15,23 @@ const listElement = [
     icon: <Heart size={16} />,
   },
   {
-    title: "Alamat",
+    title: "Alamat Saya",
     href: "/profile/address",
-    icon: <Heart size={16} />,
+    icon: <MapPin size={16} />,
+  },
+  {
+    title: "Pengaturan Profile",
+    href: "/profile/setting",
+    icon: <Settings size={16} />,
+  },
+  {
+    title: "Keluar",
+    href: "/profile/setting",
+    icon: <Settings size={16} />,
   },
 ];
 
-export default function ProfileLayout({children}) { 
+export default function ProfileLayout() { 
   return (
     <MainLayout>
       <div className="flex flex-row gap-8">
@@ -47,7 +57,7 @@ export default function ProfileLayout({children}) {
           </div>
         </div>
         <div className="flex-1">
-          {children}
+          <Outlet/>
         </div>
       </div>
     </MainLayout>
