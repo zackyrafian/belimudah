@@ -5,13 +5,15 @@ import { formatIDR } from '@/utils/format'
 import { calculateDiscount } from '@/utils/calculate'
 import { useState } from 'react'
 import { MainLayout } from '@/components/layouts'
+import { UserStorage } from '@/services/user.service'
 
 export default function Product() {
   const params = useParams();
   const product = ProductService.getByName(params.name);
   const { finalPrice, save } = calculateDiscount(product.price, product.discount)
   const [ variant, setVariantSelect ] = useState(product.variant[0]);
-  const [ quantity, setQuantity ] = useState(1);
+  const [quantity, setQuantity] = useState(1);
+  
 
   return (
     <div className="flex flex-col">
@@ -88,10 +90,18 @@ export default function Product() {
             </div>
 
             <div className='flex gap-2 w-full'>
-              <div className='flex-1 gap-4 p-4 flex border border-orange-400  rounded-xl text-orange-400 items-center justify-center'>
+                <button onClick={() => {
+                  const item = { 
+                    ...product, 
+                    quantity, 
+                    variant
+                  }
+                  console.log(item);
+                  UserStorage.addCart(item)
+              }} className='flex-1 gap-4 p-4 flex border border-orange-400  rounded-xl text-orange-400 items-center justify-center'>
                 <ShoppingCart />
                 <span>Tambah Keranjang</span>
-              </div>
+              </button>
               <div className='flex-1 p-4 flex border border-orange-400  rounded-xl text-orange-400 items-center justify-center'>
                 <span>Beli Sekarang</span>
               </div>
