@@ -1,9 +1,8 @@
 import { Mail } from "lucide-react"
 import { Link } from "react-router"
-import { useAuth } from "../../hooks/useAuth";
+import { AuthService } from "@/services/auth.service"
 
 export default function SignUpPage () {
-  const { handleRegister } = useAuth();
   return ( 
     <div className="flex">
       <div className="flex flex-col w-1/2"></div>
@@ -17,10 +16,9 @@ export default function SignUpPage () {
           <div className="rounded border p-4 flex-1 border-black/20 text-center">Google</div>
           <div className="rounded border p-4 flex-1 border-black/20 text-center">Facebook</div>
         </div>
-        
 
         {/* FORM */}
-        <form onSubmit={handleRegister} className="flex flex-col gap-4">
+        <form onSubmit={AuthService.handleRegister} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <label htmlFor="">Nama Lengkap</label>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
