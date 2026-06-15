@@ -4,6 +4,17 @@ const ProductService = {
   getAll() {
     return products;
   }, 
+  getByNameAll(name) {
+    if (!name) return [];
+    const keyword = name.toLowerCase().replaceAll(" ", "-");
+  
+    return products.filter(product =>
+      product.name
+        .toLowerCase()
+        .replaceAll(" ", "-")
+        .includes(keyword)
+    );
+  },
   getByName(name) { 
     return products.find(product => product.name.toLowerCase().replaceAll(" ", "-") === name)
   }, 
