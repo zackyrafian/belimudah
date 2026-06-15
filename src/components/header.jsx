@@ -2,6 +2,13 @@ import { Bell, User, Heart, ShoppingCart , MapPin } from 'lucide-react';
 import { Link } from 'react-router';
 
 function Header() {
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+    const search = form.get("search");
+  
+    window.location.href = `/browser-product/?search=${search}`
+  };
   return (
     <div className="w-full border-b border-b-black/20 shadow">
       <div className="bg-blue-500 flex items-center w-full">
@@ -18,10 +25,12 @@ function Header() {
                 <div className="bg-blue-500 w-8 h-8 flex items-center justify-center rounded-md p-2 text-white">B</div>
                 <span>BeliMudah</span>
               </div>
-            </Link>
+          </Link>
+          <form onSubmit={handleSearch} className='w-full'>
             <div className="w-full border border-black/20 bg-black/5 rounded-xl flex items-center">
-              <input className='w-full rounded-xl p-2' type="text" placeholder='Cari Produk, merek, kategori...' />
+              <input name='search' className='w-full rounded-xl p-2' type="text" placeholder='Cari Produk, merek, kategori...' />
             </div>
+          </form>
             <div className='flex gap-4'>
               <Link to={'/profile'}><Bell size={20}/></Link>
               <Link to={'/profile'}><User size={20} /></Link>
