@@ -15,15 +15,20 @@ import {
   CheckoutAddress, 
   CheckoutPaymentPage,
   CheckoutConfirmPage,
+  CheckoutSuccessPage,
 
 
   MyProfile,
   ProfileAddress,
-  ProfileSetting
+  ProfileSetting,
+
+  DashboardMainPage,
+  
+  NotFound
 } from './pages'
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { ProfileLayout } from './components/layouts'
+import { ProfileLayout, DashboardLayout } from './components/layouts'
 import CheckoutLayout from './components/layouts/checkout.layout'
 const router = createBrowserRouter([
   {
@@ -73,10 +78,13 @@ const router = createBrowserRouter([
       {
         path: 'confirm', 
         element: <CheckoutConfirmPage/>
-      }
+      },
     ]
   }, 
-
+  {
+    path: 'checkout/success', 
+    element: <CheckoutSuccessPage/>
+  },
   {
     path: "/profile",
     element: <ProfileLayout/>,
@@ -94,6 +102,20 @@ const router = createBrowserRouter([
         element: <ProfileSetting/>
       }
     ]
+  },
+  { 
+    path: "/dashboard", 
+    element: <DashboardLayout/>, 
+    children: [ 
+      { 
+        index: true, 
+        element: <DashboardMainPage/>
+      }
+    ]
+  },
+  {
+    path: '*', 
+    element: <NotFound/>
   }
 ])
 
