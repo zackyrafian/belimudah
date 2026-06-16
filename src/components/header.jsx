@@ -1,14 +1,17 @@
+import { UserStorage } from '@/services/user.service';
 import { Bell, User, Heart, ShoppingCart , MapPin } from 'lucide-react';
 import { Link } from 'react-router';
 
 function Header() {
+  const user = UserStorage.getUser();
   const handleSearch = (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
     const search = form.get("search");
-  
-    window.location.href = `/browser-product/?search=${search}`
+
+    window.location.href = `/browser-product/?search=${search}`;
   };
+
   return (
     <div className="w-full border-b border-b-black/20 shadow">
       <div className="bg-blue-500 flex items-center w-full">
@@ -20,23 +23,49 @@ function Header() {
 
       <div className="w-full p-2 border-b border-black/20">
         <div className="max-w-7xl mx-auto py-1 flex gap-4 items-center justify-between">
-            <Link to={'/'}>
-              <div className="flex items-center gap-2">
-                <div className="bg-blue-500 w-8 h-8 flex items-center justify-center rounded-md p-2 text-white">B</div>
-                <span>BeliMudah</span>
+          <Link to={'/'}>
+            <div className="flex items-center gap-2">
+              <div className="bg-blue-500 w-8 h-8 flex items-center justify-center rounded-md p-2 text-white">
+                B
               </div>
+              <span>BeliMudah</span>
+            </div>
           </Link>
+
           <form onSubmit={handleSearch} className='w-full'>
             <div className="w-full border border-black/20 bg-black/5 rounded-xl flex items-center">
-              <input name='search' className='w-full rounded-xl p-2' type="text" placeholder='Cari Produk, merek, kategori...' />
+              <input
+                name='search'
+                className='w-full rounded-xl p-2'
+                type="text"
+                placeholder='Cari Produk, merek, kategori...'
+              />
             </div>
           </form>
-            <div className='flex gap-4'>
-              <Link to={'/profile'}><Bell size={20}/></Link>
-              <Link to={'/profile'}><User size={20} /></Link>
-              <Link to={'/profile'}><Heart size={20}/></Link>
-              <Link to={'/cart'}><ShoppingCart to size={20}/></Link>
-            </div>
+
+          <div className='flex gap-4 items-center'>
+            {user ? (
+              <>
+                <Link to={'/profile'}><Bell size={20} /></Link>
+                <Link className='flex gap-2 items-center w' to={'/profile'}><User size={20} /></Link>
+                <Link to={'/profile'}><Heart size={20} /></Link>
+                <Link to={'/cart'}><ShoppingCart size={20} /></Link>
+              </>
+            ) : (
+                <>
+                <Link to={"/sign-in"}>
+                  <button className='cursor-pointer border border-blue-500 text-blue-500 rounded-xl py-1.5 px-4'>Masuk</button>
+                </Link>
+
+                <Link to={"/sign-up"}>
+                  <button className='cursor-pointer bg-blue-500 text-white rounded-xl py-1.5 px-4'>Daftar</button>
+                </Link>
+                
+              </>
+            )}
+          
+            
+          </div>
         </div>
       </div>
 
@@ -55,7 +84,7 @@ function Header() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export { Header };
