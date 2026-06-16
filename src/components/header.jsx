@@ -17,7 +17,7 @@ function Header() {
       <div className="bg-blue-500 flex items-center w-full">
         <div className="w-7xl mx-auto text-white py-1 flex items-center gap-2">
           <MapPin size={11} />
-          <span>Kirim ke: Jakarta Selatan</span>
+          <span className='text-xs'>Kirim ke: Jakarta Selatan</span>
         </div>
       </div>
 
