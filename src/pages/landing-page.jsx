@@ -1,6 +1,6 @@
 import { Header } from '../components/header'
 import { Footer } from '../components/footer'
-import { Clock, Star, StarIcon, Zap } from 'lucide-react'
+import { Clock, StarIcon, Zap } from 'lucide-react'
 import { ProductService } from '@/services/product.service'
 import { Link } from 'react-router'
 
@@ -13,12 +13,12 @@ export default function LandingPage() {
       <div className='w-7xl m-auto flex flex-col gap-4'>
         <div className='flex gap-4'>
           {categories.map((category,index) => (
-            <Link key={index} to={`/browser-product/${category.name.toLowerCase().replaceAll(' ', '-')}`}>
+            <Link key={index} to={`/browser-product?category=${category.name.toLowerCase().replaceAll(' ', '-')}`}>
               <div className='bg-white border border-black/20 rounded-xl py-4 justify-center items-center flex flex-col gap-2'>
                 <div className='w-14 h-14 rounded-xl flex justify-center m-auto'>
                   <img src="images-1.png" alt="elektronik" className='rounded-xl'/>
                 </div>
-                <div className='min-w-49.5 text-center border flex flex-col items-center justify-center'>
+                <div className='min-w-49.5 text-center flex flex-col items-center justify-center'>
                   <h3 className='text-sm'>{category.name}</h3>
                   <p className='text-xs'>{category.total} Produk</p>
                 </div>
@@ -169,7 +169,7 @@ export default function LandingPage() {
         </section>
 
         <section>
-          <div className='flex flex-col items-center bg-white p-8 justify-center rounded-xl gap-6'>
+          <div className='flex flex-col items-center bg-white border border-black/20 p-8 justify-center rounded-xl gap-6'>
             <div>
               <h1 className='text-xl'>Kenapa Belanja diBeliMudah?</h1>
             </div>
