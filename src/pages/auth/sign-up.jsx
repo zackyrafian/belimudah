@@ -1,33 +1,44 @@
-import { Mail } from "lucide-react"
+import { Mail, Lock, User } from "lucide-react"
 import { Link } from "react-router"
 import { AuthService } from "@/services/auth.service"
 import { useState } from "react"
+import Alert from "@/components/ui/alert"
 
 export default function SignUpPage() {
-  const [success, setSuccess] = useState("")
-  const [error, setError] = useState("")
+  const [alert, setAlert] = useState(null);
+    const handleSubmit = (e) => {
+      e.preventDefault();
   
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    try {
-      const form = new FormData(e.target);
-      const data = Object.fromEntries(form.entries());
-      AuthService.register(data);
-      setError("");
-      setSuccess("Berhasil daftar");
+      try {
+        const form = new FormData(e.target);
+        const data = Object.fromEntries(form.entries());
+        AuthService.register(data);
+        
+        setAlert({
+          type: "success",
+          message:
+            "Account created successfully. Your registration is complete and your profile has been set up.",
+        });
   
-      setTimeout(() => {
-        window.location.href = "/sign-in";
-      }, 800);
-  
-    } catch (err) {
-      setSuccess("");
-      setError(err.message);
-    }
-  };
+      } catch (err) {
+        setAlert({
+          type: "error",
+          message: err.message,
+        });
+      }
+    };
   
   return ( 
     <div className="flex min-h-screen">
+      {alert && (
+        <Alert
+          title={"Register"}
+          key={alert.message}
+          type={alert.type}
+          message={alert.message}
+          onClose={() => setAlert(null)}
+        />
+      )}
       <div className="flex w-1/2 h-screen">
         <div className="relative w-full">
           <img
@@ -78,53 +89,42 @@ export default function SignUpPage() {
           <span>Belum punya akun? <Link>Daftar gratis</Link></span>
         </div>
 
-        <div className="flex bg-green-500 gap-4">
-          <div className="rounded border p-4 flex-1 border-black/20 text-center">Google</div>
-          <div className="rounded border p-4 flex-1 border-black/20 text-center">Facebook</div>
+        <div className="flex gap-4">
+          <div className="rounded-xl border p-4 flex-1 border-black/20 text-center">Google</div>
+          <div className="rounded-xl border p-4 flex-1 border-black/20 text-center">Facebook</div>
         </div>
-        {success && (
-          <div className="p-3 rounded-xl bg-green-100 text-green-700 border border-green-300">
-            {success}
-          </div>
-        )}
-        
-        {error && (
-          <div className="p-3 rounded-xl bg-red-100 text-red-700 border border-red-300">
-            {error}
-          </div>
-        )}
 
         {/* FORM */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <label htmlFor="">Nama Lengkap</label>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
-              <Mail size={20}/>
-              <input name="full_name"  className="w-full h-full" type="text" placeholder="Nama Lengkap kamu"/>
+              <User className="text-gray-500" size={20}/>
+              <input name="fullname" className="w-full h-full outline-none" type="text" placeholder="Nama Lengkap kamu"/>
             </div>
           </div>
 
           <div className="flex flex-col gap-1">
             <label htmlFor="">Email</label>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
-              <Mail size={20}/>
-              <input name="email" className="w-full h-full" type="text" placeholder="@email.contoh.com"/>
+              <Mail className="text-gray-500" size={20}/>
+              <input name="email" className="w-full h-full outline-none" type="text" placeholder="@email.contoh.com"/>
             </div>
           </div>
 
           <div className="flex flex-col gap-1">
             <label htmlFor="">Kata Sandi</label>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
-              <Mail size={20}/>
-              <input name="password" className="w-full h-full" type="text" placeholder="Nama Lengkap kamu"/>
+              <Lock className="text-gray-500" size={20}/>
+              <input name="password" className="w-full h-full outline-none" type="text" placeholder="Password"/>
             </div>
           </div>
 
           <div className="flex flex-col gap-1">
             <label htmlFor="">Kata Sandi</label>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
-              <Mail size={20}/>
-              <input name="confirmPassword" className="w-full h-full" type="text" placeholder="Nama Lengkap kamu"/>
+              <Lock className="text-gray-500" size={20}/>
+              <input name="confirmPassword" className="w-full h-full outline-none" type="text" placeholder="Confirm Password"/>
             </div>
           </div>
           
