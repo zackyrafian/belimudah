@@ -16,5 +16,12 @@ const calculateDiscount = (price, discount) => {
   };
 }
 
-export { calculateDiscount }
+function generateId() {
+  const randomNum = Math.floor(Math.random() * 1000000)
+    .toString()
+    .padStart(8, "0");
+  return `BM${randomNum}`;
+}
+
+export { calculateDiscount, generateId }
 
