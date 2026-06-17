@@ -1,12 +1,83 @@
 import { Card } from "@/components";
-import { Edit, Eye, Plus, Trash2 } from "lucide-react";
-
+import { Edit, Eye, Plus, Trash2, X } from "lucide-react";
+import { useState } from "react";
 export default function DashboardProductPage() { 
+  const [open, setOpen] = useState(false); 
+ const handleClick = () => { 
+   setOpen(true);
+}
   return ( 
     <div className="flex flex-col gap-4">
+      {open && ( 
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <Card className="w-1/2">
+            <div className="flex justify-between border-b border-b-black/20 pb-4">
+              <div className="text-xl">Tambah Produk Baru</div>
+              <button onClick={() => setOpen(false)}><X/></button>
+            </div>
+
+            <form className="pt-4 flex flex-col gap-4">
+              <div className="flex gap-4">
+                <div className="flex flex-1 flex-col gap-2">
+                  <label htmlFor="" className="text-sm">Nama Produk</label>
+                  <input className="border border-black/20 px-4 py-2 rounded-xl bg-black/5" type="text" />
+                </div>
+                <div className="flex flex-1 flex-col gap-2">
+                  <label htmlFor="" className="text-sm">Merek</label>
+                  <input className="border border-black/20 px-4 py-2 rounded-xl bg-black/5" type="text" />
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="flex flex-1 flex-col gap-2">
+                  <label htmlFor="" className="text-sm">Harga (IDR)</label>
+                  <input className="border border-black/20 px-4 py-2 rounded-xl bg-black/5" type="text" />
+                </div>
+                <div className="flex flex-1 flex-col gap-2">
+                  <label htmlFor="" className="text-sm">Harga Asli (IDR)</label>
+                  <input className="border border-black/20 px-4 py-2 rounded-xl bg-black/5" type="text" />
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="flex flex-1 flex-col gap-2">
+                  <label htmlFor="" className="text-sm">Stok</label>
+                  <input className="border border-black/20 px-4 py-2 rounded-xl bg-black/5" type="text" />
+                </div>
+                <div className="flex flex-1 flex-col gap-2">
+                  <label htmlFor="" className="text-sm">Kategori</label>
+                  <input className="border border-black/20 px-4 py-2 rounded-xl bg-black/5" type="text" />
+                </div>
+              </div>
+
+              <div className="flex flex-col flex-1 gap-2">
+                <label htmlFor="" className="text-sm">Deksripsi</label>
+                <textarea name="" id="" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"></textarea>
+              </div>
+
+
+              <div className="flex gap-4">
+                <div className="flex gap-2">
+                  <input type="checkbox" />
+                  <label htmlFor="">Produk Unggulan</label>
+                </div>
+                <div className="flex gap-2">
+                  <input type="checkbox" />
+                  <label htmlFor="">Terbaru</label>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="border border-black/30 rounded-xl px-4 flex-1 py-3 flex items-center justify-center">Kembali</div>
+                <div className="bg-blue-500 rounded-xl px-4 flex-1 py-3 text-white flex items-center justify-center">Tambah Produk</div>
+              </div>
+            </form>
+          </Card>
+        </div>
+      )}
       <div className="flex justify-between">
         <span className="text-xl">Manajement Produk</span>
-        <div className="flex bg-orange-400 text-white px-4 py-2 rounded-xl gap-2"><Plus/><span>Tambah Produk</span></div>
+        <div onClick={handleClick} className="flex bg-orange-400 text-white px-4 py-2 rounded-xl gap-2"><Plus/><span>Tambah Produk</span></div>
       </div>
       <div className="p-4 bg-white flex justify-between shadow-sm border rounded-xl border-black/20 gap-2">
         <input className="py-2.5 px-4 flex-1 bg-black/5 border rounded-xl border-black/20" type="text" />
