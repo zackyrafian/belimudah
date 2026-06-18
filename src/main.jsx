@@ -23,6 +23,7 @@ import {
   ProfileSetting,
 
   DashboardMainPage,
+  DashboardProductPage,
   
   NotFound
 } from './pages'
@@ -110,7 +111,11 @@ const router = createBrowserRouter([
       { 
         index: true, 
         element: <DashboardMainPage/>
-      }
+      },
+      {
+        path: 'product', 
+        element: <DashboardProductPage/>
+      },
     ]
   },
   {
