@@ -6,25 +6,45 @@ import { calculateDiscount } from '@/utils/calculate'
 import { useState } from 'react'
 import { MainLayout } from '@/components/layouts'
 import { UserStorage } from '@/services/user.service'
+import Alert from '@/components/ui/alert'
 
 export default function Product() {
+  const [alert, setAlert] = useState(null);
   const params = useParams();
   const product = ProductService.getByName(params.name);
-  const { finalPrice, save } = calculateDiscount(product.price, product.discount)
+
+  const discount = Number(product.discount) || 0;
+  const hasDiscount = discount > 0;
+
+  const { finalPrice, save } = hasDiscount
+    ? calculateDiscount(product.price, discount)
+    : {
+        finalPrice: product.price,
+        save: 0,
+      };
+
   const [ variant, setVariantSelect ] = useState(product.variant[0]);
   const [quantity, setQuantity] = useState(1);
   
 
   return (
     <div className="flex flex-col">
+      {alert && (
+        <Alert
+          key={alert.id}
+          title="Product"
+          type={alert.type}
+          message={alert.message}
+          onClose={() => setAlert(null)}
+        />
+      )}
       <MainLayout>
-
       <div className='w-7xl m-auto flex-col gap-4 flex pt-4'>
         <div>Headphone Wireless Premium</div>
         <div className='flex flex-row gap-8'>
           <div className='w-1/2'>
             <div className='w-full'>
-              <img src="/headphone.png" alt="headphone" className='rounded-xl w-full' />
+              <img src={product.images[0]} alt={product.name} className='rounded-xl w-full' />
             </div>
             <div>
 
@@ -58,25 +78,53 @@ export default function Product() {
 
             <div className='bg-blue-200 p-4 flex rounded-xl flex-col gap-1'>
               <div className='flex items-center gap-4'>
-                <span className='text-3xl font-bold text-blue-700'>{formatIDR(finalPrice)}</span>
-                <span>{formatIDR(product.price)}</span>
-                <div className='rounded-full bg-red-600 text-white px-2 py-0.5'>
-                  <span>Hemat {product.discount}%</span>
-                </div>
-              </div>
-              <div>
-                <span className='text-green-600'>Kamu hemat {formatIDR(save)}</span>
-              </div>
-            </div>
+                <span className='text-3xl font-bold text-blue-700'>
+                  {formatIDR(finalPrice)}
+                </span>
 
-            
+                {hasDiscount && (
+                  <div className='flex gap-2'>
+                    <span>{formatIDR(product.price)}</span>
+                    <div className='rounded-full bg-red-600 text-white px-2 py-0.5 flex items-center'>
+                      <span className='text-xs'>Hemat {discount}%</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {hasDiscount && (
+                <div>
+                  <span className='text-green-600'>
+                    Kamu hemat {formatIDR(save)}
+                  </span>
+                </div>
+              )}
+            </div>
 
             <div className='flex gap-2 flex-col'>
               <span>Variant: {variant}</span>
               <div className='flex gap-2'>
-                {product.variant.map((set, index) => (
-                  <button onClick={() => setVariantSelect(set)} value={set} className='border p-2 rounded-xl' key={index}>{set}</button>
-                ))}
+                {product.variant.map((set, index) => {
+                  const isActive = variant === set;
+                
+                  return (
+                    <button
+                      key={index}
+                      onClick={() =>
+                        setVariantSelect(set)}
+                      className={`
+                        px-4 py-2 rounded-xl border transition-all duration-200
+                        ${isActive 
+                          ? ' text-blue-500 border-blue-500 bg-white-500 scale-[1.02]' 
+                          : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-500'
+                        }
+                        active:scale-95
+                      `}
+                    >
+                      {set}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -96,16 +144,21 @@ export default function Product() {
                     quantity, 
                     variant
                   }
-                  console.log(item);
+                  setAlert({ 
+                    id: Date.now(),
+                    type: "success", 
+                    message: `Successfully added ${product.name} to your cart.`
+                  })
+                  // console.log(item);
                   UserStorage.addCart(item)
-              }} className='flex-1 gap-4 p-4 flex border border-orange-400  rounded-xl text-orange-400 items-center justify-center'>
-                <ShoppingCart />
-                <span>Tambah Keranjang</span>
+              }} className='flex-1 gap-4 p-4 flex border-2 border-orange-400  rounded-xl text-orange-400 items-center justify-center'>
+                <ShoppingCart size={18}/>
+                <span className='font-semibold'>Tambah Keranjang</span>
               </button>
-              <div className='flex-1 p-4 flex border border-orange-400  rounded-xl text-orange-400 items-center justify-center'>
+              <div className='flex-1 p-4 flex border border-orange-400 bg-orange-400  rounded-xl text-white items-center justify-center'>
                 <span>Beli Sekarang</span>
               </div>
-              <div className='flex justify-center items-center border border-black/20  p-4 rounded-xl'>
+              <div className='flex justify-center items-center border-2 border-black/20  p-4 rounded-xl'>
                 <Heart />
               </div>
             </div>
@@ -126,7 +179,6 @@ export default function Product() {
                 <span className='text-xs'>Gratis Ongkir</span>
                 <span className='text-xs'>Min. Rp 100.000</span>
               </div>
-
             </div>
             
           </div>
