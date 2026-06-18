@@ -1,6 +1,6 @@
 import { Header } from '../components/header'
 import { Footer } from '../components/footer'
-import { Clock, StarIcon, Zap } from 'lucide-react'
+import { ArrowRight, Clock, StarIcon, Zap } from 'lucide-react'
 import { ProductService } from '@/services/product.service'
 import { Link } from 'react-router'
 
@@ -10,7 +10,29 @@ export default function LandingPage() {
     <div className="flex flex-col">
       <Header />
 
+      <div className="flex max-h-105 mb-4 bg-linear-to-r from-[#4F39F6] to-[#8200DB]">
+        <div className=" flex-1 flex justify-end">
+          <div className='max-w-160 text-white w-full flex justify-center flex-col p-4 gap-4'>
+            <h1 className='text-[40px] font-bold'>Elektronik Pilihan, Harga <br/>
+              Spesial</h1>
+            <h3>Laptop, smartphone, headphone, dan masih banyak lagi <br/>
+              dengan diskon hingga 40%</h3>
+            <Link to='/browser-product' className='text-blue-500 flex px-4 py-3 bg-white w-fit rounded-xl items-center gap-2'>
+              <span>Lihat Promo</span>
+              <ArrowRight size={16}/>
+            </Link>
+          </div>
+        </div>
+        <div className="bg-blue-500 opacity-30 flex-1">
+          <img
+            src="/hero-landing-page.png"
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </div>
       <div className='w-7xl m-auto flex flex-col gap-4'>
+        <h3 className='text-xl'>Belanja Berdasarkan Kategori</h3>
         <div className='flex gap-4'>
           {categories.map((category,index) => (
             <Link key={index} to={`/browser-product?category=${category.name.toLowerCase().replaceAll(' ', '-')}`}>
