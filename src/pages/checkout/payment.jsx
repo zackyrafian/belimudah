@@ -1,19 +1,26 @@
 import { CreditCard, LockIcon } from "lucide-react";
-
+import { UserStorage } from "@/services/user.service";
+import { useNavigate } from "react-router";
+import { Link } from "react-router";
 export default function CheckoutPaymentPage() { 
-
+  const navigate = useNavigate();
   const handleForm = (e) => { 
     e.preventDefault();
     const form = new FormData(e.target);
     const data = form.get("payment_metode"); 
-    // console.log(data);
+
+    if (!data) { 
+      return
+    }
+    UserStorage.setSelectedPaymentMethod(data);
+    navigate("/checkout/confirm")
   }
   return (
     <div className="flex flex-col gap-4"> 
-      <form onSubmit={handleForm} className="flex flex-col gap-4">
-      <div className="flex gap-2">
+      <form onSubmit={handleForm} className="flex flex-col gap-4 p-2">
+      <div className="flex gap-2 items-center">
         <CreditCard/>
-        <span className="text-xl">Metode Pembayaran</span>
+        <span className="text-xl font-medium">Metode Pembayaran</span>
       </div>
       <div className="grid grid-cols-3 gap-2">
         <label className="flex items-center gap-2 border-2 border-black/10 rounded-xl h-20 p-3 cursor-pointer has-checked:border-blue-500">
@@ -63,9 +70,12 @@ export default function CheckoutPaymentPage() {
         <LockIcon size={18}/>
         <span className="text-sm">Informasi pembayaranmu dienkripsi dengan SSL 256-bit. Kami tidak menyimpan data kartu kreditmu.</span>
       </div>
-      <div className="flex gap-2">
-        <button className="rounded-xl flex w-1/5 border px-4 py-2 justify-center">Kembali</button>
-        <button type="submit" className="cursor-pointer rounded-xl flex border flex-1 px-4 py-2 items-center justify-center bg-blue-500 text-white">Lanjut ke Konfirmasi</button>
+        <div className="flex gap-2">
+        <Link to={'/checkout/address'} className="rounded-xl flex w-1/5 border px-4 py-3 justify-center">
+            {/* <button className="rounded-xl flex w-1/5 border px-4 py-3 justify-center">Kembali</button>*/}
+            Kembali
+        </Link>
+        <button type="submit" className="cursor-pointer rounded-xl flex border flex-1 px-4 py-3 items-center justify-center bg-blue-500 text-white">Lanjut ke Konfirmasi</button>
         </div>
       </form>
         
