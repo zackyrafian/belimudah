@@ -1,4 +1,4 @@
-import { Check, Truck, Heart, ShoppingCart, Star, } from 'lucide-react'
+import { Check, Truck, Heart, ShoppingCart, Star, ImageOff} from 'lucide-react'
 import { useParams } from 'react-router'
 import { ProductService } from '@/services/product.service'
 import { formatIDR } from '@/utils/format'
@@ -43,8 +43,14 @@ export default function Product() {
         <div>Headphone Wireless Premium</div>
         <div className='flex flex-row gap-8'>
           <div className='w-1/2'>
-            <div className='w-full'>
-              <img src={product.images[0]} alt={product.name} className='rounded-xl w-full' />
+              <div className='w-full'>
+                {product.images?.[0] ? (
+                  <img src={product.images[0]} alt={product.name} className='rounded-xl w-full' />
+                ) : 
+                <div className="w-full min-h-156 rounded-xl flex items-center justify-center bg-gray-200 text-gray-400 hover">
+                  <ImageOff size={32} />
+                </div>
+                }
             </div>
             <div>
 
