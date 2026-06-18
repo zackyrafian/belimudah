@@ -1,6 +1,30 @@
 import { UserStorage } from "./user.service";
 
 const AuthService = { 
+  register(data) {
+    const listAccounts = UserStorage.getAccounts() || [];
+    const email = data.email.toLowerCase().trim();
+    if (listAccounts.some(account => account.email === email)) {
+      throw new Error("Email sudah di gunakan");
+    }
+    
+    if (data.password !== data.confirmPassword) {
+      throw new Error("Password tidak sama");
+    }
+    
+    const newAccount = {
+      fullname: data.fullname,
+      email,
+      password: data.password,
+      phone_number: null,
+      shipping_address: [],
+      cart: [],
+      wishlist: [],
+    };
+    listAccounts.push(newAccount);
+    localStorage.setItem("account", JSON.stringify(listAccounts));
+    return newAccount;
+  },
   handleRegister(e) {
     try {
       e.preventDefault();
