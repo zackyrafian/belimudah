@@ -9,7 +9,15 @@ export { default as SignUpPage } from './auth/sign-up'
 export { default as CheckoutAddress } from './checkout/address'
 export { default as CheckoutPaymentPage } from './checkout/payment'
 export { default as CheckoutConfirmPage } from './checkout/confirm'
+export { default as CheckoutSuccessPage } from './checkout/success'
 
 export { default as MyProfile } from './profile/my-profile'
 export { default as ProfileAddress } from './profile/address'
 export { default as ProfileSetting } from './profile/settings'
+
+
+export { default as DashboardMainPage } from './dashboard/main'
+export { default as DashboardProductPage } from './dashboard/product'
+
+
+export { default as NotFound } from './not-found'
