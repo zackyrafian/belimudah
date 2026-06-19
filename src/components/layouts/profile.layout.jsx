@@ -1,7 +1,7 @@
 import { ArrowRight, Heart, LogOut, MapPin, Settings, ShoppingBag } from "lucide-react"
 import { MainLayout } from "../../components/layouts"
 import { Link, Outlet } from "react-router"
-
+import { UserStorage } from "@/services/user.service";
 
 const listElement = [
   {
@@ -32,14 +32,28 @@ const listElement = [
 ];
 
 export default function ProfileLayout() { 
+const user = UserStorage.getUser();
+
   return (
     <MainLayout>
       <div className="flex flex-row gap-8">
         <div className="w-1/5 flex flex-col gap-4">
-          <div className="flex flex-col gap-2 rounded-xl shadow-sm items-center justify-center bg-white border-black/20 border p-4">
-            <div className="rounded-full w-16 h-16 bg-blue-500 flex justify-center items-center">B</div>
-            <div>Budi Santoso</div>
-            <div>budi@email.com</div>
+          <div className="flex flex-col gap-4 rounded-xl shadow-sm items-center justify-center bg-white border-black/20 border p-4">
+            <div className="text-white text-2xl font-bold rounded-full w-16 h-16 bg-blue-500 flex justify-center items-center">{user.fullname[0]}</div>
+            <div className="flex flex-col text-center pb-2 border-b border-b-black/20">
+              <div className="font-medium">{user.fullname}</div>
+              <div className="text-gray-500 text-sm">{user.email}</div>
+            </div>
+            <div className="flex gap-4 justify-center items-center ">
+              <div className="text-center">
+                <div className="font-bold">{user.order.length}</div>
+                <div className="text-xs">Pesanan</div>
+              </div>
+              <div className="text-center">
+                <div className="font-bold">0</div>
+                <div className="text-xs">Wishlist</div>
+              </div>
+            </div>
           </div>
 
           <div className="bg-white rounded-xl border border-black/20 shadow-sm flex flex-col gap-1">
