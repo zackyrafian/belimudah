@@ -1,11 +1,11 @@
 import { Mail, Lock, User } from "lucide-react"
 import { Link } from "react-router"
 import { AuthService } from "@/services/auth.service"
-import { useState } from "react"
 import Alert from "@/components/ui/alert"
+import { useAlert } from "@/hooks/useAlert"
 
 export default function SignUpPage() {
-  const [alert, setAlert] = useState(null);
+  const { alert, showError, showSuccess, clearAlert } = useAlert();
     const handleSubmit = (e) => {
       e.preventDefault();
   
@@ -13,18 +13,15 @@ export default function SignUpPage() {
         const form = new FormData(e.target);
         const data = Object.fromEntries(form.entries());
         AuthService.register(data);
-        
-        setAlert({
-          type: "success",
-          message:
-            "Account created successfully. Your registration is complete and your profile has been set up.",
-        });
+        showSuccess("Account created successfully. Your registration is complete and your profile has been set up.")
+        // setAlert({
+        //   type: "success",
+        //   message:
+        //     "Account created successfully. Your registration is complete and your profile has been set up.",
+        // });
   
       } catch (err) {
-        setAlert({
-          type: "error",
-          message: err.message,
-        });
+        showError(err.message)
       }
     };
   
@@ -33,10 +30,10 @@ export default function SignUpPage() {
       {alert && (
         <Alert
           title={"Register"}
-          key={alert.message}
+          key={new Date}
           type={alert.type}
           message={alert.message}
-          onClose={() => setAlert(null)}
+          onClose={() => clearAlert()}
         />
       )}
       <div className="lg:w-1/2 hidden min-h-screen lg:flex">
@@ -116,7 +113,7 @@ export default function SignUpPage() {
             <label htmlFor="">Kata Sandi</label>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
               <Lock className="text-gray-500" size={20}/>
-              <input name="password" className="w-full h-full outline-none" type="text" placeholder="Password"/>
+              <input name="password" className="w-full h-full outline-none" type="password" placeholder="Password"/>
             </div>
           </div>
 
@@ -124,7 +121,7 @@ export default function SignUpPage() {
             <label htmlFor="">Kata Sandi</label>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
               <Lock className="text-gray-500" size={20}/>
-              <input name="confirmPassword" className="w-full h-full outline-none" type="text" placeholder="Confirm Password"/>
+              <input name="confirmPassword" className="w-full h-full outline-none" type="password" placeholder="Confirm Password"/>
             </div>
           </div>
           
