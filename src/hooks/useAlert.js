@@ -3,7 +3,7 @@ import { useState } from "react";
 export function useAlert() { 
   const [alert, setAlert] = useState(null); 
 
-  const showSuccess = () => { 
+  const showSuccess = (message) => { 
     setAlert({
       type: "success", 
       message, 
