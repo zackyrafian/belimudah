@@ -3,7 +3,7 @@ import { Headphones, Mail, MapPin, Phone, RefreshCcw, Shield, Truck } from "luci
 function Footer() {
   return (
     <div className="flex w-full bg-[#111827] text-white flex-col">
-      <div className="flex w-7xl m-auto justify-between py-4 border-b">
+      <div className="flex w-7xl m-auto justify-between py-4 border-b border-b-white/20">
 
         <div className="flex items-center gap-2 w-73.5">
           <div className="rounded-full w-10 h-10 bg-blue-500/20 flex items-center justify-center">
@@ -120,7 +120,7 @@ function Footer() {
       </div>
 
 
-      <div className="flex w-7xl m-auto justify-between text-xs text-gray-400 py-4 border-t ">
+      <div className="flex w-7xl m-auto justify-between text-xs text-gray-400 py-4 border-t border-white/20 ">
         <div>© 2026 BeliMudah. Seluruh hak cipta dilindungi.</div>
         <div className="flex gap-2">
           <div>Kebijakan Privasi</div>
