@@ -1,13 +1,26 @@
-import { Heart, Shield, Tag, Trash2 } from 'lucide-react'
+import { Heart, Shield, ShoppingCart, Tag, Trash2 } from 'lucide-react'
 import { UserStorage } from '@/services/user.service'
 import { formatIDR } from '@/utils/format';
 import { MainLayout } from '@/components/layouts';
+import { Link } from 'react-router';
 
 export default function CartPage() {
   const { cart, total } = UserStorage.getCart();
   // const [ quantity , setQuantity ] = useState()
+  console.log(cart.product.length)
   return (
     <MainLayout className="flex flex-col">
+      {cart.product.length === 0 ? (
+      
+      <div className='gap-4 p-50 flex flex-col items-center justify-center text-gray-500'>
+          <div><ShoppingCart size={120}/></div>
+          <div className='flex gap-2 flex-col text-center'>
+            <h1 className='text-2xl font-bold text-black'>Your cart is empty!</h1>
+            <h1>Look like you have added anying to your cart yet</h1>
+          </div>
+          <Link to={'/'} className='bg-blue-500 rounded-xl px-4 text-white text-sm p-2 '>Start Shopping</Link>
+        </div>
+      ) : (
       <div className='w-7xl m-auto flex flex-col gap-4 pt-4'>
         <div className='text-2xl'>Keranjang Belanja { total } Produk</div>
         <div>
@@ -94,7 +107,7 @@ export default function CartPage() {
           </div>
         </div>
       </div>
-
+      )}
     </MainLayout>
   )
 }
