@@ -62,6 +62,50 @@ const UserStorage = {
     });
   },
 
+  setSelectedShippingAddress(address) {
+    return this.setCheckout({
+      shipping_address: address
+    });
+  },
+
+  setSelectedPaymentMethod(method) {
+    return this.setCheckout({
+      payment_method: method,
+    });
+  },
+
+  createCheckout(data) {
+    return this.updateUser({
+      checkout: data
+    });
+  },
+
+  setCheckout(data) { 
+    const user = this.getUser(); 
+    return this.updateUser({
+      checkout: {
+        ...(user.checkout || {}),
+        ...data,
+      }
+    });
+  },
+  clearCheckout() {
+    return this.updateUser({
+      checkout: {},
+      cart: []
+    });
+  },
+
+  createOrder(data) { 
+    const user = this.getUser(); 
+    if (!user) { 
+      return; 
+    }
+    const order = [...(user.order || [])];
+    order.push(data)
+    return this.updateUser({order})
+  },
+
   syncUser() { 
     const user = this.getUser(); 
     if(!user) return; 
