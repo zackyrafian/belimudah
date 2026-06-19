@@ -1,5 +1,5 @@
-import { Check, Truck, Heart, ShoppingCart, Star, ImageOff} from 'lucide-react'
-import { useParams } from 'react-router'
+import { Check, Truck, Heart, ShoppingCart, Star, ImageOff, ArrowRight, ChevronRight} from 'lucide-react'
+import { Link, useParams } from 'react-router'
 import { ProductService } from '@/services/product.service'
 import { formatIDR } from '@/utils/format'
 import { calculateDiscount } from '@/utils/calculate'
@@ -40,7 +40,13 @@ export default function Product() {
       )}
       <MainLayout>
       <div className='w-7xl m-auto flex-col gap-4 flex pt-4'>
-        <div>Headphone Wireless Premium</div>
+          <div className='text-sm text-black'>
+            <Link className='flex items-center gap-2' to={'/'}>Beranda<ChevronRight size={16} />
+              <Link to={`/browser-product?category=${product.category}`} className='flex items-center gap-2'>{product.category}<ChevronRight size={16} />
+                <Link className='flex items-center gap-2 font-bold'>{product.name}</Link>
+              </Link>
+            </Link>
+          </div>
         <div className='flex flex-row gap-8'>
           <div className='w-1/2'>
               <div className='w-full'>
@@ -136,10 +142,10 @@ export default function Product() {
 
             <div className='flex gap-2 flex-col'>
               <span>Jumlah: {quantity}</span>
-              <div className='border flex px-4 py-1 gap-4 rounded-xl items-center w-fit'>
-                <button onClick={() => setQuantity(quantity - 1)} className='w-6 text-center'>-</button>
+              <div className='border border-black/20 flex px-4 py-1 gap-4 rounded-xl items-center w-fit'>
+                <button onClick={() => setQuantity(quantity - 1)} className='w-6 text-center cursor-pointer'>-</button>
                 <span className='w-6 text-center'>{quantity}</span>
-                <button onClick={() => setQuantity(quantity + 1)} className='w-6 text-center'>+</button>
+                <button onClick={() => setQuantity(quantity + 1)} className='w-6 text-center cursor-pointer'>+</button>
               </div>
             </div>
 
@@ -170,35 +176,45 @@ export default function Product() {
             </div>
 
             <div className='grid grid-cols-3 gap-2'>
-              <div className='bg-gray-500/30 border-black/20 border rounded-xl flex flex-col items-center p-2'>
-                <Truck size={16} className='text-blue-500' />
-                <span className='text-xs'>Gratis Ongkir</span>
-                <span className='text-xs'>Min. Rp 100.000</span>
+              <div className='bg-gray-200/30 border-black/20 border rounded-xl flex flex-col gap-2 items-center p-2'>
+                <Truck size={18} className='text-blue-500' />
+                <div className='flex flex-col text-center'>
+                  <span className='text-xs'>Gratis Ongkir</span>
+                  <span className='text-xs'>Min. Rp 100.000</span>
+                </div>
               </div>
-              <div className='bg-gray-500/30 border-black/20 border rounded-xl flex flex-col items-center p-2'>
-                <Truck size={16} className='text-blue-500' />
-                <span className='text-xs'>Gratis Ongkir</span>
-                <span className='text-xs'>Min. Rp 100.000</span>
+              <div className='bg-gray-200/30 border-black/20 border rounded-xl flex flex-col gap-2 items-center p-2'>
+                <Truck size={18} className='text-blue-500' />
+                <div className='flex flex-col text-center'>
+                  <span className='text-xs'>Gratis Ongkir</span>
+                  <span className='text-xs'>Min. Rp 100.000</span>
+                </div>
               </div>
-              <div className='bg-gray-500/30 border-black/20 border rounded-xl flex flex-col items-center p-2'>
-                <Truck size={16} className='text-blue-500' />
-                <span className='text-xs'>Gratis Ongkir</span>
-                <span className='text-xs'>Min. Rp 100.000</span>
+              <div className='bg-gray-200/30 border-black/20 border rounded-xl flex flex-col gap-2 items-center p-2'>
+                <Truck size={18} className='text-blue-500' />
+                <div className='flex flex-col text-center'>
+                  <span className='text-xs'>Gratis Ongkir</span>
+                  <span className='text-xs'>Min. Rp 100.000</span>
+                </div>
               </div>
             </div>
-            
           </div>
         </div>
 
         <section className='bg-white border border-black/20 rounded-xl'>
-          <header className='flex gap-4 text-sm p-4 border-b'>
+          <header className='flex gap-4 text-sm p-4 border-b border-b-black/20'>
             <div>Deksripsi</div>
             <div>Spesifikasi</div>
             <div>Ulasan (2)</div>
           </header>
 
-          <main className='p-6'>
-            <p>Headphone wireless dengan teknologi noise-cancelling terdepan. Nikmati musik favoritmu tanpa gangguan dengan kualitas suara yang memukau.</p>
+          <main className='p-6 flex flex-col gap-4'>
+            <h2 className='font-medium text-xl'>{product.name}</h2>
+            <div className='flex flex-col'>
+              <span> Brand: {product.brand} </span>
+              <span>Category: {product.category}</span>
+            </div>
+            <p className='text-justify'>{product.description}</p>
           </main>
         </section>
       </div>
