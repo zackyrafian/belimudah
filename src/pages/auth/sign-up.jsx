@@ -39,7 +39,7 @@ export default function SignUpPage() {
           onClose={() => setAlert(null)}
         />
       )}
-      <div className="flex w-1/2 h-screen">
+      <div className="lg:w-1/2 hidden min-h-screen lg:flex">
         <div className="relative w-full">
           <img
             src="/auth/shopping-bags.jpg"
@@ -83,7 +83,7 @@ export default function SignUpPage() {
         </div>
         
       </div>
-      <div className="flex flex-col w-1/2 gap-4 bg-white max-h-screen lg:py-20 px-40">
+      <div className="flex flex-col lg:w-1/2 gap-4 bg-white max-h-screen justify-center xl:px-40 lg:py-20 lg:px-20 px-20 w-full">
         <div>
           <h1 className="font-bold text-2xl">Masuk ke Akun</h1>
           <span>Belum punya akun? <Link>Daftar gratis</Link></span>
