@@ -10,8 +10,8 @@ export default function MyProfile() {
     <div className="flex flex-col gap-4">
       <span className="text-2xl">Pesanan Saya</span>
 
-      {orders.map((order) => (
-        <Card className="flex flex-col gap-4">
+      {orders?.map((order, i) => (
+        <Card key={i} className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <div className="flex flex-col">
               <span className="font-bold">#{order.id}</span>
