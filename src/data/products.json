@@ -7,7 +7,7 @@
     "stock": 45,
     "price": 650000,
     "discount": 0,
-    "images": [],
+    "images": ["/headphone.png"],
     "ratting": 4.8,
     "total_review": 512,
     "sold_out": 156
@@ -98,7 +98,7 @@
     "stock": 500,
     "price": 850000,
     "discount": 20,
-    "images": [],
+    "images": ["/src/data/images/baseus_cabel.jpeg"],
     "ratting": 4.9,
     "total_review": 2410,
     "sold_out": 890
