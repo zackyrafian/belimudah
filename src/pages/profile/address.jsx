@@ -9,7 +9,7 @@ export default function ProfileAddress() {
     <div className="flex flex-col gap-2">
       {dialog && (
         <div className="fixed inset-0 bg-black/50 items-center justify-center z-50 flex">
-          <Card className="flex flex-col min-w-1/2 gap-4">
+          <Card className="p-6 flex flex-col min-w-1/2 gap-4">
             <div className="flex justify-between items-center">
               <div className="flex gap-4 items-center">
                 <MapPin/>
@@ -87,10 +87,16 @@ export default function ProfileAddress() {
             </div>
           </div>
   
-          <div>
-            <div>Budi Santoso · 0812-3456-7890</div>
-            <div>Jl. Kebon Jeruk No. 15, RT.003/RW.002</div>
-            <div>Jakarta Barat, DKI Jakarta 11530</div>
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-3">
+              <h3 className="font-semibold"> Budi Santoso</h3>
+              <span className="text-sm text-gray-500">0812-3456-7890</span>
+            </div>
+            <div className="text-sm text-gray-700 leading-relaxed">
+              Jl. Kebon Jeruk No. 15, RT.003/RW.002
+              <br />
+              Jakarta Barat, DKI Jakarta 11530
+            </div>
           </div>
         </Card>
       ))}
