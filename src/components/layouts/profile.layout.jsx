@@ -1,4 +1,4 @@
-import { ArrowRight, Heart, LogOut, MapPin, Settings, ShoppingBag, SquareArrowRightExit } from "lucide-react"
+import { ArrowRight, Heart, LogOut, MapPin, Settings, ShoppingBag } from "lucide-react"
 import { MainLayout } from "../../components/layouts"
 import { Link, Outlet } from "react-router"
 

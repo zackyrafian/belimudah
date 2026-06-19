@@ -33,9 +33,9 @@ export default function DashboardLayout() {
           <span>BeliMudah Admin</span>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col px-2 gap-4">
           {sidebarList.map((item) => (
-            <Link to={item.href} className="flex items-center gap-4">
+            <Link to={item.href} className="flex items-center gap-4 border rounded-xl px-4 py-1.5">
               <LayoutDashboard/>
               <span>{item.name}</span>
             </Link>
@@ -57,7 +57,6 @@ export default function DashboardLayout() {
         </nav>
         <div className="px-6 py-4">
           <Outlet />
-          <div>Hai</div>
         </div>
       </div>
     </div>

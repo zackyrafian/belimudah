@@ -32,7 +32,7 @@ export default function CartPage() {
                       <div className='border flex px-4 py-1 gap-4 rounded-xl items-center'>
                         <button className='w-6 text-center'>-</button>
                         <span className='w-6 text-center'>{product.quantity}</span>
-                        <button onClick={() => } className='w-6 text-center'>+</button>
+                        <button className='w-6 text-center'>+</button>
                       </div>
                       <span>{ formatIDR(product.price)}</span>
                     </div>
