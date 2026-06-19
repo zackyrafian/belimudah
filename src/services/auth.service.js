@@ -5,17 +5,17 @@ const AuthService = {
     const listAccounts = UserStorage.getAccounts() || [];
     const email = data.email.toLowerCase().trim();
     if (listAccounts.some(account => account.email === email)) {
-      throw new Error("Email sudah di gunakan");
+      throw new Error("This email address is already use.");
     }
     
     if (data.password !== data.confirmPassword) {
-      throw new Error("Password tidak sama");
+      throw new Error("Passwords do not match");
     }
     
     const newAccount = {
       fullname: data.fullname,
       email,
-      password: data.password,
+      password: btoa(data.password),
       phone_number: null,
       shipping_address: [],
       cart: [],
@@ -25,65 +25,24 @@ const AuthService = {
     localStorage.setItem("account", JSON.stringify(listAccounts));
     return newAccount;
   },
-  handleRegister(e) {
-    try {
-      e.preventDefault();
-      const form = new FormData(e.target);
-      const data = Object.fromEntries(form.entries());
-      let temp = JSON.parse(localStorage.getItem("account") || "[]");
+  login(data) {
+    const listAccounts = UserStorage.getAccounts() || [];
+    const email = data.email.toLowerCase().trim();
 
-      if (temp.some(account => account.email === data.email)) { 
-        throw new Error("Email sudah di gunakan")
-      }
-      if (data.password !== data.confirmPassword) {
-        throw new Error("Password tidak sama")
-      }
-
-      const newAccount = { 
-        fullname: data.fullname, 
-        email: data.email, 
-        password: data.password, 
-        phone_number: null,
-        shipping_address: null,
-        cart: [], 
-        wishlist: [], 
-      }
-
-      temp.push(newAccount);
-      localStorage.setItem("account", JSON.stringify(temp));
-      alert("Berhasil daftar");
-      window.location.href = '/sign-in'
-    } catch (error){
-      alert(error.message);
+    if (!email || !data.password) {
+      throw new Error("Please enter both email and password.");
     }
+
+    const existing = listAccounts.find(account => account.email === email);
+    if (!existing) { 
+      throw new Error("No account found with this email address.");
+    }
+
+    if (atob(existing.password) !== data.password) {
+      throw new Error("Incorrect password.");
+    }
+
   },
-
-  handleLogin (e) { 
-    try { 
-      e.preventDefault(); 
-      const listAccounts = UserStorage.getAccounts();
-      const form = new FormData(e.target); 
-      const data = Object.fromEntries(form.entries());
-
-      if (!data.email || !data.password) throw new Error("Harap dimasukan semua")
-
-      const existing = listAccounts.find((account) => account.email === data.email); 
-      if (!existing) { 
-        throw new Error("Email tidak terdaftar"); 
-      }
-
-      if (existing.password !== data.password) { 
-        throw new Error("Password salah"); 
-      }
-
-      UserStorage.syncUser(); 
-      console.log("Account tersedia dan berhasil masuk."); 
-      localStorage.setItem("user", JSON.stringify(existing))
-      window.location.href = '/';
-    } catch (error) { 
-      alert(error.message);
-    }
-  }
 }
 
 export { AuthService } ;
