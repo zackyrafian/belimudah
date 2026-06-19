@@ -1,6 +1,6 @@
 import { Header } from '../components/header'
 import { Footer } from '../components/footer'
-import { ArrowRight, Clock, StarIcon, Zap } from 'lucide-react'
+import { ArrowRight, Clock, StarIcon, Zap, TrendingUp } from 'lucide-react'
 import { ProductService } from '@/services/product.service'
 import { Link } from 'react-router'
 
@@ -173,20 +173,146 @@ export default function LandingPage() {
 
         <section>
           <div className='grid grid-cols-2 gap-4'>
-            <div className='flex flex-col bg-red-500 p-4 min-h-40 justify-center rounded-xl gap-2'>
-              <div className='flex flex-col'>
-                <span className='text-sm'>Fashtion Wanita</span>
-                <span className='text-xl text-white font-bold'>Diskon 50%</span>
+            <div className="relative overflow-hidden rounded-xl min-h-40">
+              <div className="absolute inset-0 bg-[url('/landing_page/running.png')] bg-cover bg-center" />
+              <div className="absolute inset-0 bg-black/40" />
+            
+              <div className="relative flex flex-col justify-center gap-2 p-4 h-full">
+                <div className="flex flex-col">
+                  <span className="text-sm text-white">Fashion Wanita</span>
+                  <span className="text-xl text-white font-bold">Diskon 50%</span>
+                </div>
+            
+                <button className="border border-white text-white text-sm rounded-lg px-3 py-1 max-w-max">
+                  Belanja Sekarang
+                </button>
               </div>
-              <button className='border border-white text-white text-sm rounded-xl px-3 py-1 text max-w-max'>Belanja Sekarang</button>
             </div>
-            <div className='flex flex-col bg-red-500 p-4 min-h-40 justify-center rounded-xl gap-2'>
+            <div className='flex flex-col bg-[url(/landing_page/bag.png)] bg-linear-to-r from-blue-500 to-red-500 p-4 min-h-40 justify-center rounded-xl gap-2'>
               <div className='flex flex-col'>
-                <span className='text-sm'>Elektonik Pilihan</span>
+                <span className='text-sm text-white'>Elektonik Pilihan</span>
                 <span className='text-xl text-white font-bold'>Harga Terbaik</span>
               </div>
-              <button className='border border-white text-white text-sm rounded-xl px-3 py-1 text max-w-max'>Lihat Produk</button>
+              <button className='border border-white text-white text-sm rounded-lg px-3 py-1 text max-w-max'>Lihat Produk</button>
             </div>
+          </div>
+        </section>
+
+
+        <section className='flex flex-col gap-4'>
+          <header className='flex gap-2'>
+            <div className='flex text-black rounded-lg px-4 py-1.5 items-center gap-2'>
+              {/* <Zap size={16}/>*/}
+              <TrendingUp />
+              <span>Produk Terbaru</span>
+            </div>
+          </header>
+
+          <div className='grid grid-cols-4 gap-4'>
+            <div className='flex flex-col rounded-xl border border-black/20  overflow-hidden'>
+              <div>
+              <img src="headphone.png" alt="headphone" />
+              </div>
+              <div className='p-4 flex flex-col'>
+                <span className='text-xs'>SoundWave</span>
+                <span className='text-sm'>Headphone WireLess Premium</span>
+                <div className='flex gap-1 items-center'>
+                  <div className='flex'>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                  </div>
+                  <span className='text-sm'>4.8</span>
+                  <span className='text-sm'>(512)</span>
+                </div>
+                <div className='flex gap-2 items-center'>
+                  <span className='text-sm text-blue-500 font-bold'>Rp 450.000</span>
+                  <span className='text-xs'>Rp 650.000</span>
+                </div>
+              </div>
+              
+            </div>
+
+             <div className='flex flex-col rounded-xl border border-black/20  overflow-hidden'>
+              <div>
+              <img src="headphone.png" alt="headphone" />
+              </div>
+              <div className='p-4 flex flex-col'>
+                <span className='text-xs'>SoundWave</span>
+                <span className='text-sm'>Headphone WireLess Premium</span>
+                <div className='flex gap-1 items-center'>
+                  <div className='flex'>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                  </div>
+                  <span className='text-sm'>4.8</span>
+                  <span className='text-sm'>(512)</span>
+                </div>
+                <div className='flex gap-2 items-center'>
+                  <span className='text-sm text-blue-500 font-bold'>Rp 450.000</span>
+                  <span className='text-xs'>Rp 650.000</span>
+                </div>
+              </div>
+              
+            </div>
+
+             <div className='flex flex-col rounded-xl border border-black/20  overflow-hidden'>
+              <div>
+              <img src="headphone.png" alt="headphone" />
+              </div>
+              <div className='p-4 flex flex-col'>
+                <span className='text-xs'>SoundWave</span>
+                <span className='text-sm'>Headphone WireLess Premium</span>
+                <div className='flex gap-1 items-center'>
+                  <div className='flex'>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                  </div>
+                  <span className='text-sm'>4.8</span>
+                  <span className='text-sm'>(512)</span>
+                </div>
+                <div className='flex gap-2 items-center'>
+                  <span className='text-sm text-blue-500 font-bold'>Rp 450.000</span>
+                  <span className='text-xs'>Rp 650.000</span>
+                </div>
+              </div>
+              
+            </div>
+
+             <div className='flex flex-col rounded-xl border border-black/20  overflow-hidden'>
+              <div>
+              <img src="headphone.png" alt="headphone" />
+              </div>
+              <div className='p-4 flex flex-col'>
+                <span className='text-xs'>SoundWave</span>
+                <span className='text-sm'>Headphone WireLess Premium</span>
+                <div className='flex gap-1 items-center'>
+                  <div className='flex'>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                    <StarIcon size={10}/>
+                  </div>
+                  <span className='text-sm'>4.8</span>
+                  <span className='text-sm'>(512)</span>
+                </div>
+                <div className='flex gap-2 items-center'>
+                  <span className='text-sm text-blue-500 font-bold'>Rp 450.000</span>
+                  <span className='text-xs'>Rp 650.000</span>
+                </div>
+              </div>
+              
+            </div>
+
           </div>
         </section>
 
