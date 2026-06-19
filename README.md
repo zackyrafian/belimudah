@@ -1,16 +1,61 @@
-# React + Vite
+# **BeliMudah**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Tech Stack 
+- **Vite** - Next Generation Frontend Tooling
+- **React** - A JavaScript library for building user interfaces
+- **TailwindCSS** - A utility-first CSS framework for rapid UI development
+- **React Router** - Declarative routing for React applications
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Product & Shopping
+- **Search Params:** Dynamic filtering and searching of products through URL query parameters.
+- **Category Filtering:** Browse products by category with dedicated filtering options.
+- **Product Details:** View detailed product information before purchasing.
+- **Add to Cart:** Add products to the shopping cart and manage quantities.
 
-## React Compiler
+### Checkout Process
+- **Address Management:** Add and select shipping addresses during checkout.
+- **Payment Selection:** Choose a preferred payment method.
+- **Order Confirmation:** Review and confirm order details before completing payment.
+- **Payment Confirmation:** Display payment status and confirmation information.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### User Account
+- **User Authentication:** Register and login to access personalized features.
+- **Profile Management:** View and manage user profile information.
+- **Order History:** Track previous purchases and order details.
+## User Interface Preview
 
-## Expanding the ESLint configuration
+### 1. Landing Page (Home)
+![Landing Page](docs/images/landing-page.png)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 2. Authentication Interfaces
+
+| Login Page | Register Page |
+| :---: | :---: |
+| ![Login Page](docs/images/login-page.png) | ![Register Page](docs/images/register-page.png) |
+
+## Routing
+```text
+/
+├── browser-product
+├── product/:name
+├── cart
+│
+├── sign-in
+├── sign-up
+│
+├── checkout
+│   ├── address
+│   ├── payment
+│   ├── confirm
+│   └── success
+│
+├── profile
+│   ├── address
+│   └── setting
+│
+├── dashboard
+│   └── product
+│
+└── * (Not Found 404)
