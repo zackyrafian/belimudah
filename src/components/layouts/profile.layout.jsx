@@ -1,4 +1,4 @@
-import { ArrowRight, Heart, MapPin, Settings } from "lucide-react"
+import { ArrowRight, Heart, LogOut, MapPin, Settings, ShoppingBag, SquareArrowRightExit } from "lucide-react"
 import { MainLayout } from "../../components/layouts"
 import { Link, Outlet } from "react-router"
 
@@ -7,7 +7,7 @@ const listElement = [
   {
     title: "Pesanan Saya",
     href: "/profile",
-    icon: <Heart size={16} />,
+    icon: <ShoppingBag size={16} />,
   },
   {
     title: "Wishlist",
@@ -27,7 +27,7 @@ const listElement = [
   {
     title: "Keluar",
     href: "/profile/setting",
-    icon: <Settings size={16} />,
+    icon: <LogOut size={16} />,
   },
 ];
 
