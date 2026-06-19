@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { MainLayout } from '@/components/layouts'
 import { UserStorage } from '@/services/user.service'
 import Alert from '@/components/ui/alert'
+import ProductCard from '@/components/product-card'
 
 export default function Product() {
   const [alert, setAlert] = useState(null);
@@ -40,13 +41,13 @@ export default function Product() {
       )}
       <MainLayout>
       <div className='w-7xl m-auto flex-col gap-4 flex pt-4'>
-          <div className='text-sm text-black'>
-            <Link className='flex items-center gap-2' to={'/'}>Beranda<ChevronRight size={16} />
-              <Link to={`/browser-product?category=${product.category}`} className='flex items-center gap-2'>{product.category}<ChevronRight size={16} />
-                <Link className='flex items-center gap-2 font-bold'>{product.name}</Link>
-              </Link>
+        <div className='text-sm text-black'>
+          <Link className='flex items-center gap-2' to={'/'}>Beranda<ChevronRight size={16} />
+            <Link to={`/browser-product?category=${product.category}`} className='flex items-center gap-2'>{product.category}<ChevronRight size={16} />
+              <Link className='flex items-center gap-2 font-bold'>{product.name}</Link>
             </Link>
-          </div>
+          </Link>
+        </div>
         <div className='flex flex-row gap-8'>
           <div className='w-1/2'>
               <div className='w-full'>
@@ -216,6 +217,16 @@ export default function Product() {
             </div>
             <p className='text-justify'>{product.description}</p>
           </main>
+        </section>
+
+        <section className='flex gap-4 flex-col'>
+          <h1 className='text-2xl font-medium'>Product Terkait</h1>
+          <div className='grid grid-cols-4 gap-4'>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <ProductCard key={i} product={product} />
+            ))}
+          </div>
+          
         </section>
       </div>
       </MainLayout>
