@@ -1,11 +1,38 @@
-import { Mail } from "lucide-react"
-import { Link } from "react-router"
+import { AlertTriangle, Lock, Mail } from "lucide-react"
+import { Link, UNSAFE_NavigationContext, useNavigate } from "react-router"
 import { AuthService } from "@/services/auth.service";
+import { useAlert } from "@/hooks/useAlert";
+import Alert from "@/components/ui/alert";
 
 export default function SignIn () { 
+  const navigate = useNavigate(); 
+  const { alert, showSuccess, showError, clearAlert } = useAlert();
+
+  const handleSubmit = (e) => { 
+    e.preventDefault(); 
+    const data = Object.fromEntries(new FormData(e.currentTarget));
+    try { 
+      AuthService.login(data);
+      showSuccess("You have successfully signed in.")
+      setTimeout(() => { 
+      navigate('/')
+      }, [1000])
+    } catch (err) { 
+      showError(err.message);
+    }
+  }
   return ( 
     <div className="flex min-h-screen">
-      <div className="flex w-1/2 h-screen">
+      {alert && ( 
+        <Alert
+          title={"Sign In"}
+          key={new Date} 
+          type={alert.type} 
+          message={alert.message}
+          onClose={() => clearAlert()}
+        />
+      )}
+      <div className="lg:flex hidden w-1/2 min-h-screen">
         <div className="relative w-full">
           <img
             src="/auth/she-flexing.jpg"
@@ -47,7 +74,7 @@ export default function SignIn () {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-1/2 gap-4 bg-white lg:p-40 md:p-10 md:pt-50 sm:p-10">
+      <div className="flex flex-col w-full lg:w-1/2 gap-4 bg-white xl:px-40 lg:py-20 lg:px-20 px-20 justify-center">
         <div>
           <h1 className="font-bold text-2xl">Masuk ke Akun</h1>
           <span>Belum punya akun? <Link>Daftar gratis</Link></span>
@@ -58,7 +85,7 @@ export default function SignIn () {
           <div className="rounded-xl border p-4 flex-1 border-black/20 text-center">Facebook</div>
         </div>
 
-        <form onSubmit={AuthService.handleLogin} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <label htmlFor="email">Email</label>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
@@ -70,11 +97,11 @@ export default function SignIn () {
           <div className="flex flex-col gap-1">
             <div className="flex justify-between">
               <label htmlFor="">Password</label>
-              <span>Lupa kata sandi?</span>
+              <Link to={"/forget-password"} className="text-blue-500">Lupa kata sandi?</Link>
             </div>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
-              <Mail size={20}/>
-              <input name="password" className="w-full h-full outline-none" type="text" placeholder="Masukan kata sandi"/>
+              <Lock size={20}/>
+              <input name="password" className="w-full h-full outline-none" type="password" placeholder="Masukan kata sandi"/>
             </div>
           </div>
           
