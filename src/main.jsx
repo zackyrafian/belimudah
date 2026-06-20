@@ -11,6 +11,7 @@ import {
 
   SignIn,
   SignUpPage,
+  ForgetPasswordPage,
 
   CheckoutAddress, 
   CheckoutPaymentPage,
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
   {
     path: '/sign-up', 
     element: <SignUpPage/>
+  },
+  {
+    path: '/forget-password', 
+    element: <ForgetPasswordPage/>
   },
 
   { 

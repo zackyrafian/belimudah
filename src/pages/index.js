@@ -3,6 +3,8 @@ export { default as BrowserProductPage } from './browser-product'
 export { default as DetailPage } from './detail-product'
 export { default as CartPage } from './cart-product'
 export { default as Product } from './product'
+
+export { default as ForgetPasswordPage } from './auth/forget-password'
 export { default as SignIn } from './auth/sign-in'
 export { default as SignUpPage } from './auth/sign-up'
 
