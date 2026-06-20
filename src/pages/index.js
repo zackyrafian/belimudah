@@ -14,6 +14,7 @@ export { default as CheckoutSuccessPage } from './checkout/success'
 export { default as MyProfile } from './profile/my-profile'
 export { default as ProfileAddress } from './profile/address'
 export { default as ProfileSetting } from './profile/settings'
+export { default as ProfileWishList} from './profile/wishlist'
 
 
 export { default as DashboardMainPage } from './dashboard/main'

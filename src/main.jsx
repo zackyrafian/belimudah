@@ -21,6 +21,7 @@ import {
   MyProfile,
   ProfileAddress,
   ProfileSetting,
+  ProfileWishList,
 
   DashboardMainPage,
   DashboardProductPage,
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
       {
         path: 'setting', 
         element: <ProfileSetting/>
+      },
+      {
+        path: 'wishlist',
+        element: <ProfileWishList/>
       }
     ]
   },
