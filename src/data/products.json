@@ -10,7 +10,8 @@
     "images": ["/headphone.png"],
     "ratting": 4.8,
     "total_review": 512,
-    "sold_out": 156
+    "sold_out": 156,
+    "description": "Nikmati pengalaman mendengar yang superior dengan Headphone Wireless Premium dari SoundWare. Dilengkapi dengan teknologi pemutusan kebisingan aktif (ANC) dan driver 40mm yang menghasilkan suara jernih serta bass yang dalam. Koneksi Bluetooth 5.2 memastikan koneksi stabil, sementara baterai berdaya tahan hingga 30 jam memungkinkan Anda menikmati musik sepanjang hari tanpa khawatir kehabisan daya. Desain ergonomis dengan bantalan empuk memberikan kenyamanan ekstra saat digunakan dalam jangka waktu lama."
   },
   {
     "name": "Mouse Gaming RGB Pro",
@@ -23,7 +24,8 @@
     "images": [],
     "ratting": 4.7,
     "total_review": 245,
-    "sold_out": 89
+    "sold_out": 89,
+    "description": "Tingkatkan permainan Anda dengan Mouse Gaming RGB Pro dari LogiTech. Dilengkapi dengan sensor optik 16.000 DPI yang dapat disesuaikan, memberikan presisi dan kecepatan tinggi untuk berbagai genre game. Lampu RGB yang dapat dikustomisasi menambah estetika gaming setup Anda. Desain ergonomis dengan grip samping memastikan kenyamanan selama sesi permainan yang panjang. Mouse ini juga dilengkapi dengan 7 tombol yang dapat diprogram, memungkinkan Anda untuk menyesuaikan kontrol sesuai kebutuhan."
   },
   {
     "name": "Keyboard Mekanik TKL",
@@ -36,7 +38,8 @@
     "images": [],
     "ratting": 4.9,
     "total_review": 189,
-    "sold_out": 42
+    "sold_out": 42,
+    "description": "Keyboard Mekanik TKL dari KeyChron menawarkan performa mengetik yang superior dengan pilihan switch yang dapat disesuaikan. Desain Tenkeyless menghemat ruang meja dan membuatnya lebih portabel. Fitur N-key rollover memastikan setiap penekanan tombol terdaftar dengan akurat, bahkan saat menekan banyak tombol secara bersamaan. Keyboard ini dilengkapi dengan lampu latar RGB yang dapat disesuaikan, bodi kokoh dari aluminium, dan kabel USB-C yang dapat dilepas untuk kemudahan penggunaan."
   },
   {
     "name": "Smartphone X10 Pro",
@@ -49,7 +52,8 @@
     "images": [],
     "ratting": 4.6,
     "total_review": 89,
-    "sold_out": 23
+    "sold_out": 23,
+    "description": "Smartphone X10 Pro dari Vivi hadir dengan layar AMOLED 6,7 inci yang memukau dan refresh rate 120Hz untuk pengalaman visual yang halus. Ditenagai oleh chipset flagship terbaru dan baterai 5000mAh dengan fast charging 65W, ponsel ini siap mendukung segala aktivitas Anda. Kamera utama 108MP menghasilkan foto yang tajam dan detail, sementara kamera ultrawide 120° memungkinkan Anda menangkap lebih banyak dalam satu frame. Dilengkapi juga dengan fitur AI untuk mengoptimalkan hasil jepretan Anda."
   },
   {
     "name": "Smartwatch Fit Life v4",
@@ -62,7 +66,8 @@
     "images": [],
     "ratting": 4.5,
     "total_review": 320,
-    "sold_out": 110
+    "sold_out": 110,
+    "description": "Smartwatch Fit Life v4 dari FitTrack adalah pendamping kebugaran ideal Anda. Dilengkapi dengan sensor detak jantung, pemantauan oksigen darah (SpO2), pelacakan tidur, dan berbagai mode olahraga, Anda dapat memantau kesehatan dengan mudah. Layar AMOLED yang cerah memudahkan Anda membaca notifikasi dan data kebugaran di bawah sinar matahari. Dengan ketahanan air 5 ATM, jam tangan ini cocok digunakan untuk berenang. Baterai tahan hingga 10 hari, menjadikannya teman setia untuk gaya hidup aktif Anda."
   },
   {
     "name": "Powerbank 20000mAh Fast Charging",
@@ -75,7 +80,8 @@
     "images": [],
     "ratting": 4.8,
     "total_review": 1205,
-    "sold_out": 430
+    "sold_out": 430,
+    "description": "Powerbank 20000mAh Fast Charging dari Anker adalah solusi terbaik untuk memastikan perangkat Anda selalu dalam kondisi siap pakai. Dengan kapasitas besar, powerbank ini dapat mengisi daya smartphone hingga 5 kali lipat. Teknologi fast charging PowerIQ memungkinkan pengisian cepat untuk berbagai perangkat. Dilengkapi dengan dua port USB-A dan satu port USB-C, Anda dapat mengisi daya beberapa perangkat sekaligus. Desainnya yang kompak dan ringan membuatnya mudah dibawa ke mana saja."
   },
   {
     "name": "Speaker Bluetooth Portable",
@@ -88,7 +94,8 @@
     "images": [],
     "ratting": 4.7,
     "total_review": 430,
-    "sold_out": 145
+    "sold_out": 145,
+    "description": "Speaker Bluetooth Portable dari JBL menghadirkan suara yang menggelegar dengan kualitas audio JBL Signature Sound. Dengan daya tahan baterai hingga 12 jam dan sertifikasi tahan air IPX7, speaker ini adalah teman sempurna untuk petualangan outdoor. Desainnya yang ringkas dan ringan memudahkan Anda membawanya ke mana saja. Dilengkapi dengan fitur JBL Connect+, Anda dapat menghubungkan hingga 100 speaker JBL untuk pengalaman audio yang lebih imersif."
   },
   {
     "name": "Kabel Data Type C to C PD 100W",
@@ -101,7 +108,8 @@
     "images": ["/src/data/images/baseus_cabel.jpeg"],
     "ratting": 4.9,
     "total_review": 2410,
-    "sold_out": 890
+    "sold_out": 890,
+    "description": "Kabel Data Type C to C PD 100W dari Baseus adalah kabel andalan untuk pengisian cepat dan transfer data. Mendukung daya hingga 100W, kabel ini ideal untuk mengisi daya laptop, tablet, dan smartphone terbaru. Dilengkapi dengan chip E-Marker yang memastikan keamanan dan efisiensi pengisian. Bahan nilon berkualitas tinggi membuat kabel ini tahan terhadap kusut dan putus, memberikan daya tahan jangka panjang. Kecepatan transfer data hingga 480Mbps memudahkan Anda memindahkan file besar dalam sekejap."
   },
   {
     "name": "Monitor Gaming 24 Inch 144Hz",
@@ -114,7 +122,8 @@
     "images": [],
     "ratting": 4.6,
     "total_review": 74,
-    "sold_out": 12
+    "sold_out": 12,
+    "description": "Monitor Gaming 24 Inch 144Hz dari Asos memberikan keunggulan kompetitif dalam setiap permainan. Dengan refresh rate 144Hz dan respon time 1ms, layar ini memastikan gerakan yang mulus dan minim ghosting, memberikan keunggulan visual bagi para gamer. Resolusi Full HD (1920x1080) menghadirkan gambar yang tajam dan detail. Teknologi AMD FreeSync mengurangi screen tearing dan stuttering. Desain bezel tipis dan stand yang dapat disesuaikan membuat monitor ini cocok untuk setup gaming modern."
   },
   {
     "name": "TWS Earbuds Noise Cancelling",
@@ -127,7 +136,8 @@
     "images": [],
     "ratting": 4.9,
     "total_review": 155,
-    "sold_out": 67
+    "sold_out": 67,
+    "description": "TWS Earbuds Noise Cancelling dari Sony menghadirkan pengalaman mendengar yang murni dan imersif. Teknologi noise cancelling yang canggih secara efektif meredam kebisingan latar belakang, memungkinkan Anda menikmati musik tanpa gangguan. Kualitas suara superior dengan driver dinamis 6mm memberikan detail audio yang kaya dan seimbang. Baterai tahan hingga 8 jam (24 jam dengan case), dan mendukung pengisian cepat 10 menit untuk 1 jam pemutaran. Desain ergonomis dengan berbagai ukuran eartip memastikan kenyamanan dan stabilitas saat digunakan."
   },
   {
     "name": "Kaos Polos Cotton Combed 30s",
@@ -140,7 +150,8 @@
     "images": [],
     "ratting": 4.4,
     "total_review": 5420,
-    "sold_out": 2310
+    "sold_out": 2310,
+    "description": "Kaos Polos Cotton Combed 30s dari KoolCloth adalah pilihan utama untuk kenyamanan sehari-hari. Terbuat dari 100% katun combed 30s, bahan ini terasa lembut, halus, dan menyerap keringat dengan baik. Tidak mudah melar atau kusut, memastikan penampilan tetap rapi sepanjang hari. Tersedia dalam berbagai pilihan warna yang elegan dan netral, kaos ini cocok untuk berbagai gaya, baik casual maupun semi-formal."
   },
   {
     "name": "Celana Chino Slim Fit",
@@ -153,7 +164,8 @@
     "images": [],
     "ratting": 4.5,
     "total_review": 830,
-    "sold_out": 290
+    "sold_out": 290,
+    "description": "Celana Chino Slim Fit dari KoolCloth menawarkan gaya klasik dengan potongan modern. Terbuat dari bahan katun stretch yang nyaman dan lentur, celana ini memberikan kebebasan gerak optimal. Desain slim fit yang pas di tubuh memberikan tampilan yang rapi dan stylish. Cocok untuk berbagai kesempatan, dari acara santai hingga semi-formal. Dilengkapi dengan detail jahitan presisi dan kancing berkualitas, celana ini adalah investasi fashion yang tahan lama."
   },
   {
     "name": "Jaket Bomber Waterproof",
@@ -166,7 +178,8 @@
     "images": [],
     "ratting": 4.6,
     "total_review": 195,
-    "sold_out": 78
+    "sold_out": 78,
+    "description": "Jaket Bomber Waterproof dari UrbanStyle adalah perpaduan sempurna antara gaya dan fungsi. Dengan bahan tahan air berkualitas tinggi, jaket ini melindungi Anda dari hujan dan angin tanpa mengorbankan penampilan. Desain bomber klasik dengan ribbing di kerah, pergelangan tangan, dan pinggiran memberikan tampilan yang stylish. Lapisan dalam yang lembut memberikan kehangatan ekstra. Dilengkapi dengan saku zipper yang aman untuk menyimpan barang berharga."
   },
   {
     "name": "Kemeja Flanel Kotak-Kotak",
@@ -179,7 +192,8 @@
     "images": [],
     "ratting": 4.5,
     "total_review": 312,
-    "sold_out": 125
+    "sold_out": 125,
+    "description": "Kemeja Flanel Kotak-Kotak dari UrbanStyle adalah pilihan tepat untuk penampilan kasual yang keren. Terbuat dari bahan flanel berkualitas tinggi yang lembut dan hangat, kemeja ini nyaman dipakai dalam berbagai cuaca. Pola kotak-kotak yang klasik memberikan sentuhan vintage yang stylish. Cocok digunakan untuk berbagai acara santai, baik bersama teman maupun keluarga. Potongan yang nyaman dengan detail kancing depan dan saku dada melengkapi desain yang simpel namun elegan."
   },
   {
     "name": "Blouse Wanita Casual",
@@ -192,7 +206,8 @@
     "images": [],
     "ratting": 4.6,
     "total_review": 440,
-    "sold_out": 185
+    "sold_out": 185,
+    "description": "Blouse Wanita Casual dari GlowFashion menghadirkan gaya yang effortless dan feminin. Bahan berkualitas tinggi yang jatuh lembut dan ringan memberikan kenyamanan sepanjang hari. Desain dengan detail ruffle atau kerutan pada bagian lengan memberikan sentuhan anggun. Warna-warna pastel yang lembut dan elegan membuat blouse ini mudah dipadukan dengan berbagai bawahan, baik untuk kegiatan sehari-hari, hangout, atau acara semi-formal."
   },
   {
     "name": "Dress Kondangan Tile Premium",
@@ -205,7 +220,8 @@
     "images": [],
     "ratting": 4.8,
     "total_review": 67,
-    "sold_out": 28
+    "sold_out": 28,
+    "description": "Dress Kondangan Tile Premium dari GlowFashion adalah pilihan sempurna untuk menghadiri pesta atau acara spesial. Diproduksi dengan bahan berkualitas tinggi yang mewah dan nyaman, dress ini menampilkan detail tile yang elegan dan modern. Potongan yang pas di tubuh dengan skirt yang mengembang memberikan siluet yang memukau. Dengan berbagai warna premium seperti Rose Gold, Navy, dan Sage Green, Anda akan tampil anggun dan memikat di setiap kesempatan."
   },
   {
     "name": "Hijab Segiempat Voal Premium",
@@ -218,7 +234,8 @@
     "images": [],
     "ratting": 4.8,
     "total_review": 8900,
-    "sold_out": 3450
+    "sold_out": 3450,
+    "description": "Hijab Segiempat Voal Premium dari HijabKu adalah pilihan favorit untuk tampil modis dan nyaman setiap hari. Terbuat dari bahan voal premium yang lembut, ringan, dan tidak mudah melorot, hijab ini memberikan kenyamanan maksimal sepanjang hari. Tersedia dalam berbagai warna elegan yang dapat dipadukan dengan berbagai outfit. Ukuran yang pas memudahkan Anda untuk membentuk berbagai gaya hijab yang diinginkan. Hijab ini juga mudah diatur dan tidak memerlukan banyak aksesori."
   },
   {
     "name": "Sweater Hoodie Unisex",
@@ -231,7 +248,8 @@
     "images": [],
     "ratting": 4.5,
     "total_review": 1105,
-    "sold_out": 520
+    "sold_out": 520,
+    "description": "Sweater Hoodie Unisex dari UrbanStyle adalah pilihan utama untuk tampil santai dan tetap hangat. Terbuat dari bahan fleece yang lembut dan nyaman, hoodie ini sangat cocok untuk cuaca dingin atau sekadar untuk bersantai di rumah. Desain hoodie dengan tali serut dan saku depan yang besar menambah kenyamanan dan gaya. Cocok untuk pria dan wanita, hoodie ini tersedia dalam berbagai warna yang menarik. Bahan yang tidak mudah kusut dan tahan lama menjadikannya item fashion wajib di lemari Anda."
   },
   {
     "name": "Sepatu Sneakers Running",
@@ -244,7 +262,8 @@
     "images": [],
     "ratting": 4.7,
     "total_review": 2340,
-    "sold_out": 630
+    "sold_out": 630,
+    "description": "Sepatu Sneakers Running dari Aerostreet menggabungkan gaya sporty dengan kenyamanan untuk aktivitas sehari-hari. Dirancang dengan sol yang empuk dan ringan untuk memberikan dukungan dan kenyamanan ekstra saat berlari atau berjalan. Upper berbahan mesh yang breathable memungkinkan sirkulasi udara yang baik, menjaga kaki tetap segar. Desain yang modern dan minimalis dengan pilihan warna kontras, membuat sepatu ini cocok untuk berbagai gaya, baik untuk olahraga maupun santai."
   },
   {
     "name": "Sepatu Pantofel Kulit Pria",
@@ -257,7 +276,8 @@
     "images": [],
     "ratting": 4.6,
     "total_review": 143,
-    "sold_out": 62
+    "sold_out": 62,
+    "description": "Sepatu Pantofel Kulit Pria dari Brogdo menghadirkan kesan profesional dan elegan. Terbuat dari bahan kulit asli berkualitas tinggi yang halus dan tahan lama, sepatu ini memberikan tampilan yang prestisius. Desain klasik dengan detail jahitan yang rapi membuatnya cocok digunakan untuk acara formal, kantor, atau pertemuan bisnis. Insole berbahan busa nyaman memberikan dukungan sepanjang hari, sementara sol bawah yang anti slip memastikan kestabilan saat melangkah."
   },
   {
     "name": "Sandal Selop Slide Kasual",
@@ -270,7 +290,8 @@
     "images": [],
     "ratting": 4.4,
     "total_review": 1280,
-    "sold_out": 450
+    "sold_out": 450,
+    "description": "Sandal Selop Slide Kasual dari Aerostreet adalah pilihan praktis dan nyaman untuk digunakan sehari-hari. Dengan desain yang simpel dan minimalis, sandal ini mudah dipakai dan cocok untuk berbagai aktivitas santai. Bahan berkualitas tinggi yang lembut di kaki, dengan sol yang ringan dan anti slip, memberikan kenyamanan dan keamanan saat digunakan. Tersedia dalam berbagai warna netral yang dapat dipadukan dengan gaya apapun. Sangat cocok untuk di rumah, perjalanan singkat, atau sekadar hangout santai."
   },
   {
     "name": "Serum Wajah Vitamin C Glow",
@@ -283,7 +304,8 @@
     "images": [],
     "ratting": 4.8,
     "total_review": 4560,
-    "sold_out": 1890
+    "sold_out": 1890,
+    "description": "Serum Wajah Vitamin C Glow dari TheOrigin adalah solusi untuk kulit bercahaya. Dengan kandungan Vitamin C 10% dan Vitamin E, serum ini membantu mencerahkan kulit, memudarkan noda hitam, dan melindungi dari radikal bebas. Tekstur ringan yang cepat meresap, tidak meninggalkan rasa lengket. Cocok untuk semua jenis kulit. Penggunaan rutin akan membantu mengurangi tanda-tanda penuaan dan memberikan kulit yang tampak lebih sehat, cerah, dan glowing."
   },
   {
     "name": "Sunscreen SPF 50 PA++++",
@@ -296,7 +318,8 @@
     "images": [],
     "ratting": 4.7,
     "total_review": 6120,
-    "sold_out": 2300
+    "sold_out": 2300,
+    "description": "Sunscreen SPF 50 PA++++ dari TheOrigin memberikan perlindungan maksimal terhadap sinar UVA dan UVB. Dengan formula ringan, non-comedogenic, dan cepat meresap, sunscreen ini cocok digunakan sebagai alas makeup. Perlindungan spektrum luas melindungi kulit dari penuaan dini, hiperpigmentasi, dan kerusakan akibat sinar matahari. Dilengkapi dengan bahan-bahan yang menenangkan untuk menjaga kulit tetap lembab dan tidak kering."
   },
   {
     "name": "Moisturizer Gel Ceramide",
@@ -309,7 +332,8 @@
     "images": [],
     "ratting": 4.9,
     "total_review": 3890,
-    "sold_out": 1620
+    "sold_out": 1620,
+    "description": "Moisturizer Gel Ceramide dari Glad2Glow adalah pelembab ringan yang membantu menjaga kelembaban dan memperbaiki skin barrier. Dengan kandungan Ceramide dan Hyaluronic Acid, produk ini memberikan hidrasi yang intens dan tahan lama. Tekstur gel yang segar dan menenangkan, cocok untuk semua jenis kulit, termasuk kulit berminyak dan sensitif. Penggunaan rutin membantu menjaga kulit tetap kenyal, lembab, dan sehat."
   },
   {
     "name": "Lip Matte Liquid Waterproof",
@@ -322,7 +346,8 @@
     "images": [],
     "ratting": 4.6,
     "total_review": 2100,
-    "sold_out": 870
+    "sold_out": 870,
+    "description": "Lip Matte Liquid Waterproof dari MakeOver menghadirkan warna yang tahan lama dan hasil akhir matte yang elegan. Formula waterproof yang ringan dan nyaman di bibir, tidak mengeringkan atau mudah luntur. Pilihan warna yang beragam dari yang natural hingga bold, memberikan kemudahan untuk menyesuaikan tampilan sesuai dengan gaya dan suasana hati. Produk ini juga diperkaya dengan Vitamin E untuk menjaga kelembaban bibir."
   },
   {
     "name": "Micellar Water Pengangkat MakeUp",
@@ -335,7 +360,8 @@
     "images": [],
     "ratting": 4.8,
     "total_review": 7430,
-    "sold_out": 2890
+    "sold_out": 2890,
+    "description": "Micellar Water Pengangkat MakeUp dari Garnier adalah pembersih wajah yang efektif dan praktis. Mengandung micelles yang bertindak seperti magnet untuk menarik kotoran, minyak, dan makeup, tanpa perlu dibilas. Formula yang lembut dan tidak mengandung alkohol, cocok untuk kulit sensitif. Dengan varian Pink untuk kulit normal dan sensitif, serta varian Biru untuk kulit berjerawat, pembersih ini membersihkan wajah secara menyeluruh tanpa membuat kulit kering."
   },
   {
     "name": "Blender Portable Mini Juicer",
@@ -348,7 +374,8 @@
     "images": [],
     "ratting": 4.3,
     "total_review": 560,
-    "sold_out": 210
+    "sold_out": 210,
+    "description": "Blender Portable Mini Juicer dari EcoHome adalah solusi praktis untuk membuat jus atau smoothie di mana saja. Dengan desain yang ringkas dan ringan, blender ini mudah dibawa untuk aktivitas outdoor, kantor, atau perjalanan. Dilengkapi dengan pisau stainless steel yang tajam dan motor yang kuat untuk menghancurkan buah dan sayuran dengan cepat. Dapat diisi ulang menggunakan USB, sehingga tidak perlu repot mencari stop kontak. Botol yang transparan memudahkan Anda melihat isi dan porsi yang dihasilkan."
   },
   {
     "name": "Air Fryer Low Watt 4L",
@@ -361,7 +388,8 @@
     "images": [],
     "ratting": 4.7,
     "total_review": 118,
-    "sold_out": 45
+    "sold_out": 45,
+    "description": "Air Fryer Low Watt 4L dari Meca memungkinkan Anda menikmati makanan sehat dengan cara yang lebih praktis dan hemat energi. Dilengkapi dengan teknologi Rapid Air yang memutar udara panas di dalam ruang memasak untuk menggoreng, memanggang, atau memanggang dengan sedikit minyak. Kapasitas 4L cukup untuk memenuhi kebutuhan keluarga. Desain low watt menghemat listrik, menjadikannya pilihan yang ramah lingkungan dan ekonomis. Kontrol digital yang mudah digunakan dan jendela pengamat memudahkan Anda memantau proses memasak."
   },
   {
     "name": "Wajan Anti Lengket Teflon 24cm",
@@ -374,7 +402,8 @@
     "images": [],
     "ratting": 4.6,
     "total_review": 1740,
-    "sold_out": 680
+    "sold_out": 680,
+    "description": "Wajan Anti Lengket Teflon 24cm dari Maxim adalah alat memasak yang esensial untuk dapur modern. Lapisan Teflon berkualitas tinggi memastikan makanan tidak lengket, memudahkan memasak dan membersihkan. Permukaan yang rata dan responsif terhadap panas memungkinkan pemerataan suhu untuk hasil masakan yang matang merata. Dilengkapi dengan pegangan yang ergonomis dan tahan panas, memberikan kenyamanan saat digunakan. Wajan ini cocok untuk berbagai keperluan memasak, dari menggoreng hingga menumis."
   },
   {
     "name": "Set Pisau Dapur Stainless 5 in 1",
@@ -387,7 +416,8 @@
     "images": [],
     "ratting": 4.5,
     "total_review": 890,
-    "sold_out": 350
+    "sold_out": 350,
+    "description": "Set Pisau Dapur Stainless 5 in 1 dari EcoHome menawarkan kelengkapan alat potong dalam satu paket praktis. Terdiri dari pisau koki, pisau pengupas, pisau roti, dan lainnya, set ini memenuhi semua kebutuhan Anda di dapur. Terbuat dari bahan stainless steel yang tahan karat dan tajam, pisau ini memberikan performa yang handal untuk memotong, mengiris, dan mengupas berbagai bahan makanan. Dengan desain pegangan yang ergonomis dan nyaman digenggam, set pisau ini sangat cocok untuk pemula maupun profesional."
   },
   {
     "name": "Tumbler Stainless Termos Isi 500ml",
@@ -400,7 +430,8 @@
     "images": [],
     "ratting": 4.8,
     "total_review": 1420,
-    "sold_out": 560
+    "sold_out": 560,
+    "description": "Tumbler Stainless Termos Isi 500ml dari LockNLock adalah pilihan tepat untuk menjaga suhu minuman Anda. Dengan konstruksi dinding ganda yang kedap udara, tumblr ini mampu menjaga minuman tetap panas atau dingin hingga beberapa jam. Terbuat dari bahan stainless steel berkualitas tinggi yang tahan karat dan aman untuk makanan, tumblr ini juga dilengkapi dengan tutup yang kedap air dan mudah dibuka. Desain yang elegan dan tersedia dalam berbagai warna menjadikannya aksesoris sehari-hari yang praktis dan stylish."
   },
   {
     "name": "Rak Sepatu Susun Plastik Bongkar Pasang",
@@ -413,7 +444,8 @@
     "images": [],
     "ratting": 4.2,
     "total_review": 640,
-    "sold_out": 310
+    "sold_out": 310,
+    "description": "Rak Sepatu Susun Plastik Bongkar Pasang dari Club adalah solusi sederhana untuk merapikan koleksi sepatu Anda. Dirancang dari material plastik berkualitas yang ringan namun kokoh, rak ini dapat dipasang dan dibongkar dengan mudah tanpa memerlukan alat. Dengan sistem susun yang fleksibel, Anda dapat menyesuaikan tinggi rak sesuai kebutuhan. Desain yang terbuka memudahkan Anda untuk melihat dan mengambil sepatu. Sangat ideal untuk digunakan di rumah, apartemen, atau kantor."
   },
   {
     "name": "Meja Belajar Lipat Portabel",
@@ -426,7 +458,8 @@
     "images": [],
     "ratting": 4.4,
     "total_review": 3210,
-    "sold_out": 1420
+    "sold_out": 1420,
+    "description": "Meja Belajar Lipat Portabel ini adalah solusi serbaguna untuk bekerja, belajar, atau menikmati makanan di mana saja. Dengan desain yang ringan dan dapat dilipat, meja ini sangat mudah dibawa dan disimpan. Kaki yang kokoh dan permukaan yang stabil memberikan kenyamanan saat digunakan. Tersedia dalam berbagai pilihan motif yang menarik, meja ini cocok untuk berbagai suasana dan kebutuhan, baik di dalam maupun luar ruangan."
   },
   {
     "name": "Kursi Kerja Kantor Ergonomis",
@@ -439,7 +472,8 @@
     "images": [],
     "ratting": 4.7,
     "total_review": 85,
-    "sold_out": 32
+    "sold_out": 32,
+    "description": "Kursi Kerja Kantor Ergonomis dari Ergox mendukung kesehatan dan produktivitas Anda. Dengan desain yang sepenuhnya dapat disesuaikan, Anda dapat mengatur ketinggian, sandaran tangan, dan kemiringan sandaran sesuai kebutuhan. Bahan jaring yang bernapas memberikan sirkulasi udara yang baik, menjaga Anda tetap sejuk sepanjang hari. Bantalan duduk yang tebal dan empuk mengurangi tekanan pada punggung bawah. Kursi ini adalah investasi penting untuk kenyamanan dan kesehatan jangka panjang selama jam kerja."
   },
   {
     "name": "Lampu Meja Belajar LED USB",
@@ -452,7 +486,8 @@
     "images": [],
     "ratting": 4.8,
     "total_review": 530,
-    "sold_out": 210
+    "sold_out": 210,
+    "description": "Lampu Meja Belajar LED USB dari Philips memberikan pencahayaan optimal untuk aktivitas membaca, menulis, atau bekerja. Dengan lampu LED berteknologi tinggi, lampu ini menghasilkan cahaya yang terang, tidak menyilaukan, dan hemat energi. Desain fleksibel memungkinkan Anda mengatur arah cahaya sesuai kebutuhan. Dapat diisi daya melalui port USB, membuatnya portabel dan mudah digunakan di mana saja. Cocok untuk digunakan di meja belajar, kantor, atau sebagai lampu tidur."
   },
   {
     "name": "Bohlam Lampu Pintar RGB Smart WiFi",
@@ -465,7 +500,8 @@
     "images": [],
     "ratting": 4.7,
     "total_review": 920,
-    "sold_out": 390
+    "sold_out": 390,
+    "description": "Bohlam Lampu Pintar RGB Smart WiFi dari Bardi mengubah cara Anda menikmati pencahayaan di rumah. Dengan konektivitas WiFi, Anda dapat mengontrol lampu dari jarak jauh melalui smartphone. Berbagai pilihan warna RGB dan spektrum putih memungkinkan Anda menyesuaikan suasana ruangan sesuai mood. Dapat dijadwalkan dan diatur otomatis. Hemat energi dengan daya 9W atau 12W, lampu ini adalah langkah cerdas menuju rumah pintar yang modern."
   },
   {
     "name": "Susu Formula Pertumbuhan Anak 1+ 800g",
@@ -478,7 +514,8 @@
     "images": [],
     "ratting": 4.9,
     "total_review": 4120,
-    "sold_out": 1750
+    "sold_out": 1750,
+    "description": "Susu Formula Pertumbuhan Anak 1+ 800g dari SGM adalah nutrisi lengkap untuk menunjang pertumbuhan dan perkembangan anak Anda. Mengandung berbagai vitamin dan mineral esensial, termasuk DHA, Omega 3 & 6, serta kalsium untuk mendukung perkembangan otak dan tulang. Formula yang dirancang khusus untuk anak usia 1-3 tahun, dengan rasa yang lezat yang disukai anak-anak. Dilengkapi dengan varian rasa Madu dan Vanila yang membuat anak tidak bosan."
   },
   {
     "name": "Kopi Bubuk Robusta Gayo 250g",
@@ -491,7 +528,8 @@
     "images": [],
     "ratting": 4.8,
     "total_review": 310,
-    "sold_out": 120
+    "sold_out": 120,
+    "description": "Kopi Bubuk Robusta Gayo 250g dari KopiKenangan menghadirkan cita rasa kopi khas Gayo yang kaya dan kuat. Robusta Gayo dikenal dengan body yang tebal dan tingkat keasaman rendah, dengan sedikit sentuhan rasa cokelat dan kacang. Proses penggilingan yang sempurna menghasilkan bubuk kopi yang segar dan harum. Tersedia dalam pilihan Biji Kopi untuk penggemar kopi yang ingin menggiling sendiri, Giling Halus untuk seduhan cepat, dan Giling Kasar untuk teknik brewing manual."
   },
   {
     "name": "Minyak Goreng Sawit Refill 2L",
@@ -504,7 +542,8 @@
     "images": [],
     "ratting": 4.7,
     "total_review": 8430,
-    "sold_out": 3420
+    "sold_out": 3420,
+    "description": "Minyak Goreng Sawit Refill 2L dari Bimoli adalah pilihan minyak goreng berkualitas tinggi untuk kebutuhan masak sehari-hari. Terbuat dari sawit pilihan, minyak ini jernih, tidak mudah berbau, dan memiliki titik asap yang tinggi, sehingga cocok untuk berbagai jenis masakan. Dengan kemasan pouch yang praktis dan ramah lingkungan, pengisian ulang menjadi lebih mudah. Minyak ini juga mengandung Vitamin A untuk tambahan nutrisi."
   },
   {
     "name": "Paket Sembako Hemat Mulia",
@@ -517,7 +556,8 @@
     "images": [],
     "ratting": 4.6,
     "total_review": 145,
-    "sold_out": 58
+    "sold_out": 58,
+    "description": "Paket Sembako Hemat Mulia adalah solusi lengkap untuk kebutuhan pokok Anda. Paket A dan Paket B menyediakan berbagai bahan makanan esensial seperti beras, minyak goreng, gula, tepung, dan lainnya dengan harga yang terjangkau. Paket ini sangat cocok untuk memenuhi kebutuhan keluarga, acara sosial, atau sebagai bantuan sembako. Dengan berbagai pilihan paket yang dapat disesuaikan, Mulia memberikan kemudahan dalam berbelanja kebutuhan sehari-hari secara hemat dan praktis."
   },
   {
     "name": "Matras Yoga Anti Slip TPE 6mm",
@@ -530,7 +570,8 @@
     "images": [],
     "ratting": 4.6,
     "total_review": 280,
-    "sold_out": 110
+    "sold_out": 110,
+    "description": "Matras Yoga Anti Slip TPE 6mm dari Specs memberikan kenyamanan dan stabilitas saat berlatih yoga atau olahraga lainnya. Terbuat dari bahan TPE yang ramah lingkungan, matras ini tidak licin dan menyerap keringat, mengurangi risiko cedera. Ketebalan 6mm memberikan bantalan yang cukup untuk kenyamanan, namun cukup padat untuk keseimbangan. Tersedia dalam berbagai warna cerah yang menambah semangat berlatih. Matras ini ringan dan mudah dibawa, cocok untuk digunakan di rumah maupun di studio yoga."
   },
   {
     "name": "Tali Skipping Digital Counter",
@@ -543,7 +584,8 @@
     "images": [],
     "ratting": 4.4,
     "total_review": 640,
-    "sold_out": 270
+    "sold_out": 270,
+    "description": "Tali Skipping Digital Counter dari Specs adalah alat pelacak yang sempurna untuk latihan kardio Anda. Dilengkapi dengan penghitung digital yang otomatis mencatat setiap lompatan, Anda dapat memantau kemajuan dan mencapai target dengan lebih mudah. Panjang tali yang dapat disesuaikan dan pegangan yang nyaman membuatnya cocok untuk segala usia. Tali ini membantu meningkatkan kebugaran kardiovaskular, koordinasi, dan kelincahan. Latihan dengan tali skipping adalah cara yang menyenangkan dan efektif untuk berolahraga."
   },
   {
     "name": "Tas Ransel Laptop Backpack",
@@ -556,7 +598,8 @@
     "images": [],
     "ratting": 4.9,
     "total_review": 510,
-    "sold_out": 180
+    "sold_out": 180,
+    "description": "Tas Ransel Laptop Backpack dari Eiger adalah teman setia untuk aktivitas harian Anda. Dirancang dengan kompartemen khusus laptop yang dilapisi bantalan untuk melindungi perangkat Anda. Dilengkapi dengan berbagai saku untuk barang-barang kecil, seperti ponsel, kabel, alat tulis, dan lainnya. Bahan yang kokoh dan tahan air menjaga isi tas tetap aman dari hujan dan benturan. Desain ergonomis dengan tali bahu yang empuk memberikan kenyamanan saat digunakan, baik untuk perjalanan ke kantor atau sekolah."
   },
   {
     "name": "Tas Selempang Kanvas Unisex",
@@ -569,7 +612,8 @@
     "images": [],
     "ratting": 4.6,
     "total_review": 890,
-    "sold_out": 340
+    "sold_out": 340,
+    "description": "Tas Selempang Kanvas Unisex dari Visval menawarkan gaya kasual yang praktis dan modis. Terbuat dari bahan kanvas berkualitas tinggi yang tahan lama dan nyaman. Desain yang simpel dengan satu kompartemen utama dan saku depan, cukup untuk membawa barang-barang penting seperti ponsel, dompet, dan kunci. Tali selempang yang dapat diatur panjangnya memungkinkan penggunaan yang nyaman, baik di bahu atau di depan dada. Dengan warna-warna netral yang elegan, tas ini cocok untuk semua gaya dan berbagai kesempatan."
   },
   {
     "name": "Dompet Kulit Pria Lipat Dua",
@@ -582,7 +626,8 @@
     "images": [],
     "ratting": 4.7,
     "total_review": 425,
-    "sold_out": 165
+    "sold_out": 165,
+    "description": "Dompet Kulit Pria Lipat Dua dari LeatherCo adalah aksesoris elegan untuk menyimpan kartu dan uang tunai. Terbuat dari kulit asli berkualitas tinggi yang halus dan tahan lama, dompet ini menampilkan desain klasik yang tidak lekang oleh waktu. Kompartemen yang dirancang dengan rapi untuk menyimpan beberapa kartu dan uang kertas. Ukuran yang kompak membuatnya mudah disimpan di saku celana. Dengan berbagai pilihan warna, dompet ini adalah pilihan yang sempurna untuk gaya profesional dan kasual."
   },
   {
     "name": "Kacamata Hitam Polarized UV400",
@@ -595,7 +640,8 @@
     "images": [],
     "ratting": 4.5,
     "total_review": 198,
-    "sold_out": 85
+    "sold_out": 85,
+    "description": "Kacamata Hitam Polarized UV400 dari RayBan menawarkan perlindungan mata maksimal sekaligus tampilan yang stylish. Lensa dengan teknologi polarisasi mengurangi silau dari sinar matahari, memberikan pandangan yang lebih jernih dan nyaman. Perlindungan UV400 melindungi mata dari sinar UVA dan UVB yang berbahaya. Bingkai yang ringan dan kokoh memberikan kenyamanan sepanjang hari. Tersedia dalam berbagai pilihan warna lensa, kacamata ini adalah aksesoris wajib untuk berbagai kegiatan outdoor."
   },
   {
     "name": "Oli Motor Matic 10W-30 1L",
@@ -608,7 +654,8 @@
     "images": [],
     "ratting": 4.8,
     "total_review": 1670,
-    "sold_out": 680
+    "sold_out": 680,
+    "description": "Oli Motor Matic 10W-30 1L dari Shell Advance AX7 adalah oli mesin yang dirancang khusus untuk motor matic modern. Dengan teknologi Active Cleansing, oli ini membantu membersihkan mesin dari kotoran dan menjaga performa optimal. Viskositas 10W-30 cocok untuk berbagai kondisi berkendara. Melindungi mesin dari aus dan korosi, serta memastikan mesin tetap bertenaga dan responsif. Oli ini adalah pilihan terbaik untuk menjaga keandalan dan umur panjang mesin motor kesayangan Anda."
   },
   {
     "name": "Helm Motor Half Face Ber-SNI",
@@ -621,7 +668,8 @@
     "images": [],
     "ratting": 4.7,
     "total_review": 432,
-    "sold_out": 148
+    "sold_out": 148,
+    "description": "Helm Motor Half Face Ber-SNI dari KYT memberikan perlindungan dan kenyamanan saat berkendara. Dengan sertifikasi SNI, helm ini menjamin keamanan standar. Desain half face yang ringan dan aerodinamis mengurangi beban di kepala. Bagian dalam yang dilapisi bahan lembut dan antibakteri memberikan kenyamanan ekstra, serta dapat dilepas dan dicuci. Visor yang anti gores dan UV memberikan perlindungan mata dari sinar matahari dan debu. Tersedia dalam berbagai warna yang stylish, helm ini cocok untuk penggunaan sehari-hari."
   },
   {
     "name": "Jas Hujan Setelan Baju Celana PVC",
@@ -634,7 +682,8 @@
     "images": [],
     "ratting": 4.5,
     "total_review": 2890,
-    "sold_out": 1120
+    "sold_out": 1120,
+    "description": "Jas Hujan Setelan Baju Celana PVC dari Elephant adalah perlindungan andalan saat hujan. Terbuat dari bahan PVC berkualitas yang tahan air dan awet, setelan ini memastikan tubuh tetap kering dan terlindung dari angin. Desain setelan terpisah (baju dan celana) memberikan kebebasan bergerak dan kenyamanan. Dilengkapi dengan hood (tudung) dan pengunci yang dapat disesuaikan. Tersedia dalam warna yang cerah dan mencolok untuk meningkatkan visibilitas saat berkendara di kondisi hujan. Sangat cocok untuk pengendara motor atau aktivitas outdoor."
   },
   {
     "name": "Lap Kanebo Serat High Quality",
@@ -647,6 +696,7 @@
     "images": [],
     "ratting": 4.6,
     "total_review": 5410,
-    "sold_out": 2150
+    "sold_out": 2150,
+    "description": "Lap Kanebo Serat High Quality dari Aemova adalah alat pembersih serbaguna yang lembut dan menyerap. Terbuat dari serat mikro yang halus, lap ini tidak meninggalkan goresan pada permukaan kaca, kendaraan, atau peralatan rumah tangga. Kemampuan menyerap air yang tinggi membuatnya sangat efektif untuk mengeringkan dan membersihkan. Sangat cocok untuk membersihkan kaca, interior mobil, peralatan elektronik, dan berbagai permukaan lainnya. Lap ini tahan lama dan tidak mudah robek."
   }
 ]
