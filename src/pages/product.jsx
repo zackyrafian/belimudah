@@ -71,15 +71,14 @@ export default function Product() {
               </div>
               <h1 className='text-2xl font-bold'>{product.name}</h1>
               <div>
-                <div className='flex items-center gap-1 text-sm'>
-                  <div className='flex'>
-                    <Star size={14} />
-                    <Star size={14} />
-                    <Star size={14} />
-                    <Star size={14} />
-                    <Star size={14} />
+                <div className='flex items-center gap-2 text-sm'>
+                  <div className='flex gap-0.5 items-center'>
+                    {Array.from({length:5}).map((_, i) => ( 
+                      <Star key={i} className={i < Math.round(product.ratting) ? 'fill-yellow-500 text-yellow-500': 'hidden'} size={14} />
+                    ))}
                   </div>
-                  <span>4.8</span>
+
+                  <span>{product.ratting}</span>
                   <span>(512)</span>
                   <div className='flex gap-1 items-center bg-green-200 text-green-600 rounded-md px-2 py-0.5'>
                     <Check size={14} />
