@@ -13,7 +13,7 @@ function Header() {
   };
 
   return (
-    <div className="w-full border-b border-b-black/20 shadow">
+    <div className="w-full border-b border-b-black/20 shadow sticky top-0 z-10 bg-white">
       <div className="bg-blue-500 flex items-center w-full">
         <div className="w-7xl mx-auto text-white py-1 flex items-center gap-2">
           <MapPin size={11} />
@@ -49,7 +49,11 @@ function Header() {
                 <Link to={'/profile'}><Bell size={20} /></Link>
                 <Link className='flex gap-2 items-center w' to={'/profile'}><User size={20} /></Link>
                 <Link to={'/profile'}><Heart size={20} /></Link>
-                <Link to={'/cart'}><ShoppingCart size={20} /></Link>
+                <Link className='relative' to={'/cart'}><ShoppingCart size={20}/>
+                  {user.cart.length > 0 && 
+                    <span className='absolute -top-2 -right-2 text-xs bg-red-500 rounded-full w-4 h-4 text-center text-white'>{user.cart.length}</span>
+                  }
+                </Link>
               </>
             ) : (
                 <>
