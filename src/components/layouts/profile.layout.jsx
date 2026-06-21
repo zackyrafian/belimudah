@@ -28,6 +28,11 @@ const listElement = [
     title: "Keluar",
     href: "/profile/setting",
     icon: <LogOut size={16} />,
+    color: 'text-red-500',
+    action: (() => { 
+      localStorage.removeItem("user")
+      window.location.href = '/'
+    })
   },
 ];
 
@@ -59,7 +64,7 @@ const user = UserStorage.getUser();
           <div className="bg-white rounded-xl border border-black/20 shadow-sm flex flex-col gap-1">
             {listElement.map((item) => { 
               return(
-              <Link key={item.href} to={item.href} className="flex items-center text-sm justify-between px-4 py-3.5 hover:bg-gray-50 transition-colors">
+              <Link onClick={item.action} key={item.href} to={item.href} className={`${item.color} flex items-center text-sm justify-between px-4 py-3.5 hover:bg-gray-50 transition-colors`}>
                 <div className="flex items-center gap-2">
                   {item.icon} 
                   <span>{item.title}</span>
