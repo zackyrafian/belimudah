@@ -26,23 +26,23 @@ export default function CartPage() {
         <div>
           <div className='flex gap-8 items-start'>
             <div className='flex w-full flex-col gap-4'>
-              {cart.product.map((product) => (
+              {cart.product.map((product, i) => (
                 <div className='shadow-sm flex w-full bg-white border-black/20 border p-4 gap-4 rounded-xl'>
                   <div className='w-24 h-24'>
                     <img className='rounded-xl' src={product.images[0]} alt="headphone" />
                   </div>
                   <div className='flex flex-col gap-1 flex-1'>
                     <div className='flex justify-between items-center'>
-                      <span className='text-sm'>{product.name}</span>
-                      <Trash2 size={16} />
+                      <span className='text-sm font-medium'>{product.name}</span>
+                      <button onClick={() => console.log(i)}><Trash2 size={16} /></button>
                     </div>
   
                     <div>
-                      <span>{product.variant}</span>
+                      <span className='text-sm'>{product.variant}</span>
                     </div>
   
                     <div className='flex items-center justify-between'>
-                      <div className='border flex px-4 py-1 gap-4 rounded-xl items-center'>
+                      <div className='border border-black/20 flex px-4 py-1 gap-4 rounded-xl items-center'>
                         <button className='w-6 text-center'>-</button>
                         <span className='w-6 text-center'>{product.quantity}</span>
                         <button className='w-6 text-center'>+</button>
@@ -50,9 +50,9 @@ export default function CartPage() {
                       <span>{ formatIDR(product.price)}</span>
                     </div>
   
-                    <div className='flex items-center gap-1'>
-                      <Heart size={16} />
-                      <span>Simpan ke wishlist</span>
+                    <div className='flex items-center gap-1 pt-2'>
+                      <Heart size={12} />
+                      <span className='text-xs'>Simpan ke wishlist</span>
                     </div>
                   </div>
                 </div>
