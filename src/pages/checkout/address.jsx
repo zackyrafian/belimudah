@@ -87,8 +87,8 @@ export default function CheckoutAddress() {
             <span>Alamat Pengiriman</span>
           </div>
           {viewMode === 'list' && ( 
-            <button onClick={() => { setViewMode('form'); setShippingAddress(null)}} className="flex items-center border rounded-xl px-4 py-2 text-sm gap-2">
-              <Plus />
+            <button onClick={() => { setViewMode('form'); setShippingAddress(null)}} className="flex items-center border border-black/20 text-gray-600 rounded-xl px-4 py-2 text-sm gap-2">
+              <Plus size={18} />
               <span>Tambah Alamat</span>
             </button>
           )}
