@@ -44,7 +44,7 @@ export default function SignIn () {
             <div className="flex flex-col justify-between h-full">
                 <div className="flex items-center gap-4">
                 <div className="bg-white/20 w-9 h-9 rounded-xl flex items-center justify-center">B</div>
-                <span className="font-bold">BeliMudah</span>
+                <Link to={'/'} className="font-bold">BeliMudah</Link>
               </div>
 
               <div className="w-xs flex flex-col gap-6">
