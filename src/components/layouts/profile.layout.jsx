@@ -51,7 +51,7 @@ const user = UserStorage.getUser();
             </div>
             <div className="flex gap-4 justify-center items-center ">
               <div className="text-center">
-                <div className="font-bold">{user.order.length}</div>
+                <div className="font-bold">{user.order?.length !== 0 ? 0 : user.order?.length}</div>
                 <div className="text-xs">Pesanan</div>
               </div>
               <div className="text-center">
