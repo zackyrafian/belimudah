@@ -41,6 +41,7 @@ function Alert({
 
   return (
     <div
+      onClick={() => setVisible(false)}
       className={`
         ${base}
         ${styles[type]}
