@@ -41,7 +41,7 @@ export default function CheckoutConfirmPage() {
         {checkout.cart.map((cart) => (
           <div className="flex justify-between items-center">
             <div className="flex gap-4">
-              <div className="w-12 h-12 rounded-xl overflow-hidden"><img src="/headphone.png" alt="headphone" /></div>
+              <div className="w-12 h-12 rounded-xl overflow-hidden"><img src={cart.images[0]} alt={cart.name} /></div>
               <div>
                 <div>{cart.name}</div>
                 <div>x{cart.quantity}</div>

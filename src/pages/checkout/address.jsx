@@ -23,7 +23,7 @@ export default function CheckoutAddress() {
     if (!shippingMetode) {
       setAlert({ 
         type: "error", 
-        message: "selecte metode delivery"
+        message: "No shipping method selected."
       })
       return;
     }
@@ -41,7 +41,7 @@ export default function CheckoutAddress() {
       ) {
         setAlert({ 
           type: "error", 
-          message: "selecte metode delivery"
+          message: "No shipping method selected."
         })
         return;
       }

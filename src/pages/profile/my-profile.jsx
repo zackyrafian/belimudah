@@ -1,10 +1,11 @@
 import { UserStorage } from "@/services/user.service";
 import { formatIDR } from "@/utils/format";
 import { Card } from "../../components";
+import { useNavigate } from "react-router";
 
 export default function MyProfile() { 
   const orders = UserStorage.getUser().order; 
-
+  const navigate = useNavigate();
   
   return (
     <div className="flex flex-col gap-4">
@@ -21,9 +22,9 @@ export default function MyProfile() {
           </div>
 
           {order.cart.map((product) => ( 
-            <div className="flex gap-4">
+            <div onClick={() => navigate(`/product/${product.name.toLowerCase().replaceAll(' ', ('-'))}`)} className="flex gap-4 cursor-pointer">
               <div className="w-12 h-12 rounded-md overflow-hidden">
-                <img src="/headphone.png" alt="headphone" />
+                <img src={product.images[0]} alt="headphone" />
               </div>
               <div className="flex flex-col">
                 <span className="text-sm">{product.name}</span>
