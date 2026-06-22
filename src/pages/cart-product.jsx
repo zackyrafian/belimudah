@@ -8,6 +8,10 @@ export default function CartPage() {
   const { cart, total } = UserStorage.getCart();
   // const [ quantity , setQuantity ] = useState()
   console.log(cart.product.length)
+  let priceTotal = 0;
+  cart.product.forEach((c) => {
+    priceTotal += c.price * c.quantity;
+  });
   return (
     <MainLayout className="flex flex-col">
       {cart.product.length === 0 ? (
@@ -34,7 +38,7 @@ export default function CartPage() {
                   <div className='flex flex-col gap-1 flex-1'>
                     <div className='flex justify-between items-center'>
                       <span className='text-sm font-medium'>{product.name}</span>
-                      <button onClick={() => console.log(i)}><Trash2 size={16} /></button>
+                      <button onClick={() => console.log(i)}><Trash2 onClick={() => UserStorage.removeFromCart(i)} size={16} /></button>
                     </div>
   
                     <div>
@@ -80,7 +84,7 @@ export default function CartPage() {
               <div className='flex-col flex gap-2'>
                 <div className='flex justify-between'>
                   <span>Subtotal {total}(item)</span>
-                  <span>{ 1 }</span>
+                      <span>{formatIDR(priceTotal)}</span>
                 </div>
 
                 <div className='flex justify-between border-b pb-4 border-b-black/20'>
@@ -90,7 +94,7 @@ export default function CartPage() {
 
                 <div className='flex justify-between pt-2'>
                   <span>Total</span>
-                  <span>Rp 450.000</span>
+                  <span>{formatIDR(priceTotal)}</span>
                 </div>
               </div>
 
