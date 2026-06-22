@@ -1,5 +1,5 @@
-import { AlertTriangle, Lock, Mail } from "lucide-react"
-import { Link, UNSAFE_NavigationContext, useNavigate } from "react-router"
+import { Lock, Mail } from "lucide-react"
+import { Link, useNavigate } from "react-router"
 import { AuthService } from "@/services/auth.service";
 import { useAlert } from "@/hooks/useAlert";
 import Alert from "@/components/ui/alert";
@@ -32,7 +32,7 @@ export default function SignIn () {
           onClose={() => clearAlert()}
         />
       )}
-      <div className="lg:flex hidden w-1/2 min-h-screen">
+      <div className="lg:flex hidden w-1/2 max-h-screen">
         <div className="relative w-full">
           <img
             src="/auth/she-flexing.jpg"

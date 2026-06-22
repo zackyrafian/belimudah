@@ -36,7 +36,7 @@ export default function SignUpPage() {
           onClose={() => clearAlert()}
         />
       )}
-      <div className="lg:w-1/2 hidden min-h-screen lg:flex">
+      <div className="lg:w-1/2 hidden max-h-screen lg:flex">
         <div className="relative w-full">
           <img
             src="/auth/shopping-bags.jpg"
