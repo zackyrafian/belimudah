@@ -2,10 +2,15 @@ import { Outlet } from "react-router";
 import Card from "../card";
 import MainLayout from "./main.layout";
 import { UserStorage } from "@/services/user.service";
+import { formatIDR } from "@/utils/format";
 
 export default function CheckoutLayout() {
   const { cart } = UserStorage.getCart();
-  
+
+  let priceTotal = 0;
+  cart.product.forEach((c) => {
+    priceTotal += c.price * c.quantity;
+  });
   return (
     <MainLayout>
       <div className="flex gap-4 items-start" >
@@ -18,7 +23,7 @@ export default function CheckoutLayout() {
             <div className="flex justify-between items-center pb-2">
               <div className="flex gap-2 items-center">
                 <div className="w-10 h-10 rounded-lg overflow-hidden">
-                  <img src="/headphone.png" alt="" />
+                  <img src={item.images[0]} alt={item.name} />
                 </div>
                 <span className="text-xs">{item.name}</span>
               </div>
@@ -42,7 +47,7 @@ export default function CheckoutLayout() {
           <div className="flex flex-col gap-2  border-t border-t-black/20 pt-2">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>Rp 450.000</span>
+              <span>{formatIDR(priceTotal)}</span>
             </div>
             <div className="flex justify-between border-b border-b-black/20 pb-2">
               <span>Ongkir</span>
@@ -50,7 +55,7 @@ export default function CheckoutLayout() {
             </div>
             <div className="flex justify-between pt-1 pb-4">
               <span>Total</span>
-              <span>Rp 450.000</span>
+              <span>{formatIDR(priceTotal)}</span>
             </div>
           </div>
           <div className="text-center text-xs">
