@@ -52,6 +52,15 @@ const UserStorage = {
     };
   },
 
+  removeFromCart(idx) {
+    const user = this.getUser();
+    if (!user) return;
+    const cart = [...(user.cart || [])];
+    cart.splice(idx, 1);
+
+    return this.updateUser({ cart });
+  },
+
   updateShippingAddress(address) { 
     const user = this.getUser();
     const shipping = user.shipping_address || [];
