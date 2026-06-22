@@ -1,8 +1,14 @@
 import { MainLayout } from "@/components/layouts"
 import { Card } from "@/components"
 import { MapPin, Truck, CircleCheckBig, ArrowRight } from "lucide-react"
+import { UserStorage } from "@/services/user.service"
+import { formatIDR } from "@/utils/format";
+import { Link } from "react-router";
 
 export default function CheckoutSuccessPage() { 
+  const orderList = UserStorage.getUser()?.order || [];  
+  const order = (orderList[orderList.length - 1])
+  console.log(order);
   return (
     <MainLayout>
         <div className="min-h-screen flex gap-4 items-center justify-center flex-col">
@@ -19,8 +25,8 @@ export default function CheckoutSuccessPage() {
               <span>Total Pembayaran</span>
             </div>
             <div className="flex justify-between">
-              <span>#BM28371132</span>
-              <span>Rp 450.000</span>
+              <span>#{order.id}</span>
+              <span>{formatIDR(order.total)}</span>
             </div>
           </div>
 
@@ -40,7 +46,9 @@ export default function CheckoutSuccessPage() {
               </div>
               <div className="flex flex-col">
                 <span className="text-sm">Alamat Pengiriman</span>
-                <span className="text-xs">Jl. Kebon Jeruk No. 15, Jakarta Barat, DKI Jakarta 11530</span>
+                <span className="text-xs">{order.shipping_address.
+                  recipient_address_full}</span>
+                <span className="text-xs">{order.shipping_address.recipient_city}, {order.shipping_address.recipient_province} - {order.shipping_address.zip_code}</span>
               </div>
             </div>
           </div>
@@ -99,7 +107,7 @@ export default function CheckoutSuccessPage() {
 
         <div className="w-160 flex gap-2">
           <div className="flex-1 rounded-xl bg-blue-500 text-white shadow-sm flex items-center justify-center p-3">Lacak Pesanan</div>
-          <div className="flex-1 rounded-xl border border-black/20 shadow-sm flex items-center justify-center p-3">Lihat Riwayat Pesanan</div>
+          <Link to={'/profile'} className="flex-1 rounded-xl border border-black/20 shadow-sm flex items-center justify-center p-3">Lihat Riwayat Pesanan</Link>
           <div className="flex-1 rounded-xl text-blue-500 flex items-center justify-center p-3 gap-2">
             <span>Lanjut Belanja</span>
             <ArrowRight size={14} className="pt-0.5 text-blue-500"/> 
