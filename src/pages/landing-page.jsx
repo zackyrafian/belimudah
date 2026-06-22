@@ -3,9 +3,15 @@ import { Footer } from '../components/footer'
 import { ArrowRight, Clock, StarIcon, Zap, TrendingUp } from 'lucide-react'
 import { ProductService } from '@/services/product.service'
 import { Link } from 'react-router'
+import ProductCard from '@/components/product-card'
 
 export default function LandingPage() {
   const categories = ProductService.getCategories(6)
+  const product = ProductService.getAll()
+  const productFlashDeal = product.filter((p) => p.discount > 10);
+  console.log(productFlashDeal);
+  const productNewProduct = product.filter((p) => p.discount === 0); 
+  console.log(productNewProduct);
   return (
     <div className="flex flex-col">
       <Header />
@@ -64,110 +70,9 @@ export default function LandingPage() {
           </header>
 
           <div className='grid grid-cols-4 gap-4'>
-            <div className='flex flex-col rounded-xl border border-black/20  overflow-hidden'>
-              <div>
-              <img src="headphone.png" alt="headphone" />
-              </div>
-              <div className='p-4 flex flex-col'>
-                <span className='text-xs'>SoundWave</span>
-                <span className='text-sm'>Headphone WireLess Premium</span>
-                <div className='flex gap-1 items-center'>
-                  <div className='flex'>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                  </div>
-                  <span className='text-sm'>4.8</span>
-                  <span className='text-sm'>(512)</span>
-                </div>
-                <div className='flex gap-2 items-center'>
-                  <span className='text-sm text-blue-500 font-bold'>Rp 450.000</span>
-                  <span className='text-xs'>Rp 650.000</span>
-                </div>
-              </div>
-              
-            </div>
-
-             <div className='flex flex-col rounded-xl border border-black/20  overflow-hidden'>
-              <div>
-              <img src="headphone.png" alt="headphone" />
-              </div>
-              <div className='p-4 flex flex-col'>
-                <span className='text-xs'>SoundWave</span>
-                <span className='text-sm'>Headphone WireLess Premium</span>
-                <div className='flex gap-1 items-center'>
-                  <div className='flex'>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                  </div>
-                  <span className='text-sm'>4.8</span>
-                  <span className='text-sm'>(512)</span>
-                </div>
-                <div className='flex gap-2 items-center'>
-                  <span className='text-sm text-blue-500 font-bold'>Rp 450.000</span>
-                  <span className='text-xs'>Rp 650.000</span>
-                </div>
-              </div>
-              
-            </div>
-
-             <div className='flex flex-col rounded-xl border border-black/20  overflow-hidden'>
-              <div>
-              <img src="headphone.png" alt="headphone" />
-              </div>
-              <div className='p-4 flex flex-col'>
-                <span className='text-xs'>SoundWave</span>
-                <span className='text-sm'>Headphone WireLess Premium</span>
-                <div className='flex gap-1 items-center'>
-                  <div className='flex'>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                  </div>
-                  <span className='text-sm'>4.8</span>
-                  <span className='text-sm'>(512)</span>
-                </div>
-                <div className='flex gap-2 items-center'>
-                  <span className='text-sm text-blue-500 font-bold'>Rp 450.000</span>
-                  <span className='text-xs'>Rp 650.000</span>
-                </div>
-              </div>
-              
-            </div>
-
-             <div className='flex flex-col rounded-xl border border-black/20  overflow-hidden'>
-              <div>
-              <img src="headphone.png" alt="headphone" />
-              </div>
-              <div className='p-4 flex flex-col'>
-                <span className='text-xs'>SoundWave</span>
-                <span className='text-sm'>Headphone WireLess Premium</span>
-                <div className='flex gap-1 items-center'>
-                  <div className='flex'>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                    <StarIcon size={10}/>
-                  </div>
-                  <span className='text-sm'>4.8</span>
-                  <span className='text-sm'>(512)</span>
-                </div>
-                <div className='flex gap-2 items-center'>
-                  <span className='text-sm text-blue-500 font-bold'>Rp 450.000</span>
-                  <span className='text-xs'>Rp 650.000</span>
-                </div>
-              </div>
-              
-            </div>
-
+            {productFlashDeal.map((p) => (
+              <ProductCard product={p}/>
+            ))}
           </div>
         </section>
 
