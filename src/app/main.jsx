@@ -28,11 +28,14 @@ import {
   DashboardProductPage,
   
   NotFound
-} from './pages'
+} from '../pages'
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { ProfileLayout, DashboardLayout } from './components/layouts'
-import CheckoutLayout from './components/layouts/checkout.layout'
+import { ProfileLayout, DashboardLayout } from '../components/layouts'
+import CheckoutLayout from '../components/layouts/checkout.layout'
+import { Provider } from 'react-redux'
+import { persistor, store } from '@/features/store'
+import { PersistGate } from 'redux-persist/integration/react';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -136,6 +139,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <RouterProvider router={router} />
+      </PersistGate>
+    </Provider>
   </StrictMode>,
 )
