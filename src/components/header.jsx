@@ -1,15 +1,16 @@
-import { UserStorage } from '@/services/user.service';
+import { useAuth } from '@/hooks/useAuth';
 import { Bell, User, Heart, ShoppingCart , MapPin } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 function Header() {
-  const user = UserStorage.getUser();
+  const { user } = useAuth();
+  // console.log(user);
+  const navigate = useNavigate();
   const handleSearch = (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
     const search = form.get("search");
-
-    window.location.href = `/browser-product/?search=${search}`;
+    navigate(`/browser-product/?search=${search}`)
   };
 
   return (
@@ -50,7 +51,7 @@ function Header() {
                 <Link className='flex gap-2 items-center w' to={'/profile'}><User size={20} /></Link>
                 <Link to={'/profile'}><Heart size={20} /></Link>
                 <Link className='relative' to={'/cart'}><ShoppingCart size={20}/>
-                  {user.cart.length > 0 && 
+                  {user.cart?.length > 0 && 
                     <span className='absolute -top-2 -right-2 text-xs bg-red-500 rounded-full w-4 h-4 text-center text-white'>{user.cart.length}</span>
                   }
                 </Link>
@@ -74,7 +75,7 @@ function Header() {
       </div>
 
       <div className='w-full'>
-        <div className='w-7xl mx-auto py-1 flex items-center justify-center gap-12'>
+        <div className='w-7xl mx-auto py-1 flex items-center justify-center gap-12 text-sm'>
           <div>
             <span>Semua Category</span>
           </div>
