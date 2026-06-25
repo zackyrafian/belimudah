@@ -1,22 +1,27 @@
 import { Lock, Mail } from "lucide-react"
 import { Link, useNavigate } from "react-router"
-import { AuthService } from "@/services/auth.service";
 import { useAlert } from "@/hooks/useAlert";
 import Alert from "@/components/ui/alert";
-
-export default function SignIn () { 
+import { FaGoogle, FaFacebook} from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { login } from "@/features/auth/authSlice";
+import { AuthService } from "@/services/auth.service";
+import { useForm } from "react-hook-form";
+import Input from "@/components/ui/input";
+export default function SignIn() { 
   const navigate = useNavigate(); 
   const { alert, showSuccess, showError, clearAlert } = useAlert();
+  const dispatch = useDispatch();
+  const { register, handleSubmit } = useForm();
 
-  const handleSubmit = (e) => { 
-    e.preventDefault(); 
-    const data = Object.fromEntries(new FormData(e.currentTarget));
+  const onSubmit = (data) => { 
     try { 
-      AuthService.login(data);
+      const user = AuthService.login(data); 
+      dispatch(login(user));
       showSuccess("You have successfully signed in.")
       setTimeout(() => { 
-      navigate('/')
-      }, [1000])
+        navigate('/');
+      }, 500)
     } catch (err) { 
       showError(err.message);
     }
@@ -77,42 +82,48 @@ export default function SignIn () {
       <div className="flex flex-col w-full lg:w-1/2 gap-4 bg-white xl:px-40 lg:py-20 lg:px-20 px-20 justify-center">
         <div>
           <h1 className="font-bold text-2xl">Masuk ke Akun</h1>
-          <span>Belum punya akun? <Link>Daftar gratis</Link></span>
+          <span className="text-sm">Belum punya akun? <Link to={'/sign-up'} className="text-blue-500"> Daftar gratis</Link></span>
         </div>
 
-        <div className="flex gap-4">
-          <div className="rounded-xl border p-4 flex-1 border-black/20 text-center">Google</div>
-          <div className="rounded-xl border p-4 flex-1 border-black/20 text-center">Facebook</div>
+        <div className="flex gap-2">
+          <div className="flex gap-4 text-center rounded-xl border px-4 py-2 flex-1 border-black/20 items-center justify-center">
+            <FaGoogle/>
+            <span>Google</span>
+          </div>
+          <div className="flex min-w-1/2 gap-4 items-center justify-center rounded-xl border py-2 flex-1 border-black/20 text-center">
+           <FaFacebook/>
+            <span>Facebook</span>
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1 text-sm">
             <label htmlFor="email">Email</label>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
-              <Mail size={20}/>
-              <input name="email" className="w-full h-full outline-none" type="text" placeholder="email@contoh.com"/>
+              <Mail size={20} />
+              <input {...register('email')} className="w-full h-full outline-none" type="text" placeholder="email@contoh.com"/>
             </div>
           </div>
 
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 text-sm">
             <div className="flex justify-between">
               <label htmlFor="">Password</label>
               <Link to={"/forget-password"} className="text-blue-500">Lupa kata sandi?</Link>
             </div>
             <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
               <Lock size={20}/>
-              <input name="password" className="w-full h-full outline-none" type="password" placeholder="Masukan kata sandi"/>
+              <input {...register('password')} className="w-full h-full outline-none" type="password" placeholder="Masukan kata sandi"/>
             </div>
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-2 text-sm">
             <input type="checkbox" />
             <span>Ingat saya selama 30 hari</span>
           </div>
           <button className="text-center bg-blue-500 w-full p-4 rounded-xl text-white" type="submit">Masuk</button>
         </form>
 
-        <div className="text-center">
+        <div className="text-center text-xs gap-2 flex flex-col">
           <div>Login aman dengan enskripsi SSL 256-bit</div>
           <div>Dengan masuk, kamu menyetujui Syarat & Ketentuan dan Kebijakan Privasi kami.</div>
         </div>
