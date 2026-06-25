@@ -5,6 +5,38 @@ import Alert from "@/components/ui/alert"
 import { useAlert } from "@/hooks/useAlert"
 import { FaGoogle, FaFacebook } from "react-icons/fa"
 import { useForm } from 'react-hook-form'
+import Input from "@/components/ui/input"
+
+const RegisterForm = [
+  {
+    label: "Nama Lengkap",
+    name: "fullname",
+    placeholder: "Nama Lengkap kamu",
+    type: "text",
+    icon: User,
+  },
+  {
+    label: "Email",
+    name: "email",
+    placeholder: "@email.contoh.com",
+    type: "email",
+    icon: Mail,
+  },
+  {
+    label: "Kata Sandi",
+    name: "password",
+    placeholder: "Password",
+    type: "password",
+    icon: Lock,
+  },
+  {
+    label: "Konfirmasi Password",
+    name: "confirmPassword",
+    placeholder: "Confirm Password",
+    type: "password",
+    icon: Lock,
+  },
+];
 
 export default function SignUpPage() {
   const { alert, showError, showSuccess, clearAlert } = useAlert();
@@ -30,7 +62,7 @@ export default function SignUpPage() {
           onClose={() => clearAlert()}
         />
       )}
-      <div className="lg:w-1/2 hidden max-h-screen lg:flex">
+      <div className="lg:w-1/2 md:w-1/2 md:flex hidden max-h-screen lg:flex">
         <div className="relative w-full">
           <img
             src="/auth/shopping-bags.jpg"
@@ -74,10 +106,24 @@ export default function SignUpPage() {
         </div>
         
       </div>
-      <div className="flex flex-col lg:w-1/2 gap-4 bg-white max-h-screen justify-center xl:px-40 lg:py-20 lg:px-20 px-20 w-full">
+      <div className="
+          flex flex-col
+          w-full md:w-1/2 lg:w-1/2
+          justify-center gap-4
+          bg-white
+          min-h-screen
+      
+          px-6
+          sm:px-8
+          md:px-12
+          lg:px-16
+          xl:px-24
+      
+          py-10
+          md:py-14">
         <div>
           <h1 className="font-bold text-2xl">Masuk ke Akun</h1>
-          <span>Belum punya akun? <Link>Daftar gratis</Link></span>
+          <span>Belum punya akun? <Link to={'/sign-in'}>Daftar gratis</Link></span>
         </div>
 
         <div className="flex gap-2">
@@ -93,42 +139,18 @@ export default function SignUpPage() {
 
         {/* FORM */}
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="">Nama Lengkap</label>
-            <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
-              <User className="text-gray-500" size={20}/>
-              <input {...register('fullname')} className="w-full h-full outline-none" type="text" placeholder="Nama Lengkap kamu"/>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor="">Email</label>
-            <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
-              <Mail className="text-gray-500" size={20}/>
-              <input {...register('email')} className="w-full h-full outline-none" type="text" placeholder="@email.contoh.com"/>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor="">Kata Sandi</label>
-            <div className="flex px-4 py-3 border border-black/20 rounded-xl items-center gap-2">
-              <Lock className="text-gray-500" size={20}/>
-              <input {...register('password')} className="w-full h-full outline-none" type="password" placeholder="Password"/>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-1 text-sm">
-            <label htmlFor="">Kata Sandi</label>
-            <div className="flex px-4 py-3 border border-black/20 rounded-xl items-center gap-2">
-              <Lock className="text-gray-500" size={20}/>
-              <input {...register('confirmPassword')} className="w-full h-full outline-none" type="password" placeholder="Confirm Password"/>
-            </div>
-          </div>
+          {RegisterForm.map((field) => ( 
+            <Input
+              key={field.name}
+              {...field}
+              register={register}
+            />
+          ))}
           <div className="flex gap-2">
             <input type="checkbox" />
-            <span>Ingat saya selama 30 hari</span>
+            <span className="text-xs">Ingat saya selama 30 hari</span>
           </div>
-          <button className="text-center bg-blue-500 w-full p-4 rounded-xl text-white" type="submit">Daftar Sekarang</button>
+          <button className="text-center bg-blue-500 w-full py-3 px-4 rounded-xl text-white" type="submit">Daftar Sekarang</button>
         </form>
 
         <div className="text-center text-xs">
