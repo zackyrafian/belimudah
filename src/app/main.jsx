@@ -37,6 +37,7 @@ import { Provider } from 'react-redux'
 import { persistor, store } from '@/features/store'
 import { PersistGate } from 'redux-persist/integration/react';
 import ProtectedRouter from './ProtectedRouter'
+import ProctedCheckoutRouter from './ProctedCheckoutRouter'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -80,23 +81,28 @@ const router = createBrowserRouter([
     element: <ProtectedRouter />,
     children: [
       {
-        path: "/checkout",
-        element: <CheckoutLayout/>, 
-        children: [ 
-          { 
-            path: 'address', 
-            element: <CheckoutAddress />
-          }, 
-          { 
-            path: 'payment', 
-            element: <CheckoutPaymentPage/>
-          },
-          {
-            path: 'confirm', 
-            element: <CheckoutConfirmPage/>
-          },
-        ]
-      }, 
+        element: <ProctedCheckoutRouter />,
+        children: [
+            {
+              path: "/checkout",
+              element: <CheckoutLayout/>, 
+              children: [ 
+                { 
+                  path: 'address', 
+                  element: <CheckoutAddress />
+                }, 
+                { 
+                  path: 'payment', 
+                  element: <CheckoutPaymentPage/>
+                },
+                {
+                  path: 'confirm', 
+                  element: <CheckoutConfirmPage/>
+                },
+              ]
+            }, 
+          ]
+      },
       {
         path: 'checkout/success', 
         element: <CheckoutSuccessPage/>
