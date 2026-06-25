@@ -36,6 +36,7 @@ import CheckoutLayout from '../components/layouts/checkout.layout'
 import { Provider } from 'react-redux'
 import { persistor, store } from '@/features/store'
 import { PersistGate } from 'redux-persist/integration/react';
+import ProtectedRouter from './ProtectedRouter'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -73,50 +74,58 @@ const router = createBrowserRouter([
     element: <ForgetPasswordPage/>
   },
 
-  { 
-    path: "/checkout",
-    element: <CheckoutLayout/>, 
-    children: [ 
-      { 
-        path: 'address', 
-        element: <CheckoutAddress />
+
+  {
+    path: "", 
+    element: <ProtectedRouter />,
+    children: [
+      {
+        path: "/checkout",
+        element: <CheckoutLayout/>, 
+        children: [ 
+          { 
+            path: 'address', 
+            element: <CheckoutAddress />
+          }, 
+          { 
+            path: 'payment', 
+            element: <CheckoutPaymentPage/>
+          },
+          {
+            path: 'confirm', 
+            element: <CheckoutConfirmPage/>
+          },
+        ]
       }, 
-      { 
-        path: 'payment', 
-        element: <CheckoutPaymentPage/>
+      {
+        path: 'checkout/success', 
+        element: <CheckoutSuccessPage/>
       },
       {
-        path: 'confirm', 
-        element: <CheckoutConfirmPage/>
+        path: "/profile",
+        element: <ProfileLayout/>,
+        children: [
+          {
+            index: true, 
+            element: <MyProfile/>
+          },
+          {
+            path: 'address',
+            element: <ProfileAddress/>
+          }, 
+          {
+            path: 'setting', 
+            element: <ProfileSetting/>
+          },
+          {
+            path: 'wishlist',
+            element: <ProfileWishList/>
+          }
+        ]
       },
     ]
   }, 
-  {
-    path: 'checkout/success', 
-    element: <CheckoutSuccessPage/>
-  },
-  {
-    path: "/profile",
-    element: <ProfileLayout/>,
-    children: [
-      {
-        index: true, 
-        element: <MyProfile/>
-      },
-      {
-        path: 'address',
-        element: <ProfileAddress/>
-      }, 
-      {
-        path: 'setting', 
-        element: <ProfileSetting/>
-      },
-      {
-        path: 'wishlist',
-        element: <ProfileWishList/>
-      }
-    ]
-  },
+  
   { 
     path: "/dashboard", 
     element: <DashboardLayout/>, 
