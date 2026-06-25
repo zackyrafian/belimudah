@@ -1,20 +1,23 @@
-import { Heart, Shield, ShoppingCart, Tag, Trash2 } from 'lucide-react'
-import { UserStorage } from '@/services/user.service'
+import { Heart, ShoppingCart, Tag, Trash2 } from 'lucide-react'
 import { formatIDR } from '@/utils/format';
 import { MainLayout } from '@/components/layouts';
 import { Link } from 'react-router';
+import { useAuth } from '@/hooks/useAuth';
+import { useDispatch } from 'react-redux';
+import { updateUserData } from '@/features/auth/authSlice';
 
 export default function CartPage() {
-  const { cart, total } = UserStorage.getCart();
-  // const [ quantity , setQuantity ] = useState()
-  console.log(cart.product.length)
+  const { user } = useAuth();
+  const { cart } = user;
+  const dispatch = useDispatch;
+  
   let priceTotal = 0;
-  cart.product.forEach((c) => {
+  cart.forEach((c) => {
     priceTotal += c.price * c.quantity;
   });
   return (
     <MainLayout className="flex flex-col">
-      {cart.product.length === 0 ? (
+      {cart.length === 0 ? (
       
       <div className='gap-4 p-50 flex flex-col items-center justify-center text-gray-500'>
           <div><ShoppingCart size={120}/></div>
@@ -26,19 +29,19 @@ export default function CartPage() {
         </div>
       ) : (
       <div className='w-7xl m-auto flex flex-col gap-4 pt-4'>
-        <div className='text-2xl'>Keranjang Belanja { total } Produk</div>
+        <div className='text-2xl'>Shopping Cart ({cart.length})</div>
         <div>
           <div className='flex gap-8 items-start'>
             <div className='flex w-full flex-col gap-4'>
-              {cart.product.map((product, i) => (
-                <div className='shadow-sm flex w-full bg-white border-black/20 border p-4 gap-4 rounded-xl'>
+              {cart.map((product, i) => (
+                <div key={i} className='shadow-sm flex w-full bg-white border-black/20 border p-4 gap-4 rounded-xl'>
                   <div className='w-24 h-24'>
                     <img className='rounded-xl' src={product.images[0]} alt="headphone" />
                   </div>
                   <div className='flex flex-col gap-1 flex-1'>
                     <div className='flex justify-between items-center'>
                       <span className='text-sm font-medium'>{product.name}</span>
-                      <button onClick={() => console.log(i)}><Trash2 onClick={() => UserStorage.removeFromCart(i)} size={16} /></button>
+                      <button onClick={() => console.log(i)}><Trash2 onClick={() => dispatch(updateUserData())} size={16} /></button>
                     </div>
   
                     <div>
@@ -79,15 +82,18 @@ export default function CartPage() {
             </div>
 
             <div className='shadow-sm text-sm flex gap-4 flex-col w-[45%] bg-white p-4 rounded-xl border border-black/20'>
-              <span className='text-xl font-semibold'>Ringkasan Pesanan</span>
+              <span className='text-lg font-medium'>Ringkasan Pesanan</span>
 
               <div className='flex-col flex gap-2'>
-                <div className='flex justify-between'>
-                  <span>Subtotal {total}(item)</span>
-                      <span>{formatIDR(priceTotal)}</span>
-                </div>
+                {cart.map((product) => (
+                  <div className='flex justify-between'>
+                    <span className='text-xs'>{product.name} x {product.quantity}</span>
+                    <span className='text-xs'>{formatIDR(product.price * product.quantity)}</span>
+                  </div>
+                ))}
+               
 
-                <div className='flex justify-between border-b pb-4 border-b-black/20'>
+                <div className='text-xs flex justify-between border-b pb-4 border-b-black/20'>
                   <span>Ongkir Kirim</span>
                   <span>Gratis</span>
                 </div>
@@ -98,15 +104,15 @@ export default function CartPage() {
                 </div>
               </div>
 
-              <button onClick={() => location.href = "/checkout/address"} className='cursor-pointer bg-orange-500 gap-2 text-sm items-center flex justify-center p-4 text-white rounded-xl'>
-                <Shield size={16}/>
-                <span>Checkout Aman</span>
+              <button onClick={() => location.href = "/checkout/address"} className='cursor-pointer text-white bg-blue-500 border gap-2 text-sm items-center flex justify-center px-4 py-3  rounded-xl'>
+                {/* <Shield size={16}/>*/}
+                <span>Place Order</span>
               </button>
 
-              <div className='flex flex-col text-center text-sm'>
+              {/* <div className='flex flex-col text-center text-sm'>
                 <span>Pembayaran 100% Aman</span>
                 <span> Metode: Transfer Bank · Virtual Account · Kartu Kredit · e-Wallet</span>
-              </div>
+              </div>*/}
             </div>
           </div>
         </div>

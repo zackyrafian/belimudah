@@ -1,10 +1,10 @@
 import { ArrowLeft, Edit } from "lucide-react";
 import { Card } from "../../components";
-import { UserStorage } from "@/services/user.service";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function ProfileSetting() {
-  const user = UserStorage.getUser();
+  const { user } = useAuth();
   const [viewMode, setViewMode] = useState('profile');
   const handleSubmit = (e) => {
     e.preventDefault();

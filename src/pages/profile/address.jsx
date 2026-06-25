@@ -1,17 +1,22 @@
 import { Edit, MapPin, PlusIcon, Trash2, X } from "lucide-react";
 import { Card } from "../../components";
-import { UserStorage } from "@/services/user.service";
 import { useState } from "react";
 import { useAlert } from "@/hooks/useAlert";
 import Alert from "@/components/ui/alert";
+import { useAuth } from "@/hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { updateUserData } from "@/features/auth/authSlice";
 export default function ProfileAddress() { 
   const { alert, showSuccess, clearAlert } = useAlert();
   const [dialog, setDialog] = useState(false);
-  const user = UserStorage.getUser();
+  const { user } = useAuth();
+  const dispatch = useDispatch();
 
   const handleForm = (e) => { 
-    const data = Object.fromEntries(new FormData(e.currentTarget))
-    UserStorage.updateShippingAddress(data);
+    const data = Object.fromEntries(new FormData(e.currentTarget));
+    const currentShipping = user?.shipping_address || [];
+    const updatedShipping = [...currentShipping, data]; 
+    dispatch(updateUserData({ shipping_address: updatedShipping }));
     showSuccess("Berhasil menambahkan Alamat")
   }
   return ( 
@@ -38,57 +43,57 @@ export default function ProfileAddress() {
                 <X/>
               </button>
             </div>
-            <form onSubmit={handleForm} className="flex flex-col gap-6">
+            <form onSubmit={handleForm} className="flex flex-col gap-6 text-sm">
               <div className="flex gap-4">
                 <div className="flex flex-col w-1/2">
                   <label htmlFor="">Nama Pengirim *</label>
-                  <input required name="recipient_name" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                  <input required name="recipient_name" type="text" placeholder="Nama Penerima" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
                 </div>
                 <div className="flex flex-col w-1/2">
                   <label htmlFor="">Nomer Telepon *</label>
-                  <input required name="phone_number" type="number" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                  <input required name="phone_number" type="number" placeholder="Nomer telepon" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
                 </div>
               </div>
 
               <div className="flex flex-col">
                 <label htmlFor="">Email *</label>
-                <input name="recipient_email" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                <input name="recipient_email" type="text" placeholder="Email penerima" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
               </div>
 
               <div className="flex flex-col">
                 <label htmlFor="">Alamat Lengkap *</label>
-                <input required name="recipient_address_full" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                <input required name="recipient_address_full" type="text" placeholder="Alamat lengkap" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
               </div>
 
               <div className="flex gap-4">
                 <div className="flex flex-col w-1/2">
                   <label htmlFor="">Kota *</label>
-                  <input required name="recipient_city" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                  <input required name="recipient_city" type="text" placeholder="Kota" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
                 </div>
                 <div className="flex flex-col w-1/2">
                   <label htmlFor="">Provinsi *</label>
-                  <input required name="recipient_province" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                  <input required name="recipient_province" type="text" placeholder="Provinsi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
                 </div>
               </div>
               <div className="flex gap-4">
                 <div className="flex flex-col w-1/2">
                   <label htmlFor="">Kode Pos *</label>
-                  <input required name="zip_code" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                  <input required name="zip_code" type="text" placeholder="Kode pos" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
                 </div>
                 <div className="flex flex-col w-1/2">
                   <label htmlFor="">Catatan (opsional)</label>
-                  <input name="note" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                  <input name="note" type="text" placeholder="Catatan tambahan" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
                 </div>
               </div>
-              <button className="bg-blue-500 py-3 rounded-xl text-white text-center">Tambah</button>
+              <button className="bg-blue-500 py-3 rounded-xl text-white text-center">Save</button>
             </form>
           </Card>
         </div>
       )}
       <div className="flex justify-between">
         <span className="text-2xl font-medium">Alamat Pengiriman</span>
-        <button onClick={() => setDialog(true)} className="flex bg-blue-500 px-4 py-2 rounded-xl text-white items-center gap-2">
-          <PlusIcon/>
+        <button onClick={() => setDialog(true)} className="flex text-gray-500 border-black/20 border text-sm px-4 py-2 rounded-xl items-center gap-2">
+          <PlusIcon size={18}/>
           <span>Alamat Pengiriman</span>
         </button>
       </div>

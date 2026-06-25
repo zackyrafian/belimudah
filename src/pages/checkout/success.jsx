@@ -1,14 +1,14 @@
 import { MainLayout } from "@/components/layouts"
 import { Card } from "@/components"
 import { MapPin, Truck, CircleCheckBig, ArrowRight } from "lucide-react"
-import { UserStorage } from "@/services/user.service"
 import { formatIDR } from "@/utils/format";
 import { Link } from "react-router";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function CheckoutSuccessPage() { 
-  const orderList = UserStorage.getUser()?.order || [];  
-  const order = (orderList[orderList.length - 1])
-  console.log(order);
+  const { user } = useAuth(); 
+  const orderList = user.order; 
+  const order = (orderList[orderList.length - 1]);
   return (
     <MainLayout>
         <div className="min-h-screen flex gap-4 items-center justify-center flex-col">

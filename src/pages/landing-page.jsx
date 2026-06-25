@@ -29,7 +29,7 @@ export default function LandingPage() {
             </Link>
           </div>
         </div>
-        <div className="bg-blue-500 opacity-30 flex-1">
+        <div className="bg-blue-500 opacity-30 flex-1 hidden lg:block">
           <img
             src="/hero-landing-page.png"
             alt=""
@@ -37,9 +37,9 @@ export default function LandingPage() {
           />
         </div>
       </div>
-      <div className='w-7xl m-auto flex flex-col gap-4'>
+      <div className='w-full lg:w-7xl m-auto flex flex-col gap-4 px-4'>
         <h3 className='text-xl'>Belanja Berdasarkan Kategori</h3>
-        <div className='flex gap-4'>
+        <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'>
           {categories.map((category,index) => (
             <Link key={index} to={`/browser-product?category=${category.name.toLowerCase().replaceAll(' ', '-')}`}>
               <div className='bg-white border border-black/20 rounded-xl py-4 justify-center items-center flex flex-col gap-2'>
@@ -58,26 +58,34 @@ export default function LandingPage() {
         </div>
 
         <section className='flex flex-col gap-4'>
-          <header className='flex gap-2'>
-            <div className='flex bg-red-500 text-white rounded-lg px-4 py-1.5 items-center gap-2'>
+          <header className='flex flex-col sm:flex-row gap-2 sm:gap-3 items-start sm:items-center'>
+            <div className='flex bg-red-500 text-white rounded-lg px-3 sm:px-4 py-1.5 items-center gap-2 text-sm sm:text-base'>
               <Zap size={16}/>
               <span>Flash Deal</span>
             </div>
-            <div className='flex items-center gap-2'>
+            <div className='flex items-center gap-2 text-xs sm:text-sm'>
               <Clock size={12} />
               <span>Berakhir dalam: 05 : 21 : 38</span>
             </div>
           </header>
-
-          <div className='grid grid-cols-4 gap-4'>
+          <div className='grid
+            grid-cols-2
+            sm:grid-cols-2
+            md:grid-cols-3
+            lg:grid-cols-4
+            xl:grid-cols-5
+            gap-3 sm:gap-4'>
             {productFlashDeal.map((p) => (
-              <ProductCard product={p}/>
+              <div key={p.id} className='transition-all duration-300 hover:scale-105 hover:shadow-xl'>
+                <ProductCard product={p}/>
+              </div>
             ))}
           </div>
         </section>
+        
 
-        <section>
-          <div className='grid grid-cols-2 gap-4'>
+        <section className=''>
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
             <div className="relative overflow-hidden rounded-xl min-h-40">
               <div className="absolute inset-0 bg-[url('/landing_page/running.png')] bg-cover bg-center" />
               <div className="absolute inset-0 bg-black/40" />
@@ -93,7 +101,7 @@ export default function LandingPage() {
                 </button>
               </div>
             </div>
-            <div className='flex flex-col bg-[url(/landing_page/bag.png)] bg-linear-to-r from-blue-500 to-red-500 p-4 min-h-40 justify-center rounded-xl gap-2'>
+            <div className='hidden lg:flex flex-col bg-[url(/landing_page/bag.png)] bg-linear-to-r from-blue-500 to-red-500 p-4 min-h-40 justify-center rounded-xl gap-2'>
               <div className='flex flex-col'>
                 <span className='text-sm text-white'>Elektonik Pilihan</span>
                 <span className='text-xl text-white font-bold'>Harga Terbaik</span>
@@ -221,7 +229,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section>
+        <section className='hidden lg:block transition-all duration-300'>
           <div className='flex flex-col items-center bg-white border border-black/20 p-8 justify-center rounded-xl gap-6'>
             <div>
               <h1 className='text-xl'>Kenapa Belanja diBeliMudah?</h1>

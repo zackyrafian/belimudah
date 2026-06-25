@@ -1,8 +1,11 @@
 import { Header } from '../components/header'
 import { Footer } from '../components/footer'
 import { Check, Truck, Heart, ShoppingCart, Star, } from 'lucide-react'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function DetailPage() {
+  const { user } = useAuth();
+  console.log(user)
   return (
     <div className="flex flex-col">
       <Header />

@@ -1,11 +1,12 @@
-import { UserStorage } from "@/services/user.service";
 import { formatIDR } from "@/utils/format";
 import { Card } from "../../components";
 import { useNavigate } from "react-router";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function MyProfile() { 
-  const orders = UserStorage.getUser().order; 
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { order : orders } = user;
   
   return (
     <div className="flex flex-col gap-4">

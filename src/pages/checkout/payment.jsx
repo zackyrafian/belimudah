@@ -1,9 +1,14 @@
 import { CreditCard, LockIcon } from "lucide-react";
-import { UserStorage } from "@/services/user.service";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
+import { useAuth } from "@/hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { updateUserData } from "@/features/auth/authSlice";
 export default function CheckoutPaymentPage() { 
+  const { user } = useAuth();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const checkout = user?.checkout;
   const handleForm = (e) => { 
     e.preventDefault();
     const form = new FormData(e.target);
@@ -12,7 +17,12 @@ export default function CheckoutPaymentPage() {
     if (!data) { 
       return
     }
-    UserStorage.setSelectedPaymentMethod(data);
+    dispatch(updateUserData({
+      checkout: {
+        ...checkout,
+        payment_method: data
+      }
+    }));
     navigate("/checkout/confirm")
   }
   return (
