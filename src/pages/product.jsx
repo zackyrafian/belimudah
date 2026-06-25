@@ -1,15 +1,20 @@
-import { Check, Truck, Heart, ShoppingCart, Star, ImageOff, ArrowRight, ChevronRight} from 'lucide-react'
-import { Link, useParams } from 'react-router'
+import { Check, Truck, Heart, ShoppingCart, Star, ImageOff, ChevronRight} from 'lucide-react'
+import { Link, useNavigate, useParams } from 'react-router'
 import { ProductService } from '@/services/product.service'
 import { formatIDR } from '@/utils/format'
 import { calculateDiscount } from '@/utils/calculate'
 import { useState } from 'react'
 import { MainLayout } from '@/components/layouts'
-import { UserStorage } from '@/services/user.service'
 import Alert from '@/components/ui/alert'
 import ProductCard from '@/components/product-card'
+import { useAuth } from '@/hooks/useAuth'
+import { useDispatch } from 'react-redux'
+import { updateUserData } from '@/features/auth/authSlice'
 
 export default function Product() {
+  const { user } = useAuth(); 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [alert, setAlert] = useState(null);
   const params = useParams();
   const product = ProductService.getByName(params.name);
@@ -27,9 +32,30 @@ export default function Product() {
   const [ variant, setVariantSelect ] = useState(product.variant[0]);
   const [quantity, setQuantity] = useState(1);
   
+  const handleCart = () => {
+    if (!user) { 
+      navigate('/sign-in')
+      return
+    }
+    const item = { 
+      ...product, 
+      quantity, 
+      variant
+    }
+    const currentCart = user.cart || []
+    const newCart = [...currentCart, item]
+    
+    dispatch(updateUserData({ cart: newCart }))
+
+    setAlert({
+      id: new Date,
+      type: "success",
+      message: `Successfully added ${product.name} to your cart.`
+    }); 
+  }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col border">
       {alert && (
         <Alert
           key={alert.id}
@@ -41,18 +67,22 @@ export default function Product() {
       )}
       <MainLayout>
       <div className='w-7xl m-auto flex-col gap-4 flex pt-4'>
-        <div className='text-sm text-black'>
-          <Link className='flex items-center gap-2' to={'/'}>Beranda<ChevronRight size={16} />
-            <Link to={`/browser-product?category=${product.category}`} className='flex items-center gap-2'>{product.category}<ChevronRight size={16} />
-              <Link className='flex items-center gap-2 font-bold'>{product.name}</Link>
-            </Link>
+        <div className="hidden text-sm lg:flex lg:items-center lg:gap-2">
+          <Link to="/">Beranda</Link>
+          <ChevronRight size={16} />
+        
+          <Link to={`/browser-product?category=${product.category}`}>
+            {product.category}
           </Link>
+          <ChevronRight size={16} />
+        
+          <span className="font-bold">{product.name}</span>
         </div>
-        <div className='flex flex-row gap-8'>
-          <div className='w-1/2'>
+        <div className='flex flex-col gap-8 lg:flex-row'>
+          <div className='w-screen lg:w-1/2'>
               <div className='w-full'>
                 {product.images?.[0] ? (
-                  <img src={product.images[0]} alt={product.name} className='rounded-xl w-full' />
+                  <img src={product.images[0]} alt={product.name} className='lg:rounded-xl w-full' />
                 ) : 
                 <div className="w-full min-h-156 rounded-xl flex items-center justify-center bg-gray-200 text-gray-400 hover">
                   <ImageOff size={32} />
@@ -63,7 +93,7 @@ export default function Product() {
 
             </div>
           </div>
-          <div className='w-1/2 flex flex-col gap-4'>
+          <div className='max-w-screen px-2 lg:min-w-1/2 flex flex-col gap-4'>
             <div>
               <div className='flex gap-2'>
                 <span>{product.brand}</span>
@@ -113,7 +143,7 @@ export default function Product() {
               )}
             </div>
 
-            <div className='flex gap-2 flex-col'>
+            <div className='hidden lg:flex lg:gap-2 lg:flex-col'>
               <span>Variant: {variant}</span>
               <div className='flex gap-2'>
                 {product.variant.map((set, index) => {
@@ -140,7 +170,7 @@ export default function Product() {
               </div>
             </div>
 
-            <div className='flex gap-2 flex-col'>
+            <div className='hidden lg:flex lg:gap-2 lg:flex-col'>
               <span>Jumlah: {quantity}</span>
               <div className='border border-black/20 flex px-4 py-1 gap-4 rounded-xl items-center w-fit'>
                 <button onClick={() => setQuantity(quantity - 1)} className='w-6 text-center cursor-pointer'>-</button>
@@ -149,33 +179,22 @@ export default function Product() {
               </div>
             </div>
 
-            <div className='flex gap-2 w-full'>
-                <button onClick={() => {
-                  const item = { 
-                    ...product, 
-                    quantity, 
-                    variant
-                  }
-                  setAlert({ 
-                    id: Date.now(),
-                    type: "success", 
-                    message: `Successfully added ${product.name} to your cart.`
-                  })
-                  // console.log(item);
-                  UserStorage.addCart(item)
-              }} className='flex-1 gap-4 p-4 flex border-2 border-orange-400  rounded-xl text-orange-400 items-center justify-center'>
+            <div className='flex gap-2 w-full
+              fixed bottom-0 left-0 right-0 z-5 bg-white p-2
+              md:static md:bg-transparent md:p-0'>
+                <button onClick={handleCart} className='flex-1 gap-4 px-3 flex bg-blue-500 borde text-white r-orange-400  rounded-xl items-center justify-center hover:bg-blue-400'>
                 <ShoppingCart size={18}/>
                 <span className='font-semibold'>Tambah Keranjang</span>
               </button>
-              <div className='flex-1 p-4 flex border border-orange-400 bg-orange-400  rounded-xl text-white items-center justify-center'>
+              {/* <div className='flex-1 p-4 flex border border-orange-400 bg-orange-400  rounded-xl text-white items-center justify-center'>
                 <span>Beli Sekarang</span>
-              </div>
-              <div className='flex justify-center items-center border-2 border-black/20  p-4 rounded-xl'>
+              </div>*/}
+              <div className='flex justify-center items-center border border-black/20  p-3 rounded-xl'>
                 <Heart />
               </div>
             </div>
 
-            <div className='grid grid-cols-3 gap-2'>
+            <div className='hidden lg:grid-cols-3 lg:grid gap-2'>
               <div className='bg-gray-200/30 border-black/20 border rounded-xl flex flex-col gap-2 items-center p-2'>
                 <Truck size={18} className='text-blue-500' />
                 <div className='flex flex-col text-center'>
@@ -222,7 +241,7 @@ export default function Product() {
           <h1 className='text-2xl font-medium'>Product Terkait</h1>
           <div className='grid grid-cols-4 gap-4'>
             {Array.from({ length: 4 }).map((_, i) => (
-              <ProductCard key={i} product={product} />
+              <ProductCard key={i} product={product}  />
             ))}
           </div>
           
