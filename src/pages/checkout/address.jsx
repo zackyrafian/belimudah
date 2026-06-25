@@ -1,15 +1,17 @@
-import { UserStorage } from "@/services/user.service";
 import { generateId } from "@/utils/calculate";
 import { ArrowLeft, MapPin, Plus, Truck } from "lucide-react"
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import Alert from "@/components/ui/alert";
-
+import { useAuth } from "@/hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { updateUserData } from "@/features/auth/authSlice";
 export default function CheckoutAddress() {
-  const user = UserStorage.getUser();
+  const { user } = useAuth();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [alert, setAlert] = useState(null);
-  const [viewMode, setViewMode] = useState(user.shipping_address && user.shipping_address.length > 0 ? 'list' : 'form');
+  const [viewMode, setViewMode] = useState(user?.shipping_address && user.shipping_address.length > 0 ? 'list' : 'form');
 
   const [shippingAddress, setShippingAddress] = useState(null);
   const [shippingMetode, setShippingMetode] = useState(null);
@@ -27,7 +29,7 @@ export default function CheckoutAddress() {
       })
       return;
     }
-
+  
     let finalAddress;
     if (viewMode === 'list' && shippingAddress) {
       finalAddress = shippingAddress;
@@ -41,40 +43,42 @@ export default function CheckoutAddress() {
       ) {
         setAlert({ 
           type: "error", 
-          message: "No shipping method selected."
+          message: "Please fill all req."
         })
         return;
       }
-
-      UserStorage.updateShippingAddress(data);
-      UserStorage.setSelectedShippingAddress(data);
+  
+      const currentShipping = user?.shipping_address || [];
+      const updatedShipping = [...currentShipping, data];
+      dispatch(updateUserData({ shipping_address: updatedShipping }));
       finalAddress = data;
     }
-
-    const total = user.cart.reduce(
+  
+    const total = user?.cart?.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0
-    );
-
-    UserStorage.createCheckout({
+    ) || 0;
+  
+    const checkoutData = {
       id: generateId(),
-      cart: user.cart,
+      cart: user?.cart || [],
       shipping_address: finalAddress,
       shipping_metode: shippingMetode,
       total,
       payment: "pending",
       createdAt: new Date(),
-    });
-
+    };
+    
+    dispatch(updateUserData({ checkout: checkoutData }));
+  
     navigate("/checkout/payment");
   };
-
   return ( 
     <div className="p-2">
       {alert && ( 
         <Alert
           title={"Checkout"}
-          key={new Date}
+          key={new Date()}
           type={alert.type}
           message={alert.message}
           onClick={() => setAlert(null)}
@@ -96,7 +100,7 @@ export default function CheckoutAddress() {
 
         {viewMode === 'list' && ( 
           <div className="flex flex-col gap-3">
-            {user.shipping_address?.map((address, index) => (
+            {user?.shipping_address?.map((address, index) => (
               <label
                 key={index}
                 className={`border-2 flex flex-col gap-1 p-3 rounded-xl cursor-pointer transition
@@ -135,7 +139,7 @@ export default function CheckoutAddress() {
 
           {viewMode === 'form' && (
             <>
-              {user.shipping_address?.length > 0 && ( 
+              {user?.shipping_address?.length > 0 && ( 
                 <button
                   type="button"
                   onClick={() => setViewMode('list')}
@@ -146,47 +150,45 @@ export default function CheckoutAddress() {
                 </button>
               )}
 
-              {/* <h3 className="font-semibold text-lg mb-2">Detail Penerima</h3>*/}
-
               <div className="flex gap-4">
                 <div className="flex flex-col w-1/2">
-                  <label htmlFor="">Nama Pengirim *</label>
-                  <input required name="recipient_name" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                  <label htmlFor="">Nama Penerima *</label>
+                  <input required name="recipient_name" type="text" placeholder="Nama penerima" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
                 </div>
                 <div className="flex flex-col w-1/2">
-                  <label htmlFor="">Nomer Telepon *</label>
-                  <input required name="phone_number" type="number" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                  <label htmlFor="">Nomor Telepon *</label>
+                  <input required name="phone_number" type="number" placeholder="Nomor telepon" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
                 </div>
               </div>
 
               <div className="flex flex-col">
                 <label htmlFor="">Email *</label>
-                <input name="recipient_email" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                <input required name="recipient_email" type="email" placeholder="Email penerima" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
               </div>
 
               <div className="flex flex-col">
                 <label htmlFor="">Alamat Lengkap *</label>
-                <input required name="recipient_address_full" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                <input required name="recipient_address_full" type="text" placeholder="Alamat lengkap" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
               </div>
 
               <div className="flex gap-4">
                 <div className="flex flex-col w-1/2">
                   <label htmlFor="">Kota *</label>
-                  <input required name="recipient_city" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                  <input required name="recipient_city" type="text" placeholder="Kota" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
                 </div>
                 <div className="flex flex-col w-1/2">
                   <label htmlFor="">Provinsi *</label>
-                  <input required name="recipient_province" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                  <input required name="recipient_province" type="text" placeholder="Provinsi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
                 </div>
               </div>
               <div className="flex gap-4">
                 <div className="flex flex-col w-1/2">
                   <label htmlFor="">Kode Pos *</label>
-                  <input required name="zip_code" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                  <input required name="zip_code" type="text" placeholder="Kode pos" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
                 </div>
                 <div className="flex flex-col w-1/2">
                   <label htmlFor="">Catatan (opsional)</label>
-                  <input name="note" type="text" placeholder="Budi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+                  <input name="note" type="text" placeholder="Catatan tambahan" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
                 </div>
               </div>
             </>
