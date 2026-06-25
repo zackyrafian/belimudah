@@ -41,7 +41,9 @@ const AuthService = {
     if (atob(existing.password) !== data.password) {
       throw new Error("Incorrect password.");
     }
-    localStorage.setItem("user", JSON.stringify(existing));
+
+    const { ...userData } = existing;
+    return userData;
   },
 }
 
