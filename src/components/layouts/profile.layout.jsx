@@ -1,84 +1,190 @@
-import { ArrowRight, Heart, LogOut, MapPin, Settings, ShoppingBag } from "lucide-react"
+import { ArrowLeft, ArrowRight, Heart, LogOut, MapPin, Search, Settings, ShoppingBag, ShoppingCart, Star, User } from "lucide-react"
 import { MainLayout } from "../../components/layouts"
-import { Link, Outlet } from "react-router"
-import { UserStorage } from "@/services/user.service";
+import { Link, Outlet, useNavigate } from "react-router"
+import { useAuth } from "@/hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { logout } from "@/features/auth/authSlice";
+import { useState } from "react";
 
-const listElement = [
-  {
-    title: "Pesanan Saya",
-    href: "/profile",
-    icon: <ShoppingBag size={16} />,
-  },
-  {
-    title: "Wishlist",
-    href: "/profile/wishlist",
-    icon: <Heart size={16} />,
-  },
-  {
-    title: "Alamat Saya",
-    href: "/profile/address",
-    icon: <MapPin size={16} />,
-  },
-  {
-    title: "Pengaturan Profile",
-    href: "/profile/setting",
-    icon: <Settings size={16} />,
-  },
-  {
-    title: "Keluar",
-    href: "/profile/setting",
-    icon: <LogOut size={16} />,
-    color: 'text-red-500',
-    action: (() => { 
-      localStorage.removeItem("user")
-      window.location.href = '/'
-    })
-  },
-];
-
-export default function ProfileLayout() { 
-const user = UserStorage.getUser();
-
-  return (
-    <MainLayout>
-      <div className="flex flex-row gap-8">
-        <div className="w-1/5 flex flex-col gap-4">
-          <div className="flex flex-col gap-4 rounded-xl shadow-sm items-center justify-center bg-white border-black/20 border p-4">
-            <div className="text-white text-2xl font-bold rounded-full w-16 h-16 bg-blue-500 flex justify-center items-center">{user.fullname[0]}</div>
-            <div className="flex flex-col text-center pb-2 border-b border-b-black/20">
-              <div className="font-medium">{user.fullname}</div>
-              <div className="text-gray-500 text-sm">{user.email}</div>
+function MobileView({ user, listElement }) { 
+  const [open, setOpen] = useState(false); 
+  const [t, setT] = useState(false); 
+  const navigate = useNavigate();
+ console.log(open) 
+  return ( 
+    <div className="px-4 pt-4 flex-col flex gap-4">
+      {t && ( 
+        <div className="absolute inset-0 bg-white px-4 flex pt-4">
+          <div className="flex h-8 w-full gap-4 items-center">
+            <div onClick={()=>setT(false)}><ArrowLeft/></div>
+            <div className="flex items-center gap-2 border h-8 p-2 text-gray-500 rounded-lg w-full">
+              <Search size={18}/>
+              <input type="text" placeholder="Cari Transaksi" className="w-full h-full outline-none"/>
             </div>
-            <div className="flex gap-4 justify-center items-center ">
-              <div className="text-center">
-                <div className="font-bold">{user.order?.length !== 0 ? 0 : user.order?.length}</div>
-                <div className="text-xs">Pesanan</div>
-              </div>
-              <div className="text-center">
-                <div className="font-bold">0</div>
-                <div className="text-xs">Wishlist</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl border border-black/20 shadow-sm flex flex-col gap-1">
-            {listElement.map((item) => { 
-              return(
-              <Link onClick={item.action} key={item.href} to={item.href} className={`${item.color} flex items-center text-sm justify-between px-4 py-3.5 hover:bg-gray-50 transition-colors`}>
-                <div className="flex items-center gap-2">
-                  {item.icon} 
-                  <span>{item.title}</span>
-                </div>
-                <ArrowRight size={16}/>
-              </Link>
-              )
-            })}
+            <div onClick={() => navigate('/cart')}><ShoppingCart/></div>
           </div>
         </div>
-        <div className="flex-1">
-          <Outlet/>
+      )}
+      {open && ( 
+        <div className="absolute inset-0 bg-white p-4 flex">
+          <div className="flex flex-col gap-4">
+            <div onClick={() => setOpen(false)} className="flex gap-4 items-center">
+              <ArrowLeft size={18} />
+              <span>Kembali</span>
+            </div>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-4">
+                <User />
+                <div className="flex flex-col text-xs">
+                  <span className="font-bold">Ubah Profile</span>
+                  <span>Atur Indentitas dan photo profile kamu</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-4">
+                <User />
+                <div className="flex flex-col text-xs">
+                  <span className="font-bold">Ubah Profile</span>
+                  <span>Atur Indentitas dan photo profile kamu</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-4">
+                <User />
+                <div className="flex flex-col text-xs">
+                  <span className="font-bold">Ubah Profile</span>
+                  <span>Atur Indentitas dan photo profile kamu</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="flex justify-end">
+        <Settings onClick={() => setOpen(true)}/>
+      </div>
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 border rounded-full"></div>
+        <span className="font-bold">{user?.fullname}</span>
+      </div>
+      <div className="flex flex-col gap-4 border">
+        <div className="font-bold flex justify-between">
+          <h3>Transaksi</h3>
+          <ArrowRight size={16}/> 
+        </div>
+        <div className="grid grid-cols-5 justify-center">
+          {Array.from({ length: 5 }).map((a, i) => (
+            <div key={i} className="flex flex-col items-center">
+              <Star />
+              <span className="text-xs font-medium">Ulasan</span>
+            </div>
+          ))}
         </div>
       </div>
+      {listElement.map((list, i) => ( 
+        <div key={i}>
+          <div className="border border-blue-500 px-4 py-2" onClick={() => setT(true)}>{list.title}</div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function DekstopView({user, listElement}) { 
+  return (
+    <MainLayout>
+    <div className="flex flex-row gap-8 border-red-500 border px-4">
+      <div className="w-1/5 flex flex-col gap-4">
+        <div className="flex flex-col gap-4 rounded-xl shadow-sm items-center justify-center bg-white border-black/20 border p-4">
+          <div className="text-white text-2xl font-bold rounded-full w-16 h-16 bg-blue-500 flex justify-center items-center">{user.fullname[0]}</div>
+          <div className="flex flex-col text-center pb-2 border-b border-b-black/20">
+            <div className="font-medium">{user.fullname}</div>
+            <div className="text-gray-500 text-sm">{user.email}</div>
+          </div>
+          <div className="flex gap-4 justify-center items-center ">
+            <div className="text-center">
+              {/* <div className="font-bold">{user.order?.length !== 0 ? 0 : user.order?.length}</div>*/}
+              <div className="font-bold">{user.order.length}</div>
+              <div className="text-xs">Pesanan</div>
+            </div>
+            <div className="text-center">
+              <div className="font-bold">0</div>
+              <div className="text-xs">Wishlist</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl border border-black/20 shadow-sm flex flex-col gap-1">
+          {listElement.map((item) => { 
+            return(
+            <Link onClick={item.action} key={item.href} to={item.href} className={`${item.color} flex items-center text-sm justify-between px-4 py-3.5 hover:bg-gray-50 transition-colors`}>
+              <div className="flex items-center gap-2">
+                {item.icon} 
+                <span>{item.title}</span>
+              </div>
+              <ArrowRight size={16}/>
+            </Link>
+            )
+          })}
+        </div>
+      </div>
+      <div className="flex-1">
+        <Outlet/>
+      </div>
+      </div>
     </MainLayout>
+  )
+}
+
+export default function ProfileLayout() { 
+  const { user } = useAuth();
+  const dispatch = useDispatch();
+
+  const listElement = [
+    {
+      title: "Pesanan",
+      href: "/profile",
+      icon: <ShoppingBag size={16} />,
+    },
+    {
+      title: "Wishlist",
+      href: "/profile/wishlist",
+      icon: <Heart size={16} />,
+    },
+    {
+      title: "Alamat",
+      href: "/profile/address",
+      icon: <MapPin size={16} />,
+    },
+    {
+      title: "Pengaturan",
+      href: "/profile/setting",
+      icon: <Settings size={16} />,
+    },
+    {
+      title: "Keluar",
+      href: "/profile/setting",
+      icon: <LogOut size={16} />,
+      color: 'text-red-500',
+      action: (() => { 
+        dispatch(logout(user))
+      })
+    },
+  ];
+
+  
+  return (
+    <div>
+      <div className="hidden md:block">
+        <DekstopView listElement={listElement} user={user}/>
+      </div>
+      <div className="lg:hidden">
+        <MobileView listElement={listElement} user={user}/>
+      </div>
+    </div>
   )
 }
