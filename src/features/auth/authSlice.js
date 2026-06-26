@@ -12,7 +12,7 @@ const authSlice = createSlice({
       UserStorage.syncUser(action.payload);
     },
     logout(state) { 
-      state.data = null;
+      state.user = null;
     },
     updateUserData(state, action) {
       state.user = { ...state.user, ...action.payload };
