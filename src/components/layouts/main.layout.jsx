@@ -5,7 +5,7 @@ export default function MainLayout({ children }) {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="max-w-7xl w-full mx-auto flex-1 py-8">
+      <main className="max-w-7xl w-full mx-auto flex-1 lg:py-8 pb-8">
         {children}
       </main>
       <Footer />

@@ -16,14 +16,14 @@ function Header() {
   return (
     <div className="w-full border-b border-b-black/20 shadow sticky top-0 z-10 bg-white">
       <div className="bg-blue-500 items-center w-full hidden lg:block">
-        <div className="w-7xl mx-auto text-white py-1 flex items-center gap-2">
+        <div className="w-7xl mx-auto text-white py-1 flex items-center gap-2 px-4">
           <MapPin size={11} />
           <span className='text-xs'>Kirim ke: Jakarta Selatan</span>
         </div>
       </div>
 
       <div className="w-full p-2 border-b border-black/20">
-        <div className="w-full lg:max-w-7xl mx-auto py-1 flex gap-4 items-center justify-between">
+        <div className="w-full lg:max-w-7xl mx-auto py-1 flex gap-4 items-center justify-between px-4">
           <Link to={'/'}>
             <div className="flex items-center gap-2">
               <div className="bg-blue-500 w-8 h-8 flex items-center justify-center rounded-md p-2 text-white">
@@ -75,7 +75,7 @@ function Header() {
       </div>
 
       <div className='w-full hidden lg:block'>
-        <div className='w-7xl mx-auto py-1 flex items-center justify-center gap-12 text-sm'>
+        <div className='max-w-7xl mx-auto py-1 flex items-center justify-center gap-12 text-sm'>
           <div>
             <span>Semua Category</span>
           </div>

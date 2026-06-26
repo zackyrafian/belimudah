@@ -1,14 +1,15 @@
 import { Outlet } from "react-router";
 import Card from "../card";
 import MainLayout from "./main.layout";
-import { UserStorage } from "@/services/user.service";
 import { formatIDR } from "@/utils/format";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function CheckoutLayout() {
-  const { cart } = UserStorage.getCart();
-
+  // const { cart } = UserStorage.getCart();
+  const { user } = useAuth(); 
+  const { cart } = user;
   let priceTotal = 0;
-  cart.product.forEach((c) => {
+  cart.forEach((c) => {
     priceTotal += c.price * c.quantity;
   });
   return (
@@ -19,7 +20,7 @@ export default function CheckoutLayout() {
         </Card>
         <Card className="w-1/4 flex-col gap-2 flex text-sm sticky top-0">
           <h3 className="text-lg">Ringkasan Pesan</h3>
-          {cart.product.map((item) => (
+          {cart.map((item) => (
             <div className="flex justify-between items-center pb-2">
               <div className="flex gap-2 items-center">
                 <div className="w-10 h-10 rounded-lg overflow-hidden">

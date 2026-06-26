@@ -1,9 +1,5 @@
-import { AlertTriangle, ArrowLeft, Lock, Mail } from "lucide-react"
-import { Link, UNSAFE_NavigationContext, useNavigate } from "react-router"
-import { AuthService } from "@/services/auth.service";
-import { useAlert } from "@/hooks/useAlert";
-import Alert from "@/components/ui/alert";
-
+import {  ArrowLeft, Mail } from "lucide-react"
+import { Link } from "react-router"
 
 export default function ForgetPasswordPage() { 
   return ( 
