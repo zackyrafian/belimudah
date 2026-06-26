@@ -31,7 +31,6 @@ export default function Product() {
 
   const [ variant, setVariantSelect ] = useState(product.variant[0]);
   const [quantity, setQuantity] = useState(1);
-  
   const handleCart = () => {
     if (!user) { 
       navigate('/sign-in')
@@ -43,8 +42,24 @@ export default function Product() {
       variant
     }
     const currentCart = user.cart || []
-    const newCart = [...currentCart, item]
-    
+    const existingItemIndex = currentCart.findIndex(
+      cartItem => cartItem.name === product.name && 
+                  JSON.stringify(cartItem.variant) === JSON.stringify(variant)
+    )
+    let newCart; 
+    if (existingItemIndex !== -1) {
+      newCart = currentCart.map((cartItem, index) => {
+        if (index === existingItemIndex) {
+          return {
+            ...cartItem,
+            quantity: cartItem.quantity + quantity
+          }
+        }
+        return cartItem
+      })
+    } else {
+      newCart = [...currentCart, item]
+    }
     dispatch(updateUserData({ cart: newCart }))
 
     setAlert({
@@ -66,7 +81,7 @@ export default function Product() {
         />
       )}
       <MainLayout>
-      <div className='w-7xl m-auto flex-col gap-4 flex pt-4'>
+      <div className='lg:w-7xl m-auto flex-col gap-4 flex pt-4'>
         <div className="hidden text-sm lg:flex lg:items-center lg:gap-2">
           <Link to="/">Beranda</Link>
           <ChevronRight size={16} />
@@ -220,7 +235,7 @@ export default function Product() {
           </div>
         </div>
 
-        <section className='bg-white border border-black/20 rounded-xl'>
+        <section className= 'lg:bg-white lg:border lg:border-black/20 rounded-xl'>
           <header className='flex gap-4 text-sm p-4 border-b border-b-black/20'>
             <div>Deksripsi</div>
             <div>Spesifikasi</div>
@@ -237,9 +252,9 @@ export default function Product() {
           </main>
         </section>
 
-        <section className='flex gap-4 flex-col'>
+        <section className='flex gap-4 p-4 lg:p-0 flex-col'>
           <h1 className='text-2xl font-medium'>Product Terkait</h1>
-          <div className='grid grid-cols-4 gap-4'>
+          <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
             {Array.from({ length: 4 }).map((_, i) => (
               <ProductCard key={i} product={product}  />
             ))}
