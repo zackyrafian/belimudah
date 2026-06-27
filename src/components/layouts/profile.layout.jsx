@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, Heart, LogOut, MapPin, Search, Settings, ShoppingBag, ShoppingCart, Star, User } from "lucide-react"
+import { ArrowLeft, ArrowRight, Dot, EllipsisVertical, Heart, LogOut, MapPin, Search, Settings, ShoppingBag, ShoppingCart, Star, User } from "lucide-react"
 import { MainLayout } from "../../components/layouts"
 import { Link, Outlet, useNavigate } from "react-router"
 import { useAuth } from "@/hooks/useAuth";
@@ -14,7 +14,7 @@ function MobileView({ user, listElement }) {
   return ( 
     <div className="px-4 pt-4 flex-col flex gap-4">
       {t && ( 
-        <div className="absolute inset-0 bg-white px-4 flex pt-4">
+        <div className="absolute inset-0 bg-white px-4 pt-4 flex flex-col gap-4">
           <div className="flex h-8 w-full gap-4 items-center">
             <div onClick={()=>setT(false)}><ArrowLeft/></div>
             <div className="flex items-center gap-2 border h-8 p-2 text-gray-500 rounded-lg w-full">
@@ -23,6 +23,49 @@ function MobileView({ user, listElement }) {
             </div>
             <div onClick={() => navigate('/cart')}><ShoppingCart/></div>
           </div>
+          <div className="flex gap-2">
+            <div className="rounded-full bg-black/5 px-2 text-sm py-1">Semua Status</div>
+            <div className="rounded-full bg-black/5 px-2 text-sm py-1">Semua Status</div>
+            <div className="rounded-full bg-black/5 px-2 text-sm py-1">Semua Status</div>
+          </div>
+          
+          <div className="flex rounded-xl border p-2 gap-4 flex-col">
+            <header className="flex justify-between w-full">
+              <div className="flex gap-2 items-center">
+                <div><ShoppingBag /></div>
+                <div className="flex flex-col text-sm">
+                  <span className="font-bold">Belanja</span>
+                  <span className="font-light">9 Des 2024</span>
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                <div className="text-sm"><span>Selesai</span></div>
+                <div className="flex flex-col">
+                  <EllipsisVertical/>
+                </div>
+              </div>
+            </header>
+
+            <main className="flex gap-2 items-center border-y py-2">
+              <div className="w-12 h-12">
+                <img src="/src/data/images/smart-watch.png" alt="" />
+              </div>
+              <div className="text-sm">
+                <h3 className="font-bold">Smartwatch Fit Life v4</h3>
+                <p className="text-xs">1 barang</p>
+              </div>
+            </main>
+
+            <footer className="flex justify-between items-center">
+              <div className="flex flex-col text-xs">
+                <span>Total Belanja</span>
+                <span className="text-sm font-bold">Rp10.199</span>
+              </div>
+              <div className="text-sm">Belanja Lagi</div>
+            </footer>
+          </div>
+          
         </div>
       )}
       {open && ( 
