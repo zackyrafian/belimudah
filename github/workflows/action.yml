@@ -1,0 +1,27 @@
+name: 
+on:
+  push:
+    tags: 
+      - "v*"
+
+jobs:
+  docker: 
+    runs-on: ubuntu-latest
+    steps: 
+    steps: 
+      - name: docker checkout
+        uses: actions/checkout@v6
+
+      - name: docker Login
+        uses: docker/login-actions@v2
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Build
+        uses: docker/build-push-actions@v6
+        push: true
+        context: .
+        tags: 
+          ghcr.io/${{github.repository}}:latest
