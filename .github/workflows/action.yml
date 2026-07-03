@@ -1,26 +1,82 @@
-name: 
+name: Automation build images
+run-name: ${{github.event.head_commit.message}}
+
 on:
   push:
-    tags: 
-      - "v*"
+    tags:
+      - 'v*'
 
 jobs:
-  docker: 
+  build-app:
+    name: "Build React App into Distributable"
     runs-on: ubuntu-latest
-    steps: 
-      - name: docker checkout
-        uses: actions/checkout@v6
-
-      - name: docker Login
-        uses: docker/login-action@v4
+    outputs:
+      output1: ${{ steps.upload-dist.outputs.artifact-id }}
+    steps:
+      - name: Setup nodejs
+        uses: actions/setup-node@v6
         with:
-          registry: ghcr.io
-          username: ${{github.actor}}
-          password: ${{secrets.GITHUB_TOKEN}}
+          node-version: "26.4.0"
+      - name: Get source
+        uses: actions/checkout@v7
+      - name: Install nodejs deps
+        run: npm install
+      - name: Build app
+        run: npm run build
+      - name: Save artifact
+        uses: actions/upload-artifact@v7
+        id: upload-dist
+        with:
+          name: build-result
+          path: dist/
 
-      - name: Build
-        uses: docker/build-push-action@v7
-        with: 
-          context: .
-          push: true
-          tags: ghcr.io/${{github.repository}}:latest
+  release-app:
+    name: "Release builded app"
+    needs: build-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v8
+        with:
+          artifact-ids: ${{needs.build-app.outputs.output1}}
+      - name: Compress artifact
+        run: zip -r one-app.zip ./*
+      - name: Release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            one-app.zip
+
+  build-docker-image:
+    name: "Build Docker image"
+    needs: release-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login ghcr.io
+        run: echo -n ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build Docker image
+        run: docker build . -t ghcr.io/${{github.repository}}:latest
+
+      - name: Push to ghcr.io
+        run: docker push ghcr.io/${{github.repository}}:latest
+
+  deploy-image:
+    name: "Deploy image into server"
+    needs: build-docker-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull image from ghcr and deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{secrets.SSH_USER}}
+          port: ${{secrets.SSH_PORT}}
+          key: ${{secrets.SSH_KEY}}
+          script: |
+            docker pull ghcr.io/${{github.repository}}:latest
+            docker rm -f one-app
+            docker run -d -p 9402:80 --name one-app ghcr.io/${{github.repository}}:latest
