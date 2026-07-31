@@ -5,7 +5,7 @@ import { useAlert } from "@/hooks/useAlert";
 import Alert from "@/components/ui/alert";
 import { useAuth } from "@/hooks/useAuth";
 import { useDispatch } from "react-redux";
-import { updateUserData } from "@/features/auth/authSlice";
+import { updateShippingAddress } from "@/features/auth/authSlice";
 export default function ProfileAddress() { 
   const { alert, showSuccess, clearAlert } = useAlert();
   const [dialog, setDialog] = useState(false);
@@ -16,7 +16,7 @@ export default function ProfileAddress() {
     const data = Object.fromEntries(new FormData(e.currentTarget));
     const currentShipping = user?.shipping_address || [];
     const updatedShipping = [...currentShipping, data]; 
-    dispatch(updateUserData({ shipping_address: updatedShipping }));
+    dispatch(updateShippingAddress(updatedShipping));
     showSuccess("Berhasil menambahkan Alamat")
   }
   return ( 

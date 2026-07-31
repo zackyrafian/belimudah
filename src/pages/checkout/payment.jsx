@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
 import { useDispatch } from "react-redux";
-import { updateUserData } from "@/features/auth/authSlice";
+import { updateCheckout } from "@/features/auth/authSlice";
 export default function CheckoutPaymentPage() { 
   const { user } = useAuth();
   const dispatch = useDispatch();
@@ -17,11 +17,9 @@ export default function CheckoutPaymentPage() {
     if (!data) { 
       return
     }
-    dispatch(updateUserData({
-      checkout: {
-        ...checkout,
-        payment_method: data
-      }
+    dispatch(updateCheckout({
+      ...checkout,
+      payment_method: data
     }));
     navigate("/checkout/confirm")
   }

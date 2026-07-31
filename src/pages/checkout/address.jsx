@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import Alert from "@/components/ui/alert";
 import { useAuth } from "@/hooks/useAuth";
 import { useDispatch } from "react-redux";
-import { updateUserData } from "@/features/auth/authSlice";
+import { updateShippingAddress, updateCheckout } from "@/features/auth/authSlice";
 export default function CheckoutAddress() {
   const { user } = useAuth();
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ export default function CheckoutAddress() {
   
       const currentShipping = user?.shipping_address || [];
       const updatedShipping = [...currentShipping, data];
-      dispatch(updateUserData({ shipping_address: updatedShipping }));
+      dispatch(updateShippingAddress(updatedShipping));
       finalAddress = data;
     }
   
@@ -69,7 +69,7 @@ export default function CheckoutAddress() {
       createdAt: new Date(),
     };
     
-    dispatch(updateUserData({ checkout: checkoutData }));
+    dispatch(updateCheckout(checkoutData));
   
     navigate("/checkout/payment");
   };

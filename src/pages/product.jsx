@@ -9,7 +9,7 @@ import Alert from '@/components/ui/alert'
 import ProductCard from '@/components/product-card'
 import { useAuth } from '@/hooks/useAuth'
 import { useDispatch } from 'react-redux'
-import { updateUserData } from '@/features/auth/authSlice'
+import { updateCart } from '@/features/auth/authSlice'
 
 export default function Product() {
   const { user } = useAuth(); 
@@ -60,7 +60,7 @@ export default function Product() {
     } else {
       newCart = [...currentCart, item]
     }
-    dispatch(updateUserData({ cart: newCart }))
+    dispatch(updateCart(newCart))
 
     setAlert({
       id: new Date,

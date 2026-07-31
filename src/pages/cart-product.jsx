@@ -4,12 +4,12 @@ import { MainLayout } from '@/components/layouts';
 import { Link } from 'react-router';
 import { useAuth } from '@/hooks/useAuth';
 import { useDispatch } from 'react-redux';
-import { updateUserData } from '@/features/auth/authSlice';
+import { updateCart } from '@/features/auth/authSlice';
 
 export default function CartPage() {
   const { user } = useAuth();
   const { cart } = user;
-  const dispatch = useDispatch;
+  const dispatch = useDispatch();
   
   let priceTotal = 0;
   cart.forEach((c) => {
@@ -41,7 +41,10 @@ export default function CartPage() {
                   <div className='flex flex-col gap-1 flex-1'>
                     <div className='flex justify-between items-center'>
                       <span className='text-sm font-medium'>{product.name}</span>
-                      <button onClick={() => console.log(i)}><Trash2 onClick={() => dispatch(updateUserData())} size={16} /></button>
+                      <button onClick={() => {
+                        const newCart = cart.filter((_, index) => index !== i);
+                        dispatch(updateCart(newCart));
+                      }}><Trash2 size={16} /></button>
                     </div>
   
                     <div>

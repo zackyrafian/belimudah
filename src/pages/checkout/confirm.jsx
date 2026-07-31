@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { PackageCheck } from 'lucide-react'
 import { useAuth } from "@/hooks/useAuth";
 import { useDispatch } from "react-redux";
-import { updateUserData } from "@/features/auth/authSlice";
+import { placeOrder } from "@/features/auth/authSlice";
 
 export default function CheckoutConfirmPage() {
   const { user } = useAuth();
@@ -17,11 +17,7 @@ export default function CheckoutConfirmPage() {
     if (!user || !checkout) return;
     const orders = user?.order || [];
     const updatedOrders = [...orders, checkout];
-    dispatch(updateUserData({ 
-      order: updatedOrders,
-      checkout: null,
-      cart: []
-    }));
+    dispatch(placeOrder(checkout));
 
     navigate('/checkout/success');
   }
