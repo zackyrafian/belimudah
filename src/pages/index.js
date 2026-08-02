@@ -21,6 +21,8 @@ export { default as ProfileWishList} from './profile/wishlist'
 
 export { default as DashboardMainPage } from './dashboard/main'
 export { default as DashboardProductPage } from './dashboard/product'
+export { default as DashboardOrderPage } from './dashboard/order'
+export { default as DashboardCustomersPage } from './dashboard/customers'
 
 
 export { default as NotFound } from './not-found'

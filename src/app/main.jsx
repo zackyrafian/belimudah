@@ -26,6 +26,8 @@ import {
 
   DashboardMainPage,
   DashboardProductPage,
+  DashboardOrderPage,
+  DashboardCustomersPage,
   
   NotFound
 } from '../pages'
@@ -143,6 +145,14 @@ const router = createBrowserRouter([
       {
         path: 'product', 
         element: <DashboardProductPage/>
+      },
+      {
+        path: 'order', 
+        element: <DashboardOrderPage/>
+      },
+      {
+        path: 'customers', 
+        element: <DashboardCustomersPage/>
       },
     ]
   },
