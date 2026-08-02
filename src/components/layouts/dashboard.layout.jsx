@@ -1,42 +1,48 @@
 import { Link, Outlet } from "react-router";
-import { Bell, LayoutDashboard, X } from "lucide-react";
+import { Bell, LayoutDashboard, Package, Settings, SquareRoundCorner, User2Icon, X } from "lucide-react";
 
 const sidebarList = [
   {
     name: "Dashboard",
     href: '',
+    icon: <LayoutDashboard size={18}/>
   },
   {
     name: "Produk", 
-    href: 'product'
+    href: 'product',
+    icon: <Package size={18}/>
   }, 
   { 
     name: "Pesanan", 
-    href: 'order'
+    href: 'order', 
+    icon: <SquareRoundCorner size={18}/>
   }, 
   { 
     name: "Pelanggan", 
-    href: 'user'
+    href: 'customers',
+    icon: <User2Icon size={18}/>
+    
   }, 
   { 
     name: "Pengaturan", 
-    href: 'setting'
+    href: 'setting',
+    icon: <Settings size={18}/>
   }
 ]
 
 export default function DashboardLayout() { 
   return ( 
-    <div className="flex min-h-screen">
-      <aside className="min-w-1/7 p-4 border-r shadow-sm min-h-screen flex-col flex gap-8">
-        <div className="flex gap-2 items-center justify-center">
+    <div className="flex min-h-screen ">
+      <aside className="min-w-1/7 p-4 border-r border-r-black/20 shadow-sm min-h-screen flex-col flex gap-8">
+        <div className="flex gap-2 items-center">
           <div className="w-8 h-8 rounded-lg bg-blue-500 text-white flex items-center justify-center">B</div>
-          <span>BeliMudah Admin</span>
+          <span>BeliMudah</span>
         </div>
 
         <div className="flex flex-col px-2 gap-4">
           {sidebarList.map((item) => (
-            <Link to={item.href} className="flex items-center gap-4 border rounded-xl px-4 py-1.5">
-              <LayoutDashboard/>
+            <Link to={item.href} className="flex items-center gap-4 rounded-xl py-1.5 text-sm font-medium">
+              {item.icon}
               <span>{item.name}</span>
             </Link>
           ))}
