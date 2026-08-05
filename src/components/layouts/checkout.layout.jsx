@@ -3,15 +3,25 @@ import Card from "../card";
 import MainLayout from "./main.layout";
 import { formatIDR } from "@/utils/format";
 import { useAuth } from "@/hooks/useAuth";
+import { useState, useEffect } from "react";
+
+const API = 'http://localhost:2222';
 
 export default function CheckoutLayout() {
-  // const { cart } = UserStorage.getCart();
-  const { user } = useAuth(); 
-  const { cart } = user;
-  let priceTotal = 0;
-  cart.forEach((c) => {
-    priceTotal += c.price * c.quantity;
-  });
+  const { user } = useAuth();
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    if (!user?.token) return;
+    fetch(`${API}/users/cart`, {
+      headers: { Authorization: `Bearer ${user.token}` }
+    })
+      .then(res => res.json())
+      .then(data => setCart(data.results || []))
+      .catch(err => console.error(err));
+  }, [user]);
+
+  const priceTotal = cart.reduce((sum, c) => sum + Number(c.price) * c.quantity, 0);
   return (
     <MainLayout>
       <div className="flex gap-4 items-start" >
@@ -21,29 +31,18 @@ export default function CheckoutLayout() {
         <Card className="w-1/4 flex-col gap-2 flex text-sm sticky top-0">
           <h3 className="text-lg">Ringkasan Pesan</h3>
           {cart.map((item) => (
-            <div className="flex justify-between items-center pb-2">
+            <div key={item.id} className="flex justify-between items-center pb-2">
               <div className="flex gap-2 items-center">
                 <div className="w-10 h-10 rounded-lg overflow-hidden">
-                  <img src={item.images[0]} alt={item.name} />
+                  <img src={item.images?.[0]} alt={item.name} />
                 </div>
                 <span className="text-xs">{item.name}</span>
               </div>
               <div>
-                <span>x1</span>
+                <span>x{item.quantity}</span>
               </div>
             </div>
           ))}
-          {/* <div className="flex justify-between items-center pb-2">
-            <div className="flex gap-2 items-center">
-              <div className="w-10 h-10 rounded-lg overflow-hidden">
-                <img src="/headphone.png" alt="" />
-              </div>
-              <span className="text-xs">Headphone Wireless Premium</span>
-            </div>
-            <div>
-              <span>x1</span>
-            </div>
-          </div>*/}
          
           <div className="flex flex-col gap-2  border-t border-t-black/20 pt-2">
             <div className="flex justify-between">

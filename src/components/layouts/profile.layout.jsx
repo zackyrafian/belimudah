@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, Dot, EllipsisVertical, Heart, LogOut, MapPin, Search, Settings, ShoppingBag, ShoppingCart, Star, User } from "lucide-react"
+import { ArrowLeft, ArrowRight, EllipsisVertical, Heart, LogOut, MapPin, Search, Settings, ShoppingBag, ShoppingCart, Star, User } from "lucide-react"
 import { MainLayout } from "../../components/layouts"
 import { Link, Outlet, useNavigate } from "react-router"
 import { useAuth } from "@/hooks/useAuth";
@@ -143,7 +143,7 @@ function DekstopView({user, listElement}) {
     <div className="flex flex-row gap-8 border-red-500 border px-4">
       <div className="w-1/5 flex flex-col gap-4">
         <div className="flex flex-col gap-4 rounded-xl shadow-sm items-center justify-center bg-white border-black/20 border p-4">
-          <div className="text-white text-2xl font-bold rounded-full w-16 h-16 bg-blue-500 flex justify-center items-center">{user.fullname[0]}</div>
+          <div className="text-white text-2xl font-bold rounded-full w-16 h-16 bg-blue-500 flex justify-center items-center">{user.fullname?.[0]}</div>
           <div className="flex flex-col text-center pb-2 border-b border-b-black/20">
             <div className="font-medium">{user.fullname}</div>
             <div className="text-gray-500 text-sm">{user.email}</div>
@@ -151,7 +151,7 @@ function DekstopView({user, listElement}) {
           <div className="flex gap-4 justify-center items-center ">
             <div className="text-center">
               {/* <div className="font-bold">{user.order?.length !== 0 ? 0 : user.order?.length}</div>*/}
-              <div className="font-bold">{user.order.length}</div>
+              <div className="font-bold">{user.order?.length ?? 0}</div>
               <div className="text-xs">Pesanan</div>
             </div>
             <div className="text-center">
@@ -220,6 +220,8 @@ export default function ProfileLayout() {
   ];
 
   
+  if (!user) return null;
+
   return (
     <div>
       <div className="hidden md:block">
