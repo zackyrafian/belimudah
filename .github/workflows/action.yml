@@ -77,6 +77,6 @@ jobs:
           port: ${{secrets.SSH_PORT}}
           key: ${{secrets.SSH_KEY}}
           script: |
-            docker pull ghcr.io/${{github.repository}}:latest
-            docker rm -f one-app
-            docker run -d -p 9402:80 --name one-app ghcr.io/${{github.repository}}:latest
+            cd app
+            docker compose pull frontend
+            docker compose up frontend -d
