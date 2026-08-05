@@ -3,8 +3,8 @@ import { useAuth } from "@/hooks/useAuth";
 
 export default function ProctedCheckoutRouter() {
   const { user } = useAuth();
-  if (!user.cart || user.cart.length === 0) {
-    return <Navigate to="/" />;
+  if (!user) {
+    return <Navigate to="/sign-in" />;
   }
   return <Outlet />;
 }
