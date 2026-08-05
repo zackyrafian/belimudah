@@ -4,11 +4,51 @@ import { MapPin, Truck, CircleCheckBig, ArrowRight } from "lucide-react"
 import { formatIDR } from "@/utils/format";
 import { Link } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
+import { useState, useEffect } from "react";
+
+const API = 'http://localhost:2222';
 
 export default function CheckoutSuccessPage() { 
-  const { user } = useAuth(); 
-  const orderList = user.order; 
-  const order = (orderList[orderList.length - 1]);
+  const { user } = useAuth();
+  const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user?.token) return;
+    fetch(`${API}/users/orders`, {
+      headers: { Authorization: `Bearer ${user.token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        const orders = data.results || [];
+        setOrder(orders[0] || null);
+      })
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
+  }, [user]);
+
+  if (loading) {
+    return (
+      <MainLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <span className="text-gray-500">Memuat data pesanan...</span>
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (!order) {
+    return (
+      <MainLayout>
+        <div className="min-h-screen flex gap-4 items-center justify-center flex-col">
+          <CircleCheckBig size={64} className="text-gray-400" />
+          <h3 className="text-xl font-medium text-gray-600">Data pesanan tidak ditemukan</h3>
+          <Link to="/" className="border px-6 py-2 rounded-xl bg-blue-500 text-white">Kembali ke Beranda</Link>
+        </div>
+      </MainLayout>
+    );
+  }
+
   return (
     <MainLayout>
         <div className="min-h-screen flex gap-4 items-center justify-center flex-col">
@@ -26,7 +66,7 @@ export default function CheckoutSuccessPage() {
             </div>
             <div className="flex justify-between">
               <span>#{order.id}</span>
-              <span>{formatIDR(order.total)}</span>
+              <span>{formatIDR(order.payment?.total_amount ?? order.total_price)}</span>
             </div>
           </div>
 
@@ -46,9 +86,8 @@ export default function CheckoutSuccessPage() {
               </div>
               <div className="flex flex-col">
                 <span className="text-sm">Alamat Pengiriman</span>
-                <span className="text-xs">{order.shipping_address.
-                  recipient_address_full}</span>
-                <span className="text-xs">{order.shipping_address.recipient_city}, {order.shipping_address.recipient_province} - {order.shipping_address.zip_code}</span>
+                <span className="text-xs">{order.shipping_address?.recipient_address_full}</span>
+                <span className="text-xs">{order.shipping_address?.recipient_city}, {order.shipping_address?.recipient_province} - {order.shipping_address?.zip_code}</span>
               </div>
             </div>
           </div>

@@ -3,85 +3,117 @@ import { Shield } from "lucide-react";
 import { useNavigate } from "react-router";
 import { PackageCheck } from 'lucide-react'
 import { useAuth } from "@/hooks/useAuth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { placeOrder } from "@/features/auth/authSlice";
+import { useState, useEffect } from "react";
+
+const API = 'http://localhost:2222';
 
 export default function CheckoutConfirmPage() {
   const { user } = useAuth();
   const dispatch = useDispatch();
+  const checkout = useSelector((state) => state.auth.auth?.checkout);
   const navigate = useNavigate();
-  const checkout = user?.checkout;
+  const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleForm = (e) => {
+  const address_id = checkout?.address_id;
+  const payment_method_id = checkout?.payment_method_id;
+
+  useEffect(() => {
+    if (!user?.token) return;
+    fetch(`${API}/users/cart`, {
+      headers: { Authorization: `Bearer ${user.token}` }
+    })
+      .then(res => res.json())
+      .then(data => setCart(data.results || []))
+      .catch(err => console.error(err));
+  }, [user]);
+
+  const total = cart.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
+
+  const handleForm = async (e) => {
     e.preventDefault();
-    if (!user || !checkout) return;
-    const orders = user?.order || [];
-    const updatedOrders = [...orders, checkout];
-    dispatch(placeOrder(checkout));
+    if (!user || !address_id || !payment_method_id) return;
 
-    navigate('/checkout/success');
+    const cart_id = cart.map(item => item.id);
+
+    setLoading(true);
+    try {
+      const res = await fetch(`${API}/users/orders`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          cart_id,
+          address_id: Number(address_id),
+          payment_method_id: Number(payment_method_id)
+        })
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        alert(json.message || 'Gagal membuat pesanan.');
+        return;
+      }
+      dispatch(placeOrder());
+      navigate('/checkout/success', { state: { order: json.results } });
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  if (!checkout) {
+  if (!address_id || !payment_method_id) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <PackageCheck size={64} className="text-gray-400" />
-        <h3 className="text-xl font-medium text-gray-600">No checkout data found</h3>
-        <button 
-          onClick={() => navigate('/')} 
+        <h3 className="text-xl font-medium text-gray-600">Data checkout tidak lengkap</h3>
+        <button
+          onClick={() => navigate('/checkout/address')}
           className="bg-blue-500 text-white px-6 py-2 rounded-xl"
         >
-          Back to Home
+          Mulai dari Alamat
         </button>
       </div>
     );
   }
 
-  return ( 
+  return (
     <form onSubmit={handleForm} className="flex-col flex gap-4">
       <div className="flex items-center gap-2">
         <PackageCheck />
         <h3 className="text-xl font-medium">Konfirmasi Pesanan</h3>
       </div>
 
-      <div className="p-4 flex flex-col border border-black/20 to-30% rounded-xl">
-        <span className="pb-2">Alamat Pengiriman</span>
-        <h3 className="">{checkout.shipping_address?.recipient_name} · <span className="text-gray-500 text-sm">{checkout.shipping_address?.phone_number}</span></h3>
-        <div className="flex flex-col gap-1">
-          <span className="text-sm">{checkout.shipping_address?.recipient_address_full}</span>
-          <span className="text-xs">{checkout.shipping_address?.recipient_city}, {checkout.shipping_address?.recipient_province} - {checkout.shipping_address?.zip_code}</span>
-        </div>
-      </div>
-
-      <div className="p-4 flex flex-col border border-black/20 rounded-xl">
-        <span>Metode Pengiriman</span>
-        <span>JNE Regular 3-5 hari kerja</span>
-      </div>
       <div className="p-4 flex flex-col gap-4 border border-black/20 rounded-xl">
         <span>Produk yang di Pesan</span>
-
-        {checkout.cart?.map((cart, index) => (
-          <div key={index} className="flex justify-between items-center">
-            <div className="flex gap-4">
-              <div className="w-12 h-12 rounded-xl overflow-hidden"><img src={cart.images?.[0]} alt={cart.name} /></div>
+        {cart.map((item) => (
+          <div key={item.id} className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <img src={item.images?.[0]} className="w-12 h-12 rounded-xl object-cover" alt={item.name} />
               <div>
-                <div>{cart.name}</div>
-                <div>x{cart.quantity}</div>
-              </div>  
+                <div className="text-sm font-medium">{item.name}</div>
+                <div>x{item.quantity}</div>
+              </div>
             </div>
-            <div>{formatIDR(cart.price * cart.quantity)}</div>
+            <div>{formatIDR(Number(item.price) * item.quantity)}</div>
           </div>
         ))}
       </div>
-      
+
       <div className="flex gap-4 items-center border border-blue-200 bg-blue-50 text-black rounded-xl py-2 p-4">
         <Shield size={28}/>
         <span className="text-sm">Dengan menekan "Bayar Sekarang", kamu menyetujui Syarat & Ketentuan kami. Pembayaran baru akan diproses setelah kamu mengkonfirmasi di langkah ini.</span>
       </div>
 
       <div className="flex gap-4">
-          <button type="button" onClick={() => navigate('/checkout/payment')} className="cursor-pointer border w-30 text-center border-black/20 p-2 rounded-xl">Kembali</button>
-        <button className="cursor-pointer flex items-center border border-black/20 flex-1 justify-center p-2 rounded-xl" type="submit">Bayar {formatIDR(checkout.total)} Sekarang</button>
+        <button type="button" onClick={() => navigate('/checkout/payment')} className="cursor-pointer border w-30 text-center border-black/20 p-2 rounded-xl">Kembali</button>
+        <button disabled={loading} className="cursor-pointer flex items-center border border-black/20 flex-1 justify-center p-2 rounded-xl bg-blue-500 text-white disabled:opacity-60" type="submit">
+          {loading ? 'Memproses...' : `Bayar ${formatIDR(total)} Sekarang`}
+        </button>
       </div>
     </form>
   )

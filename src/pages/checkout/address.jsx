@@ -1,77 +1,81 @@
-import { generateId } from "@/utils/calculate";
 import { ArrowLeft, MapPin, Plus, Truck } from "lucide-react"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import Alert from "@/components/ui/alert";
 import { useAuth } from "@/hooks/useAuth";
 import { useDispatch } from "react-redux";
-import { updateShippingAddress, updateCheckout } from "@/features/auth/authSlice";
+import { updateCheckout } from "@/features/auth/authSlice";
+
+const API = 'http://localhost:2222';
+
 export default function CheckoutAddress() {
   const { user } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [alert, setAlert] = useState(null);
-  const [viewMode, setViewMode] = useState(user?.shipping_address && user.shipping_address.length > 0 ? 'list' : 'form');
-
-  const [shippingAddress, setShippingAddress] = useState(null);
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [shippingMetode, setShippingMetode] = useState(null);
+  const [viewMode, setViewMode] = useState('loading');
 
-  const handleSelectAddress = (address) => { 
-    setShippingAddress(address);
-  }
+  useEffect(() => {
+    if (!user?.token) return;
+    fetch(`${API}/users/address`, {
+      headers: { Authorization: `Bearer ${user.token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        const list = data.results || [];
+        setAddresses(list);
+        setViewMode(list.length > 0 ? 'list' : 'form');
+      })
+      .catch(() => setViewMode('form'));
+  }, [user]);
 
-  const handleForm = (e) => {
+  const handleForm = async (e) => {
     e.preventDefault();
     if (!shippingMetode) {
-      setAlert({ 
-        type: "error", 
-        message: "No shipping method selected."
-      })
+      setAlert({ type: 'error', message: 'Pilih metode pengiriman.' });
       return;
     }
-  
-    let finalAddress;
-    if (viewMode === 'list' && shippingAddress) {
-      finalAddress = shippingAddress;
-    } else {
+
+    let address_id = selectedAddressId;
+
+    if (viewMode === 'form') {
       const form = new FormData(e.target);
       const data = Object.fromEntries(form.entries());
-      if (
-        !data.recipient_name ||
-        !data.phone_number ||
-        !data.recipient_address_full
-      ) {
-        setAlert({ 
-          type: "error", 
-          message: "Please fill all req."
-        })
+      if (!data.recipient_name || !data.phone_number || !data.recipient_address_full) {
+        setAlert({ type: 'error', message: 'Isi semua kolom yang wajib.' });
         return;
       }
-  
-      const currentShipping = user?.shipping_address || [];
-      const updatedShipping = [...currentShipping, data];
-      dispatch(updateShippingAddress(updatedShipping));
-      finalAddress = data;
+      try {
+        const res = await fetch(`${API}/users/address`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const json = await res.json();
+        if (!res.ok) {
+          setAlert({ type: 'error', message: json.message || 'Gagal menyimpan alamat.' });
+          return;
+        }
+        address_id = json.results?.id || json.result?.id;
+      } catch (err) {
+        setAlert({ type: 'error', message: err.message });
+        return;
+      }
     }
-  
-    const total = user?.cart?.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    ) || 0;
-  
-    const checkoutData = {
-      id: generateId(),
-      cart: user?.cart || [],
-      shipping_address: finalAddress,
-      shipping_metode: shippingMetode,
-      total,
-      payment: "pending",
-      createdAt: new Date(),
-    };
-    
-    dispatch(updateCheckout(checkoutData));
-  
-    navigate("/checkout/payment");
+
+    if (!address_id) {
+      setAlert({ type: 'error', message: 'Pilih alamat pengiriman.' });
+      return;
+    }
+
+    dispatch(updateCheckout({ address_id, shipping_metode: shippingMetode }));
+    navigate('/checkout/payment');
   };
   return ( 
     <div className="p-2">
@@ -91,7 +95,7 @@ export default function CheckoutAddress() {
             <span>Alamat Pengiriman</span>
           </div>
           {viewMode === 'list' && ( 
-            <button onClick={() => { setViewMode('form'); setShippingAddress(null)}} className="flex items-center border border-black/20 text-gray-600 rounded-xl px-4 py-2 text-sm gap-2">
+            <button onClick={() => { setViewMode('form'); setSelectedAddressId(null)}} className="flex items-center border border-black/20 text-gray-600 rounded-xl px-4 py-2 text-sm gap-2">
               <Plus size={18} />
               <span>Tambah Alamat</span>
             </button>
@@ -100,31 +104,21 @@ export default function CheckoutAddress() {
 
         {viewMode === 'list' && ( 
           <div className="flex flex-col gap-3">
-            {user?.shipping_address?.map((address, index) => (
+            {addresses.map((address) => (
               <label
-                key={index}
+                key={address.id}
                 className={`border-2 flex flex-col gap-1 p-3 rounded-xl cursor-pointer transition
-                  ${
-                    shippingAddress?.recipient_address_full ===
-                    address.recipient_address_full
-                      ? "border-blue-500"
-                      : "border-black/20"
-                  }`}
+                  ${selectedAddressId === address.id ? "border-blue-500" : "border-black/20"}`}
               >
                 <input
                   type="radio"
                   name="shipping_address_list"
                   className="hidden"
-                  checked={shippingAddress?.recipient_address_full === address.recipient_address_full}
-                  onChange={() => handleSelectAddress(address)}
+                  checked={selectedAddressId === address.id}
+                  onChange={() => setSelectedAddressId(address.id)}
                 />
-
-                <div className="font-semibold">
-                  {address.recipient_name}
-                </div>
-                <div className="text-sm text-gray-600">
-                  {address.recipient_address_full}
-                </div>
+                <div className="font-semibold">{address.recipient_name}</div>
+                <div className="text-sm text-gray-600">{address.recipient_address_full}</div>
                 <div className="text-xs text-gray-500">
                   {address.recipient_city}, {address.recipient_province} - {address.zip_code}
                 </div>
@@ -134,12 +128,12 @@ export default function CheckoutAddress() {
         )}
       </div>
 
-      {(viewMode === 'form' || (viewMode === 'list' && shippingAddress)) && (
+      {(viewMode === 'form' || viewMode === 'list') && (
         <form onSubmit={handleForm} className="flex flex-col gap-5">
 
           {viewMode === 'form' && (
             <>
-              {user?.shipping_address?.length > 0 && ( 
+              {addresses.length > 0 && ( 
                 <button
                   type="button"
                   onClick={() => setViewMode('list')}
