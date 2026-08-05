@@ -7,7 +7,7 @@ import { calculateDiscount } from "@/utils/calculate";
 export default function ProductCard({product}) { 
   const {finalPrice} = calculateDiscount(product.price, product.discount)
   return ( 
-    <Link  to={`/product/${product.name.toLowerCase().replaceAll(" ", "-")}`}>
+    <Link  to={`/product/${product.id}`}>
       <div className='bg-white flex flex-col rounded-xl border border-black/20  overflow-hidden'>
         <div>
           {product.images?.[0] ? (

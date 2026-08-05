@@ -1,73 +1,77 @@
 import { Check, Truck, Heart, ShoppingCart, Star, ImageOff, ChevronRight} from 'lucide-react'
 import { Link, useNavigate, useParams } from 'react-router'
-import { ProductService } from '@/services/product.service'
 import { formatIDR } from '@/utils/format'
 import { calculateDiscount } from '@/utils/calculate'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { MainLayout } from '@/components/layouts'
 import Alert from '@/components/ui/alert'
 import ProductCard from '@/components/product-card'
 import { useAuth } from '@/hooks/useAuth'
-import { useDispatch } from 'react-redux'
-import { updateCart } from '@/features/auth/authSlice'
+
+const API = 'http://localhost:2222'
 
 export default function Product() {
   const { user } = useAuth(); 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [alert, setAlert] = useState(null);
   const params = useParams();
-  const product = ProductService.getByName(params.name);
 
-  const discount = Number(product.discount) || 0;
-  const hasDiscount = discount > 0;
-
-  const { finalPrice, save } = hasDiscount
-    ? calculateDiscount(product.price, discount)
-    : {
-        finalPrice: product.price,
-        save: 0,
-      };
-
-  const [ variant, setVariantSelect ] = useState(product.variant[0]);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [related, setRelated] = useState([]);
+  const [variant, setVariantSelect] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const handleCart = () => {
+
+  useEffect(() => {
+    fetch(`${API}/products/${params.id}`)
+      .then(res => res.json())
+      .then(json => {
+        const p = json.results?.[0] ?? json.result ?? json.data;
+        setProduct(p);
+        setVariantSelect(p?.variant?.[0] || null);
+        if (p?.category) {
+          fetch(`${API}/products?search[category]=${encodeURIComponent(p.category)}`)
+            .then(r => r.json())
+            .then(j => setRelated((j.results || []).filter(r => r.id !== p.id).slice(0, 4)))
+        }
+      })
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
+  }, [params.id]);
+
+  const handleCart = async () => {
     if (!user) { 
       navigate('/sign-in')
       return
     }
-    const item = { 
-      ...product, 
-      quantity, 
-      variant
+    try {
+      const res = await fetch(`${API}/users/cart`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: JSON.stringify({ product_id: product.id, quantity })
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setAlert({ id: Date.now(), type: 'error', message: json.message || 'Gagal menambahkan ke keranjang.' });
+        return;
+      }
+      setAlert({ id: Date.now(), type: 'success', message: `Berhasil menambahkan ${product.name} ke keranjang.` });
+    } catch (err) {
+      setAlert({ id: Date.now(), type: 'error', message: err.message });
     }
-    const currentCart = user.cart || []
-    const existingItemIndex = currentCart.findIndex(
-      cartItem => cartItem.name === product.name && 
-                  JSON.stringify(cartItem.variant) === JSON.stringify(variant)
-    )
-    let newCart; 
-    if (existingItemIndex !== -1) {
-      newCart = currentCart.map((cartItem, index) => {
-        if (index === existingItemIndex) {
-          return {
-            ...cartItem,
-            quantity: cartItem.quantity + quantity
-          }
-        }
-        return cartItem
-      })
-    } else {
-      newCart = [...currentCart, item]
-    }
-    dispatch(updateCart(newCart))
-
-    setAlert({
-      id: new Date,
-      type: "success",
-      message: `Successfully added ${product.name} to your cart.`
-    }); 
   }
+
+  if (loading) return <MainLayout><div className='p-8 text-center'>Memuat produk...</div></MainLayout>
+  if (!product) return <MainLayout><div className='p-8 text-center'>Produk tidak ditemukan.</div></MainLayout>
+
+  const discount = Number(product.discount) || 0;
+  const hasDiscount = discount > 0;
+  const { finalPrice, save } = hasDiscount
+    ? calculateDiscount(product.price, discount)
+    : { finalPrice: product.price, save: 0 };
 
   return (
     <div className="flex flex-col border">
@@ -119,11 +123,11 @@ export default function Product() {
                 <div className='flex items-center gap-2 text-sm'>
                   <div className='flex gap-0.5 items-center'>
                     {Array.from({length:5}).map((_, i) => ( 
-                      <Star key={i} className={i < Math.round(product.ratting) ? 'fill-yellow-500 text-yellow-500': 'hidden'} size={14} />
+                      <Star key={i} className={i < Math.round(product.rating) ? 'fill-yellow-500 text-yellow-500': 'hidden'} size={14} />
                     ))}
                   </div>
 
-                  <span>{product.ratting}</span>
+                  <span>{product.rating}</span>
                   <span>(512)</span>
                   <div className='flex gap-1 items-center bg-green-200 text-green-600 rounded-md px-2 py-0.5'>
                     <Check size={14} />
@@ -255,11 +259,10 @@ export default function Product() {
         <section className='flex gap-4 p-4 lg:p-0 flex-col'>
           <h1 className='text-2xl font-medium'>Product Terkait</h1>
           <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
-            {Array.from({ length: 4 }).map((_, i) => (
-              <ProductCard key={i} product={product}  />
+            {related.map((p) => (
+              <ProductCard key={p.id} product={p} />
             ))}
           </div>
-          
         </section>
       </div>
       </MainLayout>

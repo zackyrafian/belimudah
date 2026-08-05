@@ -1,28 +1,29 @@
 import { Star, } from 'lucide-react'
-import { useState } from 'react'
-import { ProductService } from '@/services/product.service'
+import { useState, useEffect } from 'react'
 import ProductCard from '@/components/product-card'
 import { MainLayout } from '@/components/layouts'
 import { useSearchParams } from 'react-router'
 
+const API = 'http://localhost:2222'
+
 export default function BrowserProductPage(){
-  const products = ProductService.getAll();
+  const [products, setProducts] = useState([])
   const [limit, setLimit] = useState(12); 
   const [params] = useSearchParams();
-  const search = params.get('search')?.toLowerCase().replaceAll(' ', '-') || '';
-  const category = params.get('category')?.toLowerCase().replaceAll(' ', '-') || '';
-  
-  const filteredProducts = products.filter((product) => {
-    const productName = product.name
-      .toLowerCase()
-      .replaceAll(' ', '-');
-    const productCategory = product.category
-      .toLowerCase()
-      .replaceAll(' ', '-');
-    const matchSearch = !search || productName.includes(search);
-    const matchCategory = !category || productCategory === category;
-    return matchSearch && matchCategory;
-  });
+  const search = params.get('search') || '';
+  const category = params.get('category') || '';
+
+  useEffect(() => {
+    const query = new URLSearchParams()
+    if (search) query.set('search[name]', search)
+    if (category) query.set('search[category]', category)
+    fetch(`${API}/products?${query.toString()}`)
+      .then(res => res.json())
+      .then(json => setProducts(json.results || []))
+      .catch(err => console.error(err))
+  }, [search, category])
+
+  const filteredProducts = products;
 
   return (
     <MainLayout>

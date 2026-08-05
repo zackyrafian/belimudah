@@ -1,17 +1,34 @@
 import { Header } from '../components/header'
 import { Footer } from '../components/footer'
 import { ArrowRight, Clock, StarIcon, Zap, TrendingUp } from 'lucide-react'
-import { ProductService } from '@/services/product.service'
 import { Link } from 'react-router'
 import ProductCard from '@/components/product-card'
+import { useState, useEffect } from 'react'
+
+const API = 'http://localhost:2222'
 
 export default function LandingPage() {
-  const categories = ProductService.getCategories(6)
-  const product = ProductService.getAll()
-  const productFlashDeal = product.filter((p) => p.discount > 10);
-  console.log(productFlashDeal);
-  const productNewProduct = product.filter((p) => p.discount === 0); 
-  console.log(productNewProduct);
+  const [products, setProducts] = useState([])
+  console.log(products)
+
+  useEffect(() => {
+    fetch(`${API}/products`)
+      .then(res => res.json())
+      .then(json => setProducts(json.results || []))
+      .catch(err => console.error(err))
+  }, [])
+
+  const productFlashDeal = products.filter((p) => p.discount > 10)
+  const productNewProduct = products.filter((p) => p.discount === 0)
+
+  const categoryMap = {}
+  products.forEach(p => {
+    if (!p.category) return
+    categoryMap[p.category] = (categoryMap[p.category] || 0) + 1
+  })
+  const categories = Object.entries(categoryMap)
+    .slice(0, 6)
+    .map(([name, total]) => ({ name, total }))
   return (
     <div className="flex flex-col">
       <Header />
