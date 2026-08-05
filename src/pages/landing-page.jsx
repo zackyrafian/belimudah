@@ -19,7 +19,6 @@ export default function LandingPage() {
   }, [])
 
   const productFlashDeal = products.filter((p) => p.discount > 10)
-  const productNewProduct = products.filter((p) => p.discount === 0)
 
   const categoryMap = {}
   products.forEach(p => {
