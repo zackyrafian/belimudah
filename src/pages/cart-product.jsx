@@ -3,18 +3,59 @@ import { formatIDR } from '@/utils/format';
 import { MainLayout } from '@/components/layouts';
 import { Link } from 'react-router';
 import { useAuth } from '@/hooks/useAuth';
-import { useDispatch } from 'react-redux';
-import { updateCart } from '@/features/auth/authSlice';
+import { useEffect, useState } from 'react';
+
+const API = 'http://localhost:2222';
 
 export default function CartPage() {
   const { user } = useAuth();
-  const { cart } = user;
-  const dispatch = useDispatch();
-  
-  let priceTotal = 0;
-  cart.forEach((c) => {
-    priceTotal += c.price * c.quantity;
-  });
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => { 
+    if (!user?.token) return;
+    fetch(`${API}/users/cart`, { 
+      headers: { Authorization: `Bearer ${user.token}` }
+    })
+      .then(res => res.json())
+      .then(data => setCart(data.results || []))
+      .catch(err => console.error(err));
+  }, [user]);
+
+  const handleDelete = async (cartId) => {
+    try {
+      const res = await fetch(`${API}/users/cart/${cartId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+      if (res.ok) {
+        setCart(prev => prev.filter(item => item.id !== cartId));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleQuantity = async (cartId, newQty) => {
+    if (newQty < 1) return;
+    try {
+      const res = await fetch(`${API}/users/cart/${cartId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ quantity: newQty })
+      });
+      if (res.ok) {
+        setCart(prev => prev.map(item => item.id === cartId ? { ...item, quantity: newQty } : item));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const priceTotal = cart.reduce((sum, product) => sum + Number(product.price) * product.quantity, 0);
+
   return (
     <MainLayout className="flex flex-col">
       {cart.length === 0 ? (
@@ -33,18 +74,15 @@ export default function CartPage() {
         <div>
           <div className='flex gap-8 items-start'>
             <div className='flex w-full flex-col gap-4'>
-              {cart.map((product, i) => (
-                <div key={i} className='shadow-sm flex w-full bg-white border-black/20 border p-4 gap-4 rounded-xl'>
+              {cart.map((product) => (
+                <div key={product.id} className='shadow-sm flex w-full bg-white border-black/20 border p-4 gap-4 rounded-xl'>
                   <div className='w-24 h-24'>
-                    <img className='rounded-xl' src={product.images[0]} alt="headphone" />
+                    <img className='rounded-xl' src={product.images?.[0]} alt="headphone" />
                   </div>
                   <div className='flex flex-col gap-1 flex-1'>
                     <div className='flex justify-between items-center'>
                       <span className='text-sm font-medium'>{product.name}</span>
-                      <button onClick={() => {
-                        const newCart = cart.filter((_, index) => index !== i);
-                        dispatch(updateCart(newCart));
-                      }}><Trash2 size={16} /></button>
+                      <button onClick={() => handleDelete(product.id)}><Trash2 size={16} /></button>
                     </div>
   
                     <div>
@@ -53,11 +91,11 @@ export default function CartPage() {
   
                     <div className='flex items-center justify-between'>
                       <div className='border border-black/20 flex px-4 py-1 gap-4 rounded-xl items-center'>
-                        <button className='w-6 text-center'>-</button>
+                        <button className='w-6 text-center' onClick={() => handleQuantity(product.id, product.quantity - 1)}>-</button>
                         <span className='w-6 text-center'>{product.quantity}</span>
-                        <button className='w-6 text-center'>+</button>
+                        <button className='w-6 text-center' onClick={() => handleQuantity(product.id, product.quantity + 1)}>+</button>
                       </div>
-                      <span>{ formatIDR(product.price)}</span>
+                      <span>{ formatIDR(Number(product.price))}</span>
                     </div>
   
                     <div className='flex items-center gap-1 pt-2'>
