@@ -1,5 +1,5 @@
 name: Automation build images
-run-name: ${{github.event.head_commit.message}}
+run-name: ${{ github.event.head_commit.message }}
 
 on:
   push:
@@ -10,22 +10,19 @@ jobs:
   build-app:
     name: "Build React App into Distributable"
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.upload-dist.outputs.artifact-id }}
     steps:
-      - name: Setup nodejs
-        uses: actions/setup-node@v6
-        with:
-          node-version: "26.4.0"
       - name: Get source
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
+      - name: Setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - name: Install nodejs deps
-        run: npm install
+        run: npm ci
       - name: Build app
         run: npm run build
       - name: Save artifact
-        uses: actions/upload-artifact@v7
-        id: upload-dist
+        uses: actions/upload-artifact@v4
         with:
           name: build-result
           path: dist/
@@ -34,35 +31,43 @@ jobs:
     name: "Release builded app"
     needs: build-app
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
-          artifact-ids: ${{needs.build-app.outputs.output1}}
+          name: build-result
+          path: dist
       - name: Compress artifact
-        run: zip -r one-app.zip ./*
+        run: cd dist && zip -r ../one-app.zip .
       - name: Release
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@v2
         with:
-          files: |
-            one-app.zip
+          files: one-app.zip
 
   build-docker-image:
     name: "Build Docker image"
     needs: release-app
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Login ghcr.io
-        run: echo -n ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo -n "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Build Docker image
-        run: docker build . -t ghcr.io/${{github.repository}}:latest
+        run: |
+          docker build . \
+            -t ghcr.io/${{ github.repository }}:latest \
+            -t ghcr.io/${{ github.repository }}:${{ github.ref_name }}
 
       - name: Push to ghcr.io
-        run: docker push ghcr.io/${{github.repository}}:latest
+        run: docker push --all-tags ghcr.io/${{ github.repository }}
 
   deploy-image:
     name: "Deploy image into server"
@@ -72,11 +77,12 @@ jobs:
       - name: Pull image from ghcr and deploy
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{secrets.SSH_HOST}}
-          username: ${{secrets.SSH_USER}}
-          port: ${{secrets.SSH_PORT}}
-          key: ${{secrets.SSH_KEY}}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
-            cd app
+            set -e
+            cd ~/app
             docker compose pull frontend
-            docker compose up frontend -d
+            docker compose up -d frontend
