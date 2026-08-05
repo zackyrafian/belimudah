@@ -1,5 +1,5 @@
 import { Mail, Lock, User } from "lucide-react"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { AuthService } from "@/services/auth.service"
 import Alert from "@/components/ui/alert"
 import { useAlert } from "@/hooks/useAlert"
@@ -41,11 +41,15 @@ const RegisterForm = [
 export default function SignUpPage() {
   const { alert, showError, showSuccess, clearAlert } = useAlert();
   const { register, handleSubmit } = useForm(); 
+  const navigate = useNavigate()
 
-  const onSubmit = (data) => { 
+  const onSubmit = async (data) => { 
     try { 
-      AuthService.register(data); 
+      await AuthService.register(data); 
       showSuccess("You have successfully signed in.")
+      setTimeout(() => { 
+        navigate('/sign-in')
+      }, [500])
     } catch (err) { 
       showError(err.message);
     }

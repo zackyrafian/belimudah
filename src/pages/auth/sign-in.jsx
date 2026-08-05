@@ -7,16 +7,17 @@ import { useDispatch } from "react-redux";
 import { login } from "@/features/auth/authSlice";
 import { AuthService } from "@/services/auth.service";
 import { useForm } from "react-hook-form";
+
 export default function SignIn() { 
   const navigate = useNavigate(); 
   const { alert, showSuccess, showError, clearAlert } = useAlert();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data) => { 
+  const onSubmit = async (data) => { 
     try { 
-      const user = AuthService.login(data); 
-      dispatch(login(user));
+      const userData = await AuthService.login(data);
+      dispatch(login(userData));
       showSuccess("You have successfully signed in.")
       setTimeout(() => { 
         navigate('/');

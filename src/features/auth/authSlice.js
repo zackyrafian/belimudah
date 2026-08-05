@@ -13,19 +13,19 @@ const authSlice = createSlice({
     },
     logout(state) { 
       state.auth = null;
+      localStorage.removeItem("token");
     },
     updateCart(state, action) {
-      state.auth.cart = action.payload;
+      if (state.auth) state.auth.cart = action.payload;
     },
     updateShippingAddress(state, action) {
-      state.auth.shipping_address = action.payload;
+      if (state.auth) state.auth.shipping_address = action.payload;
     },
     updateCheckout(state, action) {
-      state.auth.checkout = action.payload;
+      if (state.auth) state.auth.checkout = { ...(state.auth.checkout || {}), ...action.payload };
     },
-    placeOrder(state, action) {
-      const currentOrders = state.auth.order || [];
-      state.auth.order = [...currentOrders, action.payload];
+    placeOrder(state) {
+      if (!state.auth) return;
       state.auth.cart = [];
       state.auth.checkout = null;
     },
