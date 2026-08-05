@@ -68,8 +68,8 @@ export default function DashboardProductPage() {
               </div>
 
               <div className="flex gap-4">
-                <div className="border border-black/30 rounded-xl px-4 flex-1 py-3 flex items-center justify-center">Kembali</div>
-                <div className="bg-blue-500 rounded-xl px-4 flex-1 py-3 text-white flex items-center justify-center">Tambah Produk</div>
+                <div className="border border-black/30 rounded-xl px-4 flex-1 py-2 flex items-center justify-center text-sm">Kembali</div>
+                <div className="bg-blue-500 rounded-xl px-4 flex-1 py-2 text-white flex items-center justify-center text-sm">Tambah Produk</div>
               </div>
             </form>
           </Card>
@@ -77,13 +77,13 @@ export default function DashboardProductPage() {
       )}
       <div className="flex justify-between">
         <span className="text-xl">Manajement Produk</span>
-        <div onClick={handleClick} className="flex bg-orange-400 text-white px-4 py-2 rounded-xl gap-2"><Plus/><span>Tambah Produk</span></div>
+        <div onClick={handleClick} className=" bg-orange-400 text-white px-4 py-2 rounded-xl gap-2 text-sm flex items-center justify-center"><Plus size={18}/><span>Tambah Produk</span></div>
       </div>
-      <div className="p-4 bg-white flex justify-between shadow-sm border rounded-xl border-black/20 gap-2">
-        <input className="py-2.5 px-4 flex-1 bg-black/5 border rounded-xl border-black/20" type="text" />
+      <div className="p-4 bg-white flex justify-between shadow-sm border rounded-xl border-black/20 gap-2 font-medium">
+        <input className="py-2.5 px-4 flex-1 bg-black/5 border rounded-xl border-black/20 text-sm" type="text" />
         <div className="flex gap-2.5">
-          <div className="py-2.5 px-4 bg-white border border-black/20 rounded-xl">Semua Kategori</div>
-          <div className="py-2.5 px-4 bg-white border-black/20 border rounded-xl">Filter</div>
+          <div className="py-2.5 px-4 bg-white border border-black/20 rounded-xl text-sm">Semua Kategori</div>
+          <div className="py-2.5 px-4 bg-white border-black/20 border rounded-xl text-sm">Filter</div>
         </div>
       </div>
 

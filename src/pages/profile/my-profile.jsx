@@ -2,11 +2,27 @@ import { formatIDR } from "@/utils/format";
 import { Card } from "../../components";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useState } from "react";
 
 export default function MyProfile() { 
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { order : orders } = user;
+
+  console.log(user)
+  // const { order : orders } = user;
+  const [orders, setOrders] = useState([]); 
+
+  useEffect(() => { 
+    const fetchData = async () => { 
+      const res = await fetch('http://localhost:2222/users/orders', { 
+        headers: { Authorization: `Bearer ${user.token}` }
+      })
+      const data = await res.json(); 
+      console.log(data.results)
+      setOrders(data.results);
+    }
+    fetchData();
+  })
   
   return (
     <div className="flex flex-col gap-4">
