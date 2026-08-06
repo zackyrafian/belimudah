@@ -1,6 +1,6 @@
 import { Header } from '../components/header'
 import { Footer } from '../components/footer'
-import { ArrowRight, Clock, StarIcon, Zap, TrendingUp } from 'lucide-react'
+import { ArrowRight, Clock, Zap, TrendingUp } from 'lucide-react'
 import { Link } from 'react-router'
 import ProductCard from '@/components/product-card'
 import { useState, useEffect } from 'react'
@@ -19,6 +19,7 @@ export default function LandingPage() {
   }, [])
 
   const productFlashDeal = products.filter((p) => p.discount > 10)
+  const productNew = products.filter((p) => p.discount === 0)
 
   const categoryMap = {}
   products.forEach(p => {
@@ -77,7 +78,7 @@ export default function LandingPage() {
           <header className='flex flex-col sm:flex-row gap-2 sm:gap-3 items-start sm:items-center'>
             <div className='flex bg-red-500 text-white rounded-lg px-3 sm:px-4 py-1.5 items-center gap-2 text-sm sm:text-base'>
               <Zap size={16}/>
-              <span>Flash Deal</span>
+              <span className='text-sm'>Flash Deal</span>
             </div>
             <div className='flex items-center gap-2 text-xs sm:text-sm'>
               <Clock size={12} />
@@ -137,7 +138,7 @@ export default function LandingPage() {
             </div>
           </header>
 
-          <div className='grid grid-cols-4 gap-4'>
+          {/* <div className='grid grid-cols-4 gap-4'>
             <div className='flex flex-col rounded-xl border border-black/20  overflow-hidden'>
               <div>
               <img src="headphone.png" alt="headphone" />
@@ -242,6 +243,20 @@ export default function LandingPage() {
               
             </div>
 
+          </div>*/}
+
+          <div className='grid
+            grid-cols-2
+            sm:grid-cols-2
+            md:grid-cols-3
+            lg:grid-cols-4
+            xl:grid-cols-5
+            gap-3 sm:gap-4'>
+            {productNew.map((p) => (
+              <div key={p.id} className='transition-all duration-300 hover:scale-105 hover:shadow-xl'>
+                <ProductCard product={p}/>
+              </div>
+            ))}
           </div>
         </section>
 
