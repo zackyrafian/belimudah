@@ -3,7 +3,7 @@ const AuthService = {
   async register (data) {
     const { fullname, email, password } = data;
     try { 
-      const res = await fetch('http://localhost:2222/auth/register', { 
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/auth/register`, { 
         method: "POST", 
         headers: { 
           "Content-Type": "application/json", 
@@ -50,7 +50,7 @@ const AuthService = {
     const { email, password } = data;
 
     try { 
-      const res = await fetch("http://localhost:2222/auth/login", {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/auth/login`, {
         method: "POST", 
         headers: { 
           "Content-Type": "application/json", 

@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import ProductCard from '@/components/product-card'
 import { useState, useEffect } from 'react'
 
-const API = 'http://localhost:2222'
+const API = import.meta.env.VITE_SERVER_URL
 
 export default function LandingPage() {
   const [products, setProducts] = useState([])
