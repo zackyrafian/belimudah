@@ -1,16 +1,31 @@
 import { Edit, MapPin, PlusIcon, Trash2, X } from "lucide-react";
 import { Card } from "../../components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAlert } from "@/hooks/useAlert";
 import Alert from "@/components/ui/alert";
 import { useAuth } from "@/hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { updateShippingAddress } from "@/features/auth/authSlice";
+
+const API = import.meta.env.VITE_SERVER_URL
+
 export default function ProfileAddress() { 
   const { alert, showSuccess, clearAlert } = useAlert();
+  const [shippingAddress, setshippingAddress] = useState([]);
   const [dialog, setDialog] = useState(false);
   const { user } = useAuth();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!user?.token) return;
+    fetch(`${API}/users/address`, {
+      headers: { Authorization: `Bearer ${user.token}` }
+    })
+      .then(res => res.json())
+      .then(data => setshippingAddress(data.results || []))
+      .catch(err => console.error(err));
+  }, [user]);
+
 
   const handleForm = (e) => { 
     const data = Object.fromEntries(new FormData(e.currentTarget));
@@ -99,12 +114,12 @@ export default function ProfileAddress() {
       </div>
 
         <div className="flex flex-col gap-4 pt-4">
-          {user?.shipping_address?.map((address) => (
+          {shippingAddress?.map((address) => (
             <Card className="flex flex-col gap-4">
               <div className="flex justify-between items-center">
-                <div className="flex gap-2 font-bold">
+                <div className="flex gap-2 font-bold items-center">
                   <span>Rumah Utama</span>
-                  <div className="rounded-full text-xs flex items-center bg-blue-500 text-white px-4">Utama</div>
+                  <div className="h-5 rounded-full text-xs font-normal flex items-center bg-blue-500 text-white px-4">Utama</div>
                 </div>
                 <div className="flex gap-4">
                   <Edit size={15}/>
