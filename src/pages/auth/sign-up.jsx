@@ -42,6 +42,8 @@ export default function SignUpPage() {
   const { alert, showError, showSuccess, clearAlert } = useAlert();
   const { register, handleSubmit } = useForm(); 
   const navigate = useNavigate()
+  console.log(import.meta.env.VITE_SERVER_URL)
+  
 
   const onSubmit = async (data) => { 
     try { 
