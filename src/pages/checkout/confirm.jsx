@@ -1,5 +1,5 @@
 import { formatIDR } from "@/utils/format";
-import { Shield } from "lucide-react";
+import { ImageOff, Shield } from "lucide-react";
 import { useNavigate } from "react-router";
 import { PackageCheck } from 'lucide-react'
 import { useAuth } from "@/hooks/useAuth";
@@ -93,7 +93,11 @@ export default function CheckoutConfirmPage() {
         {cart.map((item) => (
           <div key={item.id} className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <img src={item.images?.[0]} className="w-12 h-12 rounded-xl object-cover" alt={item.name} />
+              {item.images ? ( 
+                <div className='w-12 h-12 bg-gray-200 text-gray-400 rounded-xl flex items-center justify-center'>
+                  <ImageOff/>
+                </div>
+              ): <img src={item.images?.[0]} className="w-12 h-12 rounded-xl object-cover" alt={item.name} /> }
               <div>
                 <div className="text-sm font-medium">{item.name}</div>
                 <div>x{item.quantity}</div>

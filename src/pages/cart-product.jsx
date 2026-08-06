@@ -1,4 +1,4 @@
-import { Heart, ShoppingCart, Tag, Trash2 } from 'lucide-react'
+import { Heart, ImageOff, ShoppingCart, Tag, Trash2 } from 'lucide-react'
 import { formatIDR } from '@/utils/format';
 import { MainLayout } from '@/components/layouts';
 import { Link } from 'react-router';
@@ -67,7 +67,7 @@ export default function CartPage() {
             <h1 className='text-2xl font-bold text-black'>Your cart is empty!</h1>
             <h1>Look like you have added anying to your cart yet</h1>
           </div>
-          <Link to={'/'} className='bg-blue-500 rounded-xl px-4 text-white text-sm p-2 '>Start Shopping</Link>
+          <Link to={'/'} className='bg-blue-500 rounded-md px-4 text-white text-sm p-2 '>Start Shopping</Link>
         </div>
       ) : (
       <div className='w-7xl m-auto flex flex-col gap-4 pt-4'>
@@ -78,7 +78,11 @@ export default function CartPage() {
               {cart.map((product) => (
                 <div key={product.id} className='shadow-sm flex w-full bg-white border-black/20 border p-4 gap-4 rounded-xl'>
                   <div className='w-24 h-24'>
-                    <img className='rounded-xl' src={product.images?.[0]} alt="headphone" />
+                    {product.images ? (
+                      <div className='w-full h-full bg-gray-200 text-gray-400 rounded-xl flex items-center justify-center'>
+                        <ImageOff/>
+                      </div>
+                    ) : <img className='rounded-xl' src={product.images?.[0]} alt="headphone" />}
                   </div>
                   <div className='flex flex-col gap-1 flex-1'>
                     <div className='flex justify-between items-center'>

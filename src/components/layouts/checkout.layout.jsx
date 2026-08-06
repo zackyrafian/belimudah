@@ -4,6 +4,7 @@ import MainLayout from "./main.layout";
 import { formatIDR } from "@/utils/format";
 import { useAuth } from "@/hooks/useAuth";
 import { useState, useEffect } from "react";
+import { ImageOff } from "lucide-react";
 
 const API = import.meta.env.VITE_SERVER_URL
 
@@ -34,7 +35,11 @@ export default function CheckoutLayout() {
             <div key={item.id} className="flex justify-between items-center pb-2">
               <div className="flex gap-2 items-center">
                 <div className="w-10 h-10 rounded-lg overflow-hidden">
-                  <img src={item.images?.[0]} alt={item.name} />
+                  {item.images ? (
+                    <div className='w-full h-full bg-gray-200 text-gray-400 rounded-lg flex items-center justify-center'>
+                      <ImageOff/>
+                    </div>
+                  ) : <img src={item.images?.[0]} alt={item.name} />}
                 </div>
                 <span className="text-xs">{item.name}</span>
               </div>
