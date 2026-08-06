@@ -7,48 +7,8 @@ on:
       - 'v*'
 
 jobs:
-  build-app:
-    name: "Build React App into Distributable"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get source
-        uses: actions/checkout@v4
-      - name: Setup nodejs
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Install nodejs deps
-        run: npm ci
-      - name: Build app
-        run: npm run build
-      - name: Save artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-result
-          path: dist/
-
-  release-app:
-    name: "Release builded app"
-    needs: build-app
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-result
-          path: dist
-      - name: Compress artifact
-        run: cd dist && zip -r ../one-app.zip .
-      - name: Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: one-app.zip
-
   build-docker-image:
     name: "Build Docker image"
-    needs: release-app
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -63,11 +23,37 @@ jobs:
       - name: Build Docker image
         run: |
           docker build . \
+            --build-arg VITE_SERVER_URL=${{ secrets.VITE_SERVER_URL }} \
             -t ghcr.io/${{ github.repository }}:latest \
             -t ghcr.io/${{ github.repository }}:${{ github.ref_name }}
 
       - name: Push to ghcr.io
         run: docker push --all-tags ghcr.io/${{ github.repository }}
+
+  release-app:
+    name: "Release builded app"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install nodejs deps
+        run: npm ci
+      - name: Build app
+        env:
+          VITE_SERVER_URL: ${{ secrets.VITE_SERVER_URL }}
+        run: npm run build
+      - name: Compress artifact
+        run: cd dist && zip -r ../one-app.zip .
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: one-app.zip
 
   deploy-image:
     name: "Deploy image into server"

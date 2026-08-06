@@ -8,6 +8,10 @@ FROM node:alpine AS builder
 WORKDIR /build
 COPY --from=clone-project /src/ .
 RUN npm install 
+
+ARG VITE_SERVER_URL=http://103.127.96.192:9301
+ENV VITE_SERVER_URL=$VITE_SERVER_URL
+
 RUN npm run build
 
 FROM nginx
