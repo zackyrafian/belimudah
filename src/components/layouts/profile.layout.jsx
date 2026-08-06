@@ -183,6 +183,8 @@ function DekstopView({ user, listElement }) {
   )
 }
 
+const API = import.meta.env.VITE_SERVER_URL
+
 export default function ProfileLayout() { 
   const { user } = useAuth();
   const [data, setData] = useState();
@@ -191,7 +193,7 @@ export default function ProfileLayout() {
   useEffect(() => { 
     const fetchData = async () => { 
       try { 
-        const res = await fetch('http://localhost:2222/users/profile', {
+        const res = await fetch(`${API}/users/profile`, {
           headers: { Authorization: `Bearer ${user.token}`}
         })
         if (!res.ok) { 
