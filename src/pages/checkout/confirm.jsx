@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { placeOrder } from "@/features/auth/authSlice";
 import { useState, useEffect } from "react";
 
-const API = 'http://localhost:2222';
+const API = import.meta.env.VITE_SERVER_URL
 
 export default function CheckoutConfirmPage() {
   const { user } = useAuth();

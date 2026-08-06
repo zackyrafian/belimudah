@@ -4,7 +4,7 @@ import ProductCard from '@/components/product-card'
 import { MainLayout } from '@/components/layouts'
 import { useSearchParams } from 'react-router'
 
-const API = 'http://localhost:2222'
+const API = import.meta.env.VITE_SERVER_URL
 
 export default function BrowserProductPage(){
   const [products, setProducts] = useState([])

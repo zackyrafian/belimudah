@@ -4,7 +4,7 @@ import { Link, Outlet, useNavigate } from "react-router"
 import { useAuth } from "@/hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { logout } from "@/features/auth/authSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function MobileView({ user, listElement }) { 
   const [open, setOpen] = useState(false); 
@@ -137,10 +137,10 @@ function MobileView({ user, listElement }) {
   )
 }
 
-function DekstopView({user, listElement}) { 
+function DekstopView({ user, listElement }) { 
   return (
     <MainLayout>
-    <div className="flex flex-row gap-8 border-red-500 border px-4">
+    <div className="flex flex-row gap-8  px-4">
       <div className="w-1/5 flex flex-col gap-4">
         <div className="flex flex-col gap-4 rounded-xl shadow-sm items-center justify-center bg-white border-black/20 border p-4">
           <div className="text-white text-2xl font-bold rounded-full w-16 h-16 bg-blue-500 flex justify-center items-center">{user.fullname?.[0]}</div>
@@ -185,7 +185,28 @@ function DekstopView({user, listElement}) {
 
 export default function ProfileLayout() { 
   const { user } = useAuth();
+  const [data, setData] = useState();
   const dispatch = useDispatch();
+
+  useEffect(() => { 
+    const fetchData = async () => { 
+      try { 
+        const res = await fetch('http://localhost:2222/users/profile', {
+          headers: { Authorization: `Bearer ${user.token}`}
+        })
+        if (!res.ok) { 
+          throw new Error("Failed fetch data user.")
+        }
+        const data = await res.json(); 
+        setData(data.result);
+      } catch (error) { 
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, [])
+
+  console.log(data);
 
   const listElement = [
     {
@@ -220,12 +241,12 @@ export default function ProfileLayout() {
   ];
 
   
-  if (!user) return null;
+  if (!user || !data) return null;
 
   return (
     <div>
       <div className="hidden md:block">
-        <DekstopView listElement={listElement} user={user}/>
+      <DekstopView listElement={listElement} user={data}/>
       </div>
       <div className="lg:hidden">
         <MobileView listElement={listElement} user={user}/>

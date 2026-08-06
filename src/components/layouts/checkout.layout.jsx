@@ -5,7 +5,7 @@ import { formatIDR } from "@/utils/format";
 import { useAuth } from "@/hooks/useAuth";
 import { useState, useEffect } from "react";
 
-const API = 'http://localhost:2222';
+const API = import.meta.env.VITE_SERVER_URL
 
 export default function CheckoutLayout() {
   const { user } = useAuth();

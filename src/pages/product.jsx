@@ -8,7 +8,7 @@ import Alert from '@/components/ui/alert'
 import ProductCard from '@/components/product-card'
 import { useAuth } from '@/hooks/useAuth'
 
-const API = 'http://localhost:2222'
+const API = import.meta.env.VITE_SERVER_URL
 
 export default function Product() {
   const { user } = useAuth(); 

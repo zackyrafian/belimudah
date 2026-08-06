@@ -12,17 +12,20 @@ export default function MyProfile() {
   // const { order : orders } = user;
   const [orders, setOrders] = useState([]); 
 
+  console.log(orders)
+
   useEffect(() => { 
     const fetchData = async () => { 
       const res = await fetch('http://localhost:2222/users/orders', { 
         headers: { Authorization: `Bearer ${user.token}` }
       })
       const data = await res.json(); 
-      console.log(data.results)
       setOrders(data.results);
     }
     fetchData();
-  })
+  }, [])
+
+  console.log(orders)
   
   return (
     <div className="flex flex-col gap-4">
@@ -32,13 +35,13 @@ export default function MyProfile() {
         <Card key={i} className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <div className="flex flex-col">
-              <span className="font-bold">#{order.id}</span>
+              <span className="font-bold">#{order?.id}</span>
               <span className="text-xs">20 Mei 2026</span>
             </div>
             <div>Terkirim</div>
           </div>
 
-          {order.cart.map((product) => ( 
+          {order.cart?.map((product) => ( 
             <div onClick={() => navigate(`/product/${product.name.toLowerCase().replaceAll(' ', ('-'))}`)} className="flex gap-4 cursor-pointer">
               <div className="w-12 h-12 rounded-md overflow-hidden">
                 <img src={product.images[0]} alt="headphone" />
