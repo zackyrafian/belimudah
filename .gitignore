@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 lsp-settings.json
 /test
+
+
+.env
