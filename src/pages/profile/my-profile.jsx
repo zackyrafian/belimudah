@@ -5,6 +5,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { ImageOff } from "lucide-react";
 
+
+const API = import.meta.env.VITE_SERVER_URL
+
 export default function MyProfile() { 
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -17,7 +20,7 @@ export default function MyProfile() {
 
   useEffect(() => { 
     const fetchData = async () => { 
-      const res = await fetch('http://localhost:2222/users/orders', { 
+      const res = await fetch(`${API}/users/orders`, { 
         headers: { Authorization: `Bearer ${user.token}` }
       })
       const data = await res.json(); 
