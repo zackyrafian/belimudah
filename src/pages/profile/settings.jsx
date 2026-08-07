@@ -2,18 +2,88 @@ import { ArrowLeft, Edit } from "lucide-react";
 import { Card } from "../../components";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+
+const API = import.meta.env.VITE_SERVER_URL
 
 export default function ProfileSetting() {
   const { user } = useAuth();
   const [viewMode, setViewMode] = useState('profile');
+  const [userData, setUserData] = useState();
+  const photoRef = useRef(null);
+  const [formData, setFormData] = useState({})
+  const [prewviewPhoto, setPreviewPhoto] = useState(null);
   
-  const photoRef = useRef(null); 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));
-    console.log(data);
+  useEffect(() => { 
+    const fetchData = async () => { 
+      try { 
+        const res = await fetch(`${API}/users/profile`, { 
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          },
+        }); 
+        const data = await res.json(); 
+        console.log(data.result)
+        setUserData(data.result)
+        setFormData(data.result)
+      } catch (error) { 
+        console.log(error.message)
+      }
+    }
+    fetchData();
+  }, [])
+
+  const handlePhotoChange = (e) => { 
+    const file = e.target.files[0]; 
+    if (!file) return; 
+    setPreviewPhoto(URL.createObjectURL(file))
+  } 
+
+  const handleChange = (e) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => { 
+    e.preventDefault(); 
+
+    const changes = Object.keys(formData).reduce((acc, key) => {
+      if (formData[key] !== userData[key]) {
+        acc[key] = formData[key];
+      }
+      return acc;
+    }, {});
+
+    const photoFile = photoRef.current?.files[0];
+    const payload = new FormData();
+
+    if (!photoFile && Object.keys(changes).length === 0) { 
+      return;
+    }
+
+    Object.entries(changes).forEach(([key, value]) => { 
+      payload.append(key, value)
+    })
+    if (photoFile) { 
+      payload.append('picture', photoFile)
+    }
+
+    try { 
+      const res = await fetch(`${API}/users/profile`, {
+        method: 'PATCH', 
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        },
+        body: payload, 
+      })
+      setUserData(prev => ({ ...prev, ...changes}))
+      const data = await res.json();
+      console.log(data);
+    } catch (error) { 
+      console.log("FAILED", error)
+    }
   }
+  console.log(prewviewPhoto)
+  // console.log(`${API}/${userData?.image_profile}`)
   return (
     <div>
       {viewMode === 'profile' ? (
@@ -31,30 +101,38 @@ export default function ProfileSetting() {
               {/* <div className="rounded-full w-20 h-20 bg-fuchsia-100 flex items-center justify-center"></div>*/}
               <div onClick={() => {
                 photoRef.current.click();
-              }} className="rounded-full w-20 h-20 items-center bg-fuchsia-100 justify-center">
-                <input className="hidden" ref={photoRef} type="file"/>
+              }} className="rounded-full w-20 h-20 items-center bg-fuchsia-100 justify-center flex overflow-hidden">
+                {prewviewPhoto ? (
+                  <img src={prewviewPhoto} alt="preview" className="w-full h-full object-cover" />
+                ) : userData?.image_profile ? (
+                  <img src={`${API}/${userData.image_profile}`} alt="profile" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-xs text-gray-400">Foto</span>
+                )}
+                
+                <input className="hidden" ref={photoRef} type="file" accept="image/*" onChange={handlePhotoChange}/>
               </div>
               <span>Ganti Foto Profile</span>
             </div>
 
             <div className="flex flex-col w-full gap-1">
               <label htmlFor="">Nama Lengkap</label>
-              <input name="full_name" defaultValue={user.fullname} type="text" className="border border-black/20 rounded-xl py-3 px-4" />
+              <input onChange={handleChange} name="full_name" defaultValue={formData.fullname || ''} type="text" className="border border-black/20 rounded-xl py-3 px-4" />
             </div>
 
             <div className="flex flex-col w-full gap-1">
               <label htmlFor="">Email</label>
-              <input name="email" defaultValue={user.email} type="text" className="border border-black/20 rounded-xl py-3 px-4" />
+              <input onChange={handleChange} name="email" defaultValue={formData.email || ''} type="text" className="border border-black/20 rounded-xl py-3 px-4" />
             </div>
 
             <div className="flex flex-col w-full gap-1">
               <label htmlFor="">No Telepon</label>
-              <input name="phone_number" type="text" className="border border-black/20 rounded-xl py-3 px-4" />
+              <input onChange={handleChange} defaultValue={formData.phone_number || ''} name="phone_number" type="text" className="border border-black/20 rounded-xl py-3 px-4" />
             </div>
 
             <div className="flex flex-col w-full gap-1">
               <label htmlFor="">Tanggal Lahir</label>
-              <input name="date_of_birth" type="date" className="border border-black/20 rounded-xl py-3 px-4" />
+              <input onChange={handleChange} defaultValue={formData.date_of_birth ?? ''} name="date_of_birth" type="date" className="border border-black/20 rounded-xl py-3 px-4" />
             </div>
 
             <div className="flex flex-col w-full gap-1">
@@ -63,6 +141,8 @@ export default function ProfileSetting() {
                 <select
                   id="gender"
                   name="gender"
+                  onChange={handleChange}
+                  defaultValue={formData.gender || ''}
                   className="w-full appearance-none border border-black/20 rounded-xl py-3 px-4 pr-10 bg-white"
                 >
                   <option value="">Select Gender</option>
@@ -90,7 +170,6 @@ export default function ProfileSetting() {
           <div onClick={() => setViewMode('profile')} className="flex gap-2 items-center text-xs text-gray-700 cursor-pointer">
             <ArrowLeft size={14} />
             <span>Back Profile Setting</span>
-
 
           </div>
           <Card className="flex flex-col gap-4">
