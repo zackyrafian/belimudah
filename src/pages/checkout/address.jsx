@@ -27,7 +27,12 @@ export default function CheckoutAddress() {
       .then(data => {
         const list = data.results || [];
         setAddresses(list);
-        setViewMode(list.length > 0 ? 'list' : 'form');
+        if (list.length > 0) {
+          setSelectedAddressId(list[0].id);
+          setViewMode('list');
+        } else {
+          setViewMode('form');
+        }
       })
       .catch(() => setViewMode('form'));
   }, [user]);
@@ -62,7 +67,14 @@ export default function CheckoutAddress() {
           setAlert({ type: 'error', message: json.message || 'Gagal menyimpan alamat.' });
           return;
         }
-        address_id = json.results?.id || json.result?.id;
+        const listRes = await fetch(`${API}/users/address`, {
+          headers: { Authorization: `Bearer ${user.token}` }
+        });
+        const listJson = await listRes.json();
+        const updatedList = listJson.results || [];
+        if (updatedList.length > 0) {
+          address_id = updatedList[updatedList.length - 1].id;
+        }
       } catch (err) {
         setAlert({ type: 'error', message: err.message });
         return;
@@ -95,7 +107,7 @@ export default function CheckoutAddress() {
             <span>Alamat Pengiriman</span>
           </div>
           {viewMode === 'list' && ( 
-            <button onClick={() => { setViewMode('form'); setSelectedAddressId(null)}} className="flex items-center border border-black/20 text-gray-600 rounded-xl px-4 py-2 text-sm gap-2">
+            <button type="button" onClick={() => { setViewMode('form'); setSelectedAddressId(null)}} className="flex items-center border border-black/20 text-gray-600 rounded-xl px-4 py-2 text-sm gap-2">
               <Plus size={18} />
               <span>Tambah Alamat</span>
             </button>
