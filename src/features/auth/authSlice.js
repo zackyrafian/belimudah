@@ -1,7 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit"
+
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import authThunks from "./authThunks"
 
 const initialState = { 
   auth: null,
+  loading: false,
+  error: null,
 }
 
 const authSlice = createSlice({ 
@@ -29,6 +33,36 @@ const authSlice = createSlice({
       state.auth.cart = [];
       state.auth.checkout = null;
     },
+  },
+  extraReducers: (builder) => { 
+    builder
+      .addCase(authThunks.loginAsync.pending, (state) => { 
+        state.loading = true;
+        state.error = null; 
+      })
+      .addCase(authThunks.loginAsync.fulfilled, (state, action) => { 
+        state.loading = false;
+        state.auth = action.payload;
+      })
+      .addCase(authThunks.loginAsync.rejected, (state, action) => { 
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(authThunks.userInfoAsync.pending, (state) => { 
+        state.loading = true;
+      })
+      .addCase(authThunks.userInfoAsync.fulfilled, (state, action) => { 
+        state.loading = false;
+        if (state.auth) {
+          state.auth = { ...state.auth, ...action.payload };
+        } else {
+          state.auth = action.payload;
+        }
+      })
+      .addCase(authThunks.userInfoAsync.rejected, (state, action) => { 
+        state.loading = false;
+        state.error = action.payload;
+      })
   }
 })
 
