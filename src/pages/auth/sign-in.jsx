@@ -3,28 +3,42 @@ import { Link, useNavigate } from "react-router"
 import { useAlert } from "@/hooks/useAlert";
 import Alert from "@/components/ui/alert";
 import { FaGoogle, FaFacebook} from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { login } from "@/features/auth/authSlice";
-import { AuthService } from "@/services/auth.service";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAsync } from "@/features/auth/authThunks";
 import { useForm } from "react-hook-form";
 
 export default function SignIn() { 
   const navigate = useNavigate(); 
   const { alert, showSuccess, showError, clearAlert } = useAlert();
   const dispatch = useDispatch();
+  const { loading } = useSelector(state => state.auth);
   const { register, handleSubmit } = useForm();
 
+  // const onSubmit = async (data) => { 
+  //   try { 
+  //     const userData = await AuthService.login(data);
+  //     dispatch(login(userData));
+  //     showSuccess("You have successfully signed in.")
+  //     setTimeout(() => { 
+  //       navigate('/');
+  //     }, 500)
+  //   } catch (err) { 
+  //     showError(err.message);
+  //   }
+  // }
+
   const onSubmit = async (data) => { 
-    try { 
-      const userData = await AuthService.login(data);
-      dispatch(login(userData));
-      showSuccess("You have successfully signed in.")
-      setTimeout(() => { 
-        navigate('/');
-      }, 500)
-    } catch (err) { 
-      showError(err.message);
-    }
+    dispatch(loginAsync(data))
+      .unwrap()
+      .then(() => { 
+        showSuccess("You have successfully signed in.")
+        setTimeout(() => { 
+          navigate('/');
+        }, 500)
+      })
+      .catch((err) => { 
+        showError(err);
+      })
   }
   return ( 
     <div className="flex min-h-screen">
@@ -120,7 +134,13 @@ export default function SignIn() {
             <input type="checkbox" />
             <span>Ingat saya selama 30 hari</span>
           </div>
-          <button className="text-center bg-blue-500 w-full p-4 rounded-xl text-white" type="submit">Masuk</button>
+          <button 
+            className="text-center bg-blue-500 w-full p-4 rounded-xl text-white disabled:opacity-50 disabled:cursor-not-allowed" 
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? 'Masuk...' : 'Masuk'}
+          </button>
         </form>
 
         <div className="text-center text-xs gap-2 flex flex-col">
