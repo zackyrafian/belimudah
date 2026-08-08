@@ -1,5 +1,7 @@
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useNavigate } from "react-router";
 import { Bell, LayoutDashboard, Package, Settings, SquareRoundCorner, User2Icon, X } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useState } from "react";
 
 const sidebarList = [
   {
@@ -30,7 +32,35 @@ const sidebarList = [
   }
 ]
 
-export default function DashboardLayout() { 
+const API = import.meta.env.VITE_SERVER_URL
+
+export default function DashboardLayout() {
+  const navigate = useNavigate();
+  const { user } = useAuth(); 
+  const [userInfo, setUserInfo] = useState(); 
+  useEffect(() => { 
+    const fetchUser = async () => { 
+      try { 
+        const res = await fetch(`${API}/users/info`, { 
+          headers: { Authorization: `Bearer ${user.token}` }
+        })
+        if (!res.ok) { 
+          throw new Error("Failed fetch user"); 
+        }
+        const data = await res.json(); 
+        setUserInfo(data.result);
+      } catch (error) { 
+        console.log(error.message)
+      }
+    }
+    fetchUser();
+  }, [])
+  console.log(userInfo)
+
+  if (userInfo?.role !== "ADMIN") { 
+    navigate('/')
+    console.log("BUKAN ADMIN")
+  };
   return ( 
     <div className="flex min-h-screen ">
       <aside className="min-w-1/7 p-4 border-r border-r-black/20 shadow-sm min-h-screen flex-col flex gap-8">
