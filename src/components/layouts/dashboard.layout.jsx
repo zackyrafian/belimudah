@@ -1,7 +1,8 @@
 import { Link, Outlet, useNavigate } from "react-router";
 import { Bell, LayoutDashboard, Package, Settings, SquareRoundCorner, User2Icon, X } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userInfoAsync } from "@/features/auth/authThunks";
 
 const sidebarList = [
   {
@@ -32,35 +33,31 @@ const sidebarList = [
   }
 ]
 
-const API = import.meta.env.VITE_SERVER_URL
-
 export default function DashboardLayout() {
   const navigate = useNavigate();
-  const { user } = useAuth(); 
-  const [userInfo, setUserInfo] = useState(); 
-  useEffect(() => { 
-    const fetchUser = async () => { 
-      try { 
-        const res = await fetch(`${API}/users/info`, { 
-          headers: { Authorization: `Bearer ${user.token}` }
-        })
-        if (!res.ok) { 
-          throw new Error("Failed fetch user"); 
-        }
-        const data = await res.json(); 
-        setUserInfo(data.result);
-      } catch (error) { 
-        console.log(error.message)
-      }
-    }
-    fetchUser();
-  }, [])
-  console.log(userInfo)
+  const dispatch = useDispatch();
+  const { auth, loading } = useSelector(state => state.auth);
 
-  if (userInfo?.role !== "ADMIN") { 
-    navigate('/')
-    console.log("BUKAN ADMIN")
-  };
+  useEffect(() => { 
+    if (!auth?.role) {
+      dispatch(userInfoAsync());
+    }
+  }, [dispatch, auth?.role])
+
+  useEffect(() => {
+    if (!loading && auth && auth.role !== "ADMIN") {
+      navigate('/');
+    }
+  }, [auth, loading, navigate]);
+
+  if (loading || !auth) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div>Loading...</div>
+      </div>
+    );
+  }
+
   return ( 
     <div className="flex min-h-screen ">
       <aside className="min-w-1/7 p-4 border-r border-r-black/20 shadow-sm min-h-screen flex-col flex gap-8">
@@ -71,7 +68,7 @@ export default function DashboardLayout() {
 
         <div className="flex flex-col px-2 gap-4">
           {sidebarList.map((item) => (
-            <Link to={item.href} className="flex items-center gap-4 rounded-xl py-1.5 text-sm font-medium">
+            <Link key={item.href} to={item.href} className="flex items-center gap-4 rounded-xl py-1.5 text-sm font-medium">
               {item.icon}
               <span>{item.name}</span>
             </Link>
@@ -87,8 +84,10 @@ export default function DashboardLayout() {
           </div>
           <div className="flex items-center gap-4">
             <Bell size={18}/>
-            <div className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500/20">B</div>
-            <div>Admin</div>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500/20">
+              {auth.fullname ? auth.fullname[0].toUpperCase() : 'A'}
+            </div>
+            <div>{auth.fullname || 'Admin'}</div>
           </div>
         </nav>
         <div className="px-6 py-4">
