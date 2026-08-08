@@ -1,3 +1,24 @@
+const UserService = {
+  async getUserInfo(token) {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users/info`, {
+        headers: { 
+          Authorization: token
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch user info");
+      }
+
+      const data = await res.json();
+      return data.result;
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  }
+};
 
 const UserStorage = {
   getAccounts() {
@@ -21,4 +42,4 @@ const UserStorage = {
   }
 }
 
-export { UserStorage } ;
+export { UserService, UserStorage } ;
