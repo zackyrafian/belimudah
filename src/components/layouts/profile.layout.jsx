@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { logout } from "@/features/auth/authSlice";
 import { useEffect, useState } from "react";
 
+const API = import.meta.env.VITE_SERVER_URL
+
 function MobileView({ user, listElement }) { 
   const [open, setOpen] = useState(false); 
   const [t, setT] = useState(false); 
@@ -143,7 +145,16 @@ function DekstopView({ user, listElement }) {
     <div className="flex flex-row gap-8  px-4">
       <div className="w-1/5 flex flex-col gap-4">
         <div className="flex flex-col gap-4 rounded-xl shadow-sm items-center justify-center bg-white border-black/20 border p-4">
-          <div className="text-white text-2xl font-bold rounded-full w-16 h-16 bg-blue-500 flex justify-center items-center">{user.fullname?.[0]}</div>
+            {/* <div className="text-white text-2xl font-bold rounded-full w-16 h-16 bg-blue-500 flex justify-center items-center">{user.fullname?.[0]}</div>*/}
+            <div>
+              {user?.image_profile ? ( 
+                <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center">
+                  <img className="w-full h-full" src={`${API}/${user.image_profile}`} alt="" />
+                </div>
+              ): (
+              <div className="text-white text-2xl font-bold rounded-full w-16 h-16 bg-blue-500 flex justify-center items-center">{user.fullname?.[0]}</div>
+              )}
+            </div>
           <div className="flex flex-col text-center pb-2 border-b border-b-black/20">
             <div className="font-medium">{user.fullname}</div>
             <div className="text-gray-500 text-sm">{user.email}</div>
@@ -183,7 +194,6 @@ function DekstopView({ user, listElement }) {
   )
 }
 
-const API = import.meta.env.VITE_SERVER_URL
 
 export default function ProfileLayout() { 
   const { user } = useAuth();
