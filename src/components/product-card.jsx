@@ -18,8 +18,11 @@ export default function ProductCard({product}) {
               )}
             </div>
           ) : (
-            <div className="w-full min-h-58.75 flex items-center justify-center bg-gray-200 text-gray-400">
+            <div className="relative w-full min-h-58.75 flex items-center justify-center bg-gray-200 text-gray-400">
               <ImageOff size={32} />
+              {product.discount > 0 && ( 
+                <div className="text-white absolute top-2 bg-red-500 left-2 text-xs rounded-full px-2 py-1">-{product.discount}%</div>
+              )}
             </div>
           )}
         </div>
