@@ -10,20 +10,41 @@ export default function BrowserProductPage(){
   const [products, setProducts] = useState([])
   const [limit, setLimit] = useState(12); 
   const [params] = useSearchParams();
+  // const [selectedBrands, setSelectedBrands] = useState([]);
+  // const [brands, setBrands] = useState();
   const search = params.get('search') || '';
   const category = params.get('category') || '';
+  const brand = params.get('brand') || '';
+  
+  console.log()
 
   useEffect(() => {
+    const controller = new AbortController(); 
     const query = new URLSearchParams()
     if (search) query.set('search[name]', search)
     if (category) query.set('search[category]', category)
-    fetch(`${API}/products?${query.toString()}`)
+    if (brand) query.set('search[brand]', brand)
+    fetch(`${API}/products?${query.toString()}`, { signal: controller.signal })
       .then(res => res.json())
       .then(json => setProducts(json.results || []))
       .catch(err => console.error(err))
-  }, [search, category])
+
+    return () => controller.abort();
+  }, [search, category, brand])
+
+  // useEffect(() => { 
+  //   const controller = new AbortController(); 
+  //   fetch(`${API}/brands`, { signal: controller.signal })
+  //     .then(res => res.json())
+  //     .then(json => setBrands(json.results || []))
+  //     .catch(error => {
+  //       if (error.name !== 'AbortError') console.log(error)
+  //     });
+  //   return () => controller.abort();
+  // }, [])
 
   const filteredProducts = products;
+  console.log(filteredProducts)
 
   return (
     <MainLayout>
@@ -41,30 +62,12 @@ export default function BrowserProductPage(){
             <div className='flex flex-col gap-4'>
               <h3 className='text-xl font-semibold'>Merek</h3>
               <div className='flex flex-col gap-1'>
-                <div className='flex gap-2 items-center'>
-                <input type="checkbox" />
-                <span>TechMaster</span>
-                </div>
+                {filteredProducts.map((b) => (
                 <div className='flex gap-2 items-center'>
                   <input type="checkbox" />
-                  <span>TechMaster</span>
+                    <span>{b.brand}</span>
                 </div>
-                <div className='flex gap-2 items-center'>
-                  <input type="checkbox" />
-                  <span>TechMaster</span>
-                </div>
-                <div className='flex gap-2 items-center'>
-                  <input type="checkbox" />
-                  <span>TechMaster</span>
-                </div>
-                <div className='flex gap-2 items-center'>
-                  <input type="checkbox" />
-                  <span>TechMaster</span>
-                </div>
-                <div className='flex gap-2 items-center'>
-                  <input type="checkbox" />
-                  <span>TechMaster</span>
-                </div>
+                ))}
               </div>
             </div>
   
