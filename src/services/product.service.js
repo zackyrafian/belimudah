@@ -1,38 +1,10 @@
-import products from '@/data/products.json';
+import { api } from './api';
 
 const ProductService = {
-  getAll() {
-    return products;
-  }, 
-  getByNameAll(name) {
-    if (!name) return [];
-    const keyword = name.toLowerCase().replaceAll(" ", "-");
-  
-    return products.filter(product =>
-      product.name
-        .toLowerCase()
-        .replaceAll(" ", "-")
-        .includes(keyword)
-    );
-  },
-  getByName(name) { 
-    return products.find(product => product.name.toLowerCase().replaceAll(" ", "-") === name)
-  }, 
-  getCategories(limit) { 
-    const categories = {};
-
-    products.forEach(product => { 
-      if (!categories[product.category]) { 
-        categories[product.category] = { 
-          name: product.category, 
-          total: 0, 
-        }
-      }
-      categories[product.category].total++; 
-    })
-    const result = Object.values(categories); 
-    return limit ? result.slice(0, limit) : result;
-  }
+  getAll: (signal) => api.get('/products', { signal }),
+  delete: (id, token) => api.delete(`/products/${id}`, { 
+    headers: { Authorization: `Bearer ${token}`}
+  }),
 }
 
 export { ProductService }
