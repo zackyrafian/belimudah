@@ -1,4 +1,4 @@
-import { formatIDR } from "@/utils/format";
+import { formatIDR, formatDate } from "@/utils/format";
 import { Card } from "../../components";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
@@ -40,7 +40,7 @@ export default function MyProfile() {
           <div className="flex justify-between items-center">
             <div className="flex flex-col">
               <span className="font-bold">#{order?.id}</span>
-              <span className="text-xs">20 Mei 2026</span>
+              <span className="text-xs">{formatDate(order.created_at)}</span>
             </div>
             <div className="bg-blue-500 text-white px-2 font-medium text-xs rounded-l-xl py-0.5 rounded-r-xl">{order.status}</div>
           </div>
