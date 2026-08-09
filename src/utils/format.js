@@ -4,4 +4,17 @@ const formatIDR = new Intl.NumberFormat('id-ID', {
   minimumFractionDigits: 0, 
 }).format;
 
-export { formatIDR };
+const fmt = new Intl.DateTimeFormat('id-ID', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'Asia/Jakarta',
+});
+
+const formatDate = (value) =>  {
+  if (!value) return '-';
+  const d = new Date(value);
+  return isNaN(d) ? '-' : fmt.format(d);
+}
+
+export { formatIDR, formatDate };
