@@ -113,7 +113,7 @@ export default function SignIn() {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1 text-sm">
             <label htmlFor="email">Email</label>
-            <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
+            <div className="flex px-4 py-3 border border-black/20 rounded-xl items-center gap-2">
               <Mail size={20} />
               <input {...register('email')} className="w-full h-full outline-none" type="text" placeholder="email@contoh.com"/>
             </div>
@@ -124,7 +124,7 @@ export default function SignIn() {
               <label htmlFor="">Password</label>
               <Link to={"/forget-password"} className="text-blue-500">Lupa kata sandi?</Link>
             </div>
-            <div className="flex p-4 border border-black/20 rounded-xl items-center gap-2">
+            <div className="flex px-4 py-3 border border-black/20 rounded-xl items-center gap-2">
               <Lock size={20}/>
               <input {...register('password')} className="w-full h-full outline-none" type="password" placeholder="Masukan kata sandi"/>
             </div>
@@ -135,7 +135,7 @@ export default function SignIn() {
             <span>Ingat saya selama 30 hari</span>
           </div>
           <button 
-            className="text-center bg-blue-500 w-full p-4 rounded-xl text-white disabled:opacity-50 disabled:cursor-not-allowed" 
+            className="text-center bg-blue-500 w-full px-4 py-3 rounded-xl text-white disabled:opacity-50 disabled:cursor-not-allowed" 
             type="submit"
             disabled={loading}
           >
