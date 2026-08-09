@@ -1,8 +1,33 @@
 import { Card } from "@/components";
+import { useAuth } from "@/hooks/useAuth";
+import { formatIDR } from "@/utils/format";
 import { Edit, Eye, Plus, Trash2, X } from "lucide-react";
+import { useEffect } from "react";
 import { useState } from "react";
+
+const API = import.meta.env.VITE_SERVER_URL
+
 export default function DashboardProductPage() { 
-  const [open, setOpen] = useState(false); 
+  const [open, setOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+  const { user } = useAuth(); 
+  
+  useEffect(() => { 
+    const fetchProducts = async () => { 
+      try { 
+        const res = await fetch(`${API}/products`); 
+        const data = await res.json(); 
+        if (!res.ok) { 
+          throw new Error("Failed to fetch products"); 
+        }
+        setProducts(data.results);
+      } catch (error) { 
+        console.log(error.message); 
+      }
+    }
+    fetchProducts();
+  }, []) 
+  console.log(products);
  const handleClick = () => { 
    setOpen(true);
 }
@@ -90,7 +115,7 @@ export default function DashboardProductPage() {
       <div className="grid grid-cols-4 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (
           <Card key={i} className="flex items-center justify-center flex-col">
-            <div className="text-2xl font-bold">18</div>
+            <div className="text-2xl font-bold">{products.length}</div>
             <div>Total Product</div>
           </Card>
         ))}
@@ -112,32 +137,32 @@ export default function DashboardProductPage() {
           </thead>
         
           <tbody>
-            {Array.from({ length: 18 }).map((_, i) => (
-              <tr key={i} className="border-t border-black/10">
+            {products.map((product) => (
+              <tr key={product.id} className="border-t border-black/10">
                 <td className="p-3">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg overflow-hidden">
                       <img src="/headphone.png" alt="" />
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-medium">Headphone Wireless Premium</span>
-                      <span className="text-sm text-black/60">SoundWave</span>
+                      <span className="font-medium">{product.name}</span>
+                      <span className="text-sm text-black/60">{product.brand}</span>
                     </div>
                   </div>
                 </td>
           
-                <td className="p-3">Elektronik</td>
+                <td className="p-3">{product.category}</td>
           
                 <td className="p-3">
                   <div className="flex flex-col">
                     <span>Rp 450.000</span>
                     <span className="text-sm text-black/60 line-through">
-                      Rp 650.000
+                      {formatIDR(product.price)}
                     </span>
                   </div>
                 </td>
           
-                <td className="p-3">45</td>
+                <td className="p-3">{product.stock}</td>
           
                 <td className="p-3">4.8 (512)</td>
           
