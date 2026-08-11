@@ -3,16 +3,18 @@ import { Link } from "react-router";
 import { formatIDR } from "@/utils/format";
 import { ImageOff } from 'lucide-react'
 import { calculateDiscount } from "@/utils/calculate";
+import { API } from "@/services/api";
 
 export default function ProductCard({product}) { 
-  const {finalPrice} = calculateDiscount(product.price, product.discount)
+  const { finalPrice } = calculateDiscount(product.price, product.discount)
+
   return ( 
     <Link  to={`/product/${product.id}`}>
       <div className='bg-white flex flex-col rounded-xl border border-black/20  overflow-hidden'>
         <div>
           {product.images?.[0] ? (
             <div className="relative">
-              <img src={product.images[0]} alt={product.name} />
+              <img src={`${API}${product.images[0]}`} alt={product.name} />
               {product.discount > 0 && (
                 <div className="text-white absolute top-2 bg-red-500 left-2 text-xs rounded-full px-2 py-1">-{product.discount}%</div>
               )}
