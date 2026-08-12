@@ -1,9 +1,78 @@
-import { Card } from "@/components";
 import { useAuth } from "@/hooks/useAuth";
 import { ProductService } from "@/services/product.service";
 import { formatIDR } from "@/utils/format";
-import { Edit, Eye, Plus, Trash2, Upload, X } from "lucide-react";
+import { ChevronDown, Edit, Eye, Plus, Search, Trash2, Upload, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+
+function Combobox({ label, options, value, onChange, placeholder }) {
+  const [query, setQuery] = useState(value || "");
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  const filtered = query
+    ? options.filter((o) => o.name.toLowerCase().includes(query.toLowerCase()))
+    : options;
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const handleSelect = (opt) => {
+    setQuery(opt.name);
+    onChange(opt);
+    setOpen(false);
+  };
+
+  const handleInput = (e) => {
+    setQuery(e.target.value);
+    onChange(null);
+    setOpen(true);
+  };
+
+  return (
+    <div ref={ref} className="flex flex-1 flex-col gap-1.5 relative">
+      <label className="text-xs font-medium text-gray-600">{label}</label>
+      <div className="relative">
+        <input
+          type="text"
+          value={query}
+          onChange={handleInput}
+          onFocus={() => setOpen(true)}
+          placeholder={placeholder}
+          autoComplete="off"
+          className="w-full border border-black/20 px-3 pr-9 py-2 rounded-xl bg-black/3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+        />
+        <button
+          type="button"
+          tabIndex={-1}
+          onClick={() => setOpen((v) => !v)}
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400"
+        >
+          <ChevronDown size={15} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+        </button>
+      </div>
+      {open && filtered.length > 0 && (
+        <ul className="absolute z-50 top-full left-0 right-0 mt-1 bg-white border border-black/10 rounded-xl shadow-lg overflow-hidden max-h-44 overflow-y-auto">
+          {filtered.map((opt) => (
+            <li
+              key={opt.id}
+              onMouseDown={() => handleSelect(opt)}
+              className={`px-3 py-2 text-sm cursor-pointer hover:bg-blue-50 hover:text-blue-600 transition-colors ${
+                query === opt.name ? "bg-blue-50 text-blue-600 font-medium" : "text-gray-700"
+              }`}
+            >
+              {opt.name}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 const API = import.meta.env.VITE_SERVER_URL
 
@@ -209,158 +278,204 @@ export default function DashboardProductPage() {
   };
   return ( 
     <div className="flex flex-col gap-4">
-      {open && ( 
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <Card className="w-1/2">
-            <div className="flex justify-between border-b border-b-black/20 pb-4">
-              <div className="text-xl">Tambah Produk Baru</div>
-              <button onClick={() => setOpen(false)}><X/></button>
+      {open && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-black/10">
+              <div>
+                <h2 className="text-base font-semibold">Tambah Produk Baru</h2>
+                <p className="text-xs text-gray-500 mt-0.5">Isi informasi produk di bawah ini</p>
+              </div>
+              <button
+                onClick={() => setOpen(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-black/5 text-gray-500 transition-colors"
+              >
+                <X size={16} />
+              </button>
             </div>
 
-            <form className="pt-4 flex flex-col gap-4" onSubmit={handleSubmit}>
+            <form className="flex flex-col gap-5 overflow-y-auto px-6 py-5" onSubmit={handleSubmit}>
               <div className="flex gap-4">
-                <div className="flex flex-1 flex-col gap-2">
-                  <label htmlFor="name" className="text-sm">Nama Produk</label>
-                  <input id="name" name="name" value={form.name} onChange={handleChange} className="border border-black/20 px-4 py-2 rounded-xl bg-black/5" type="text" />
+                <div className="flex flex-1 flex-col gap-1.5">
+                  <label htmlFor="name" className="text-xs font-medium text-gray-600">Nama Produk</label>
+                  <input
+                    id="name" name="name" value={form.name} onChange={handleChange}
+                    placeholder="Contoh: Headphone Pro X"
+                    className="border border-black/20 px-3 py-2 rounded-xl bg-black/3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+                    type="text"
+                  />
                 </div>
-                <div className="flex flex-1 flex-col gap-2">
-                  <label htmlFor="brand_id" className="text-sm">Merek</label>
-                  <select
-                    id="brand_id"
-                    name="brand_id"
-                    value={form.brand_id}
-                    onChange={handleChange}
-                    className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"
-                  >
-                    <option value="">Pilih Merek</option>
-                    {brands.map((b) => (
-                      <option key={b.id} value={b.id}>{b.name}</option>
-                    ))}
-                  </select>
-                </div>
+                <Combobox
+                  label="Merek"
+                  options={brands}
+                  value={form.brand_id}
+                  onChange={(opt) => setForm((prev) => ({ ...prev, brand_id: opt?.id || "" }))}
+                  placeholder="Cari atau pilih merek..."
+                />
               </div>
 
               <div className="flex gap-4">
-                <div className="flex flex-1 flex-col gap-2">
-                  <label htmlFor="price" className="text-sm">Harga (IDR)</label>
-                  <input id="price" name="price" value={form.price} onChange={handleChange} className="border border-black/20 px-4 py-2 rounded-xl bg-black/5" type="number" />
+                <div className="flex flex-1 flex-col gap-1.5">
+                  <label htmlFor="price" className="text-xs font-medium text-gray-600">Harga (IDR)</label>
+                  <input
+                    id="price" name="price" value={form.price} onChange={handleChange}
+                    placeholder="0"
+                    className="border border-black/20 px-3 py-2 rounded-xl bg-black/3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+                    type="number"
+                  />
                 </div>
-                <div className="flex flex-1 flex-col gap-2">
-                  <label htmlFor="discount" className="text-sm">Diskon (%)</label>
-                  <input id="discount" name="discount" value={form.discount} onChange={handleChange} className="border border-black/20 px-4 py-2 rounded-xl bg-black/5" type="number" />
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex flex-1 flex-col gap-2">
-                  <label htmlFor="stock" className="text-sm">Stok</label>
-                  <input id="stock" name="stock" value={form.stock} onChange={handleChange} className="border border-black/20 px-4 py-2 rounded-xl bg-black/5" type="number" />
-                </div>
-                <div className="flex flex-1 flex-col gap-2">
-                  <label htmlFor="category_id" className="text-sm">Kategori</label>
-                  <select
-                    id="category_id"
-                    name="category_id"
-                    value={form.category_id}
-                    onChange={handleChange}
-                    className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"
-                  >
-                    <option value="">Pilih Kategori </option>
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>{c.name}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex flex-col flex-1 gap-2">
-                <label htmlFor="description" className="text-sm">Deskripsi</label>
-                <textarea id="description" name="description" value={form.description} onChange={handleChange} className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"></textarea>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label className="text-sm">Foto Produk</label>
-                <div
-                  className="border-2 border-dashed border-black/20 rounded-xl p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-black/5 transition"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                {imagePreviews.length > 0 ? (
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {imagePreviews.map((src, i) => (
-                      <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden border border-black/20">
-                        <img src={src} alt={`preview-${i}`} className="w-full h-full object-cover" />
-                        <button
-                          type="button"
-                          onClick={() => removeImage(i)}
-                          className="absolute top-0.5 right-0.5 bg-black/60 rounded-full p-0.5 text-white"
-                        >
-                          <X size={10} />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                ): ( 
-                  <div className="flex flex-col gap-2 items-center justify-center"> 
-                    <Upload size={20} className="text-black/40" />
-                    <span className="text-sm text-black/50">Klik untuk upload foto (maks. 5 foto, 2MB each)</span>
-                  </div>
-                )}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp,image/gif"
-                  multiple
-                  className="hidden"
-                  onChange={handleImageChange}
+                <div className="flex flex-1 flex-col gap-1.5">
+                  <label htmlFor="discount" className="text-xs font-medium text-gray-600">Diskon (%)</label>
+                  <input
+                    id="discount" name="discount" value={form.discount} onChange={handleChange}
+                    placeholder="0"
+                    className="border border-black/20 px-3 py-2 rounded-xl bg-black/3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+                    type="number"
                   />
                 </div>
               </div>
 
               <div className="flex gap-4">
-                <div className="flex gap-2">
-                  <input type="checkbox" />
-                  <label htmlFor="">Produk Unggulan</label>
+                <div className="flex flex-1 flex-col gap-1.5">
+                  <label htmlFor="stock" className="text-xs font-medium text-gray-600">Stok</label>
+                  <input
+                    id="stock" name="stock" value={form.stock} onChange={handleChange}
+                    placeholder="0"
+                    className="border border-black/20 px-3 py-2 rounded-xl bg-black/3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+                    type="number"
+                  />
                 </div>
-                <div className="flex gap-2">
-                  <input type="checkbox" />
-                  <label htmlFor="">Terbaru</label>
+                <Combobox
+                  label="Kategori"
+                  options={categories}
+                  value={form.category_id}
+                  onChange={(opt) => setForm((prev) => ({ ...prev, category_id: opt?.id || "" }))}
+                  placeholder="Cari atau pilih kategori..."
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="description" className="text-xs font-medium text-gray-600">Deskripsi</label>
+                <textarea
+                  id="description" name="description" value={form.description} onChange={handleChange}
+                  rows={3}
+                  placeholder="Tulis deskripsi produk..."
+                  className="border border-black/20 px-3 py-2 rounded-xl bg-black/3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-medium text-gray-600">
+                  Foto Produk
+                  <span className="ml-1 text-gray-400 font-normal">({imagePreviews.length}/5)</span>
+                </label>
+                <div
+                  className="border-2 border-dashed border-black/20 rounded-xl p-4 cursor-pointer hover:bg-black/2 transition-colors"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {imagePreviews.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {imagePreviews.map((src, i) => (
+                        <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden border border-black/20">
+                          <img src={src} alt={`preview-${i}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); removeImage(i); }}
+                            className="absolute top-0.5 right-0.5 bg-black/60 rounded-full p-0.5 text-white"
+                          >
+                            <X size={10} />
+                          </button>
+                        </div>
+                      ))}
+                      {imagePreviews.length < 5 && (
+                        <div className="w-16 h-16 rounded-lg border-2 border-dashed border-black/20 flex items-center justify-center text-gray-400">
+                          <Upload size={16} />
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center gap-2 py-2">
+                      <Upload size={20} className="text-black/30" />
+                      <span className="text-xs text-gray-400 text-center">Klik untuk upload foto<br/>Maks. 5 foto, 2MB per foto</span>
+                    </div>
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    multiple
+                    className="hidden"
+                    onChange={handleImageChange}
+                  />
                 </div>
               </div>
 
-              <div className="flex gap-4">
-                <button type="button" onClick={() => setOpen(false)} disabled={uploading} className="border border-black/30 rounded-xl px-4 flex-1 py-2 flex items-center justify-center text-sm disabled:opacity-50">Kembali</button>
-                <button type="submit" disabled={uploading} className="bg-blue-500 rounded-xl px-4 flex-1 py-2 text-white flex items-center justify-center text-sm disabled:opacity-50">
+              <div className="flex flex-col gap-1.5">
+                <span className="text-xs font-medium text-gray-600">Tag Produk</span>
+                <div className="flex gap-3">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded accent-blue-500" />
+                    <span className="text-sm text-gray-700">Produk Unggulan</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded accent-blue-500" />
+                    <span className="text-sm text-gray-700">Terbaru</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-1 pb-1">
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  disabled={uploading}
+                  className="flex-1 border border-black/20 rounded-xl px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-black/5 transition-colors disabled:opacity-50"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={uploading}
+                  className="flex-1 bg-blue-500 hover:bg-blue-600 rounded-xl px-4 py-2.5 text-white text-sm font-medium transition-colors disabled:opacity-50"
+                >
                   {uploading ? "Menyimpan..." : "Tambah Produk"}
                 </button>
               </div>
             </form>
-          </Card>
+          </div>
         </div>
       )}
       <div className="flex justify-between">
         <span className="text-2xl font-medium">Manajement Produk</span>
-        <div onClick={handleClick} className="border border-black/20 text-black px-4 py-2 rounded-xl gap-2 text-sm flex items-center justify-center"><Plus size={18}/><span>Tambah Produk</span></div>
+        <div onClick={handleClick} className="border border-black/20 text-black px-4 py-1.5 rounded-xl gap-2 text-sm flex items-center justify-center"><Plus size={18}/><span>Tambah Produk</span></div>
       </div>
-      <div className="p-4 bg-white flex justify-between shadow-sm border rounded-xl border-black/20 gap-2 font-medium">
-        <input className="py-2.5 px-4 flex-1 bg-black/5 border rounded-xl border-black/20 text-sm" type="text" />
-        <div className="flex gap-2.5">
-          <div className="py-2.5 px-4 bg-white border border-black/20 rounded-xl text-sm">Semua Kategori</div>
-          <div className="py-2.5 px-4 bg-white border-black/20 border rounded-xl text-sm">Filter</div>
+      <div className="flex flex-col gap-4 bg-white p-4 shadow-sm rounded-xl border-black/20 border">
+        <div className="flex justify-between gap-2 font-medium">
+          <div className="py-2.5 px-4 flex-1 bg-black/3 border gap-2 rounded-xl border-black/20 text-sm flex items-center">
+            <Search className="text-gray-500" size={16}/>
+            <input className="w-full outline-none h-full text-md" placeholder="Cari Produk" type="text" />
+          </div>
+          <div className="flex gap-2.5">
+            <div className="py-2.5 px-4 bg-white border border-black/20 rounded-xl text-sm">Semua Kategori</div>
+            <div className="py-2.5 px-4 bg-white border-black/20 border rounded-xl text-sm">Filter</div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="flex items-center justify-center flex-col bg-black/3 p-4 border border-black/20 rounded-xl">
+              <div className="text-2xl font-bold">{data?.total}</div>
+              <div>Total Product</div>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <Card key={i} className="flex items-center justify-center flex-col">
-            <div className="text-2xl font-bold">{data?.total}</div>
-            <div>Total Product</div>
-          </Card>
-        ))}
-      </div>
+      
 
       <div className="bg-white px-4 py-2 border border-black/20 shadow-sm rounded-xl flex flex-col gap-4">
         <div className="pt-4 text-sm">Table Product</div>
-        <table className="w-full">
+        <table className="w-full text-sm">
           <thead className="border-b-2 border-b-black/20 border-t-2 border-t-black/20">
             <tr>
               <th className="text-left p-3">Produk</th>
@@ -383,7 +498,7 @@ export default function DashboardProductPage() {
                     </div>
                     <div className="flex flex-col">
                       <span className="font-medium">{product.name}</span>
-                      <span className="text-sm text-black/60">{product.brand}</span>
+                      <span className="text-xs text-black/60">{product.brand}</span>
                     </div>
                   </div>
                 </td>
@@ -398,8 +513,8 @@ export default function DashboardProductPage() {
                     </span>*/}
                     {product.discount ? ( 
                       <div className="flex flex-col">
-                        <span>{formatIDR(product.price - (product.price * product.discount / 100))}</span>
-                        <span className="text-sm">{formatIDR(product.price)}</span>
+                        <span className="font-medium">{formatIDR(product.price - (product.price * product.discount / 100))}</span>
+                        <span className="text-xs">{formatIDR(product.price)}</span>
                       </div>
                     ): (
                       <span>{formatIDR(product.price)}</span>
@@ -413,13 +528,13 @@ export default function DashboardProductPage() {
           
                 <td className="p-3">
                   <div className="flex gap-2 flex-wrap">
-                    <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-500">
+                    <span className="px-2 border-blue-400/20 border py-1 text-[10px] rounded-full bg-blue-100 text-blue-500">
                       Baru
                     </span>
-                    <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-orange-500">
+                    <span className="px-2 border border-orange-400/20 py-1 text-[10px] rounded-full bg-yellow-100 text-orange-500">
                       Unggulan
                     </span>
-                    <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-500">
+                    <span className="px-2 border border-red-400/20 py-1 text-[10px] rounded-full bg-red-100 text-red-500">
                       Promo
                     </span>
                   </div>
