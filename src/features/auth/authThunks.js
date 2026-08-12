@@ -16,7 +16,7 @@ export const loginAsync = createAsyncThunk(
 
 export const userInfoAsync = createAsyncThunk(
   `auth/fetchUserInfo`,
-  async (_, { rejectWithValue, getState }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
