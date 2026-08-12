@@ -64,15 +64,15 @@ export default function CheckoutPaymentPage() {
             </label>
           ))}
         </div>
-        <div className="flex border w-full items-center p-3 bg-blue-200/60 gap-2 rounded-xl text-gray-600">
+        <div className="flex border w-full items-center p-3 bg-blue-500/20 border-black/20 gap-2 rounded-xl text-gray-600">
           <LockIcon size={18}/>
-          <span className="text-sm">Informasi pembayaranmu dienkripsi dengan SSL 256-bit. Kami tidak menyimpan data kartu kreditmu.</span>
+          <span className="text-xs">Informasi pembayaranmu dienkripsi dengan SSL 256-bit. Kami tidak menyimpan data kartu kreditmu.</span>
         </div>
         <div className="flex gap-2">
-          <Link to={'/checkout/address'} className="rounded-xl flex w-1/5 border px-4 py-3 justify-center">
+          <Link to={'/checkout/address'} className="rounded-xl flex w-1/5 border border-black/20 bg-black/3 text-sm px-4 py-2.5 justify-center">
             Kembali
           </Link>
-          <button type="submit" className="cursor-pointer rounded-xl flex border flex-1 px-4 py-3 items-center justify-center bg-blue-500 text-white">
+          <button type="submit" className="cursor-pointer rounded-xl flex border flex-1 px-4 text-sm py-2.5 items-center justify-center bg-blue-500 text-white">
             Lanjut ke Konfirmasi
           </button>
         </div>
