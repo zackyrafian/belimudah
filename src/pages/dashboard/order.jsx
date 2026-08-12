@@ -26,11 +26,10 @@ export default function DashboardOrderPage() {
     fetchOrdeers();
   }, [])
 
-  console.log(orders)
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between">
-        <h1 className="text-2xl">Manajement Produk</h1>
+        <h1 className="text-2xl">Manajemen Pesanan</h1>
         <button className="flex gap-2 items-center justify-center bg-blue-500 px-4 py-2 text-white text-sm rounded-xl">
           <Download size={18} />
           Export
