@@ -108,9 +108,9 @@ export default function CheckoutConfirmPage() {
         ))}
       </div>
 
-      <div className="flex gap-4 items-center border border-blue-200 bg-blue-50 text-black rounded-xl py-2 p-4">
-        <Shield size={28}/>
-        <span className="text-sm">Dengan menekan "Bayar Sekarang", kamu menyetujui Syarat & Ketentuan kami. Pembayaran baru akan diproses setelah kamu mengkonfirmasi di langkah ini.</span>
+      <div className="flex gap-4 items-center border border-black/20 bg-blue-500/20 text-black rounded-xl py-2 p-4">
+        <Shield size={22}/>
+        <span className="text-xs">Dengan menekan "Bayar Sekarang", kamu menyetujui Syarat & Ketentuan kami. Pembayaran baru akan diproses setelah kamu mengkonfirmasi di langkah ini.</span>
       </div>
 
       <div className="flex gap-4">
