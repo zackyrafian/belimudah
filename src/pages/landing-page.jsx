@@ -3,13 +3,12 @@ import { Footer } from '../components/footer'
 import { ArrowRight, Clock, Zap, TrendingUp } from 'lucide-react'
 import { Link } from 'react-router'
 import ProductCard from '@/components/product-card'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 
 const API = import.meta.env.VITE_SERVER_URL
 
 export default function LandingPage() {
   const [products, setProducts] = useState([])
-  console.log(products)
 
   useEffect(() => {
     fetch(`${API}/products`)
@@ -18,17 +17,26 @@ export default function LandingPage() {
       .catch(err => console.error(err))
   }, [])
 
-  const productFlashDeal = products.filter((p) => p.discount > 10)
-  const productNew = products.filter((p) => p.discount === 0)
+  const productFlashDeal = useMemo(
+    () => products.filter((p) => p.discount > 10),
+    [products]
+  )
 
-  const categoryMap = {}
-  products.forEach(p => {
-    if (!p.category) return
-    categoryMap[p.category] = (categoryMap[p.category] || 0) + 1
-  })
-  const categories = Object.entries(categoryMap)
-    .slice(0, 6)
-    .map(([name, total]) => ({ name, total }))
+  const productNew = useMemo(
+    () => products.filter((p) => p.discount === 0),
+    [products]
+  )
+
+  const categories = useMemo(() => {
+    const categoryMap = {}
+    products.forEach(p => {
+      if (!p.category) return
+      categoryMap[p.category] = (categoryMap[p.category] || 0) + 1
+    })
+    return Object.entries(categoryMap)
+      .slice(0, 6)
+      .map(([name, total]) => ({ name, total }))
+  }, [products])
   return (
     <div className="flex flex-col">
       <Header />
