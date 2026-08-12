@@ -119,9 +119,9 @@ export default function CartPage() {
 
                 <div className='flex gap-2'>
                   <div className='flex-1 bg-black/5 rounded-xl border border-black/20'>
-                    <input className='w-full px-4 py-3.5 rounded-xl' type="text" placeholder='Masukan kode promo' />
+                    <input className='w-full px-4 py-2 rounded-xl' type="text" placeholder='Masukan kode promo' />
                   </div>
-                  <button className='bg-blue-500 rounded-xl px-6 text-white'>Terapkan</button>
+                  <button className='bg-blue-500 rounded-xl px-6  text-white'>Terapkan</button>
                 </div>
 
               </div>
