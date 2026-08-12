@@ -13,7 +13,16 @@ export default function ProductCard({product}) {
         <div>
           {product.images?.[0] ? (
             <div className="relative min-h-58.75 max-h-58.75 overflow-hidden">
-              <img className="h-58.75 w-full" src={`${API}${product.images[0]}`} alt={product.name} />
+              {/* <img className="h-58.75 w-full" src={`${API}${product.images[0]}`} alt={product.name} />*/}
+              <img
+                className="h-58.75 w-full"
+                src={
+                  /^https?:\/\//i.test(product.images[0])
+                    ? product.images[0]
+                    : `${API}${product.images[0]}`
+                }
+                alt={product.name}
+              />
               {product.discount > 0 && (
                 <div className="text-white absolute top-2 bg-red-500 left-2 text-xs rounded-full px-2 py-1">-{product.discount}%</div>
               )}
