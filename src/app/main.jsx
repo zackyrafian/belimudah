@@ -1,8 +1,7 @@
-import { StrictMode } from 'react'
+import { StrictMode, lazy, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import { 
-  LandingPage, 
   BrowserProductPage, 
   DetailPage,
   CartPage,
@@ -40,6 +39,10 @@ import { persistor, store } from '@/features/store'
 import { PersistGate } from 'redux-persist/integration/react';
 import ProtectedRouter from './ProtectedRouter'
 import ProctedCheckoutRouter from './ProctedCheckoutRouter'
+import PageLoader from '@/components/ui/page-loader'
+
+const LandingPage = lazy(() => import('../pages/landing-page'))
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -166,7 +169,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <RouterProvider router={router} />
+        <Suspense fallback={<PageLoader />}>
+          <RouterProvider router={router} />
+        </Suspense>
       </PersistGate>
     </Provider>
   </StrictMode>,
