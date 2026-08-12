@@ -21,6 +21,7 @@ export default function Product() {
   const [related, setRelated] = useState([]);
   const [variant, setVariantSelect] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
     fetch(`${API}/products/${params.id}`)
@@ -29,6 +30,7 @@ export default function Product() {
         const p = json.results?.[0] ?? json.result ?? json.data;
         setProduct(p);
         setVariantSelect(p?.variant?.[0] || null);
+        setSelectedImage(0);
         if (p?.category) {
           fetch(`${API}/products?search[category]=${encodeURIComponent(p.category)}`)
             .then(r => r.json())
@@ -67,6 +69,7 @@ export default function Product() {
   if (loading) return <MainLayout><div className='p-8 text-center'>Memuat produk...</div></MainLayout>
   if (!product) return <MainLayout><div className='p-8 text-center'>Produk tidak ditemukan.</div></MainLayout>
 
+
   const discount = Number(product.discount) || 0;
   const hasDiscount = discount > 0;
   const { finalPrice, save } = hasDiscount
@@ -100,16 +103,24 @@ export default function Product() {
         <div className='flex flex-col gap-8 lg:flex-row'>
           <div className='w-screen lg:w-1/2'>
               <div className='w-full'>
-                {product.images?.[0] ? (
-                  <img src={product.images[0]} alt={product.name} className='lg:rounded-xl w-full' />
+                {product.images?.[selectedImage] ? (
+                  <img src={`${API}${product.images[selectedImage]}`} alt={product.name} className='lg:rounded-xl min-h-156 max-h-156 w-full object-cover' />
                 ) : 
-                <div className="w-full min-h-156 rounded-xl flex items-center justify-center bg-gray-200 text-gray-400 hover">
+                <div className="w-full min-h-156 rounded-xl flex items-center justify-center bg-gray-200 text-gray-400">
                   <ImageOff size={32} />
                 </div>
                 }
             </div>
-            <div>
-
+            <div className='flex gap-2 mt-2'>
+              {product.images.map((image, i) => ( 
+                <div
+                  key={i}
+                  onClick={() => setSelectedImage(i)}
+                  className={`w-16 h-16 rounded-md overflow-hidden cursor-pointer border-2 transition-all ${selectedImage === i ? 'border-blue-500' : 'border-transparent hover:border-gray-300'}`}
+                >
+                  <img src={`${API}${image}`} alt={`${product.name} ${i + 1}`} className='w-full h-full object-cover' />
+                </div>
+              ))}
             </div>
           </div>
           <div className='max-w-screen px-2 lg:min-w-1/2 flex flex-col gap-4'>
