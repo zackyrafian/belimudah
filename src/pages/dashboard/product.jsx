@@ -449,32 +449,31 @@ export default function DashboardProductPage() {
         <span className="text-2xl font-medium">Manajement Produk</span>
         <div onClick={handleClick} className="border border-black/20 text-black px-4 py-1.5 rounded-xl gap-2 text-sm flex items-center justify-center"><Plus size={18}/><span>Tambah Produk</span></div>
       </div>
-      <div className="flex flex-col gap-4 bg-white p-4 shadow-sm rounded-xl border-black/20 border">
-        <div className="flex justify-between gap-2 font-medium">
-          <div className="py-2.5 px-4 flex-1 bg-black/3 border gap-2 rounded-xl border-black/20 text-sm flex items-center">
-            <Search className="text-gray-500" size={16}/>
-            <input className="w-full outline-none h-full text-md" placeholder="Cari Produk" type="text" />
-          </div>
-          <div className="flex gap-2.5">
-            <div className="py-2.5 px-4 bg-white border border-black/20 rounded-xl text-sm">Semua Kategori</div>
-            <div className="py-2.5 px-4 bg-white border-black/20 border rounded-xl text-sm">Filter</div>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-4 gap-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="flex items-center justify-center flex-col bg-black/3 p-4 border border-black/20 rounded-xl">
-              <div className="text-2xl font-bold">{data?.total}</div>
-              <div>Total Product</div>
-            </div>
-          ))}
-        </div>
+      <div className="grid grid-cols-4 gap-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="flex items-center justify-center flex-col bg-white p-4 border border-black/10 rounded-xl">
+            <div className="text-2xl font-bold">{data?.total}</div>
+            <div>Total Product</div>
+          </div>
+        ))}
       </div>
 
       
 
-      <div className="bg-white px-4 py-2 border border-black/20 shadow-sm rounded-xl flex flex-col gap-4">
+      <div className="bg-white px-4 py-2 border border-black/10 rounded-xl flex flex-col gap-4">
         <div className="pt-4 text-sm">Table Product</div>
+
+        <div className="flex gap-2">
+          <div className="py-2 px-4 flex-1 bg-black/3 border gap-2 rounded-xl border-black/20 text-sm flex items-center">
+            <Search className="text-gray-500" size={16}/>
+            <input className="w-full outline-none h-full text-md" placeholder="Cari Produk" type="text" />
+          </div>
+          <div className="flex gap-2.5">
+            <div className="py-2 px-4 bg-white border border-black/20 rounded-xl text-sm">Semua Kategori</div>
+            <div className="py-2 px-4 bg-white border-black/20 border rounded-xl text-sm">Filter</div>
+          </div>
+        </div>
         <table className="w-full text-sm">
           <thead className="border-b-2 border-b-black/20 border-t-2 border-t-black/20">
             <tr>
