@@ -119,7 +119,7 @@ export default function ProfileAddress() {
               <div className="flex justify-between items-center">
                 <div className="flex gap-2 font-bold items-center">
                   <span>Rumah Utama</span>
-                  <div className="h-5 rounded-full text-xs font-normal flex items-center bg-blue-500 text-white px-4">Utama</div>
+                  <div className="h-4 rounded-full text-[8px] font-normal flex items-center bg-blue-500 text-white px-2">Utama</div>
                 </div>
                 <div className="flex gap-4">
                   <Edit size={15}/>
@@ -127,15 +127,15 @@ export default function ProfileAddress() {
                 </div>
               </div>
       
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-0.5">
                 <div className="flex items-center gap-3">
                   <h3 className="font-semibold">{address.recipient_name}</h3>
-                  <span className="text-sm text-gray-500">{address.phone_number}</span>
+                  <span className="text-xs text-gray-500">{address.phone_number}</span>
                 </div>
-                <div className="text-sm text-gray-700 leading-relaxed">
+                <div className="text-xs font-medium text-gray-700 leading-relaxed">
                   {address.recipient_address_full}
                 </div>
-                <span className="text-xs text-gray-500">{address.recipient_city}, {address.recipient_province} - {address.zip_code}</span>
+                <span className="text-xs text-gray-400">{address.recipient_city}, {address.recipient_province} - {address.zip_code}</span>
               </div>
             </Card>
           ))}
