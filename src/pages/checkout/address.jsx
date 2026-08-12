@@ -129,9 +129,9 @@ export default function CheckoutAddress() {
                   checked={selectedAddressId === address.id}
                   onChange={() => setSelectedAddressId(address.id)}
                 />
-                <div className="font-semibold">{address.recipient_name}</div>
-                <div className="text-sm text-gray-600">{address.recipient_address_full}</div>
-                <div className="text-xs text-gray-500">
+                <div className="font-semibold ">{address.recipient_name}</div>
+                <div className="text-xs font-medium text-gray-600">{address.recipient_address_full}</div>
+                <div className="text-xs text-gray-400">
                   {address.recipient_city}, {address.recipient_province} - {address.zip_code}
                 </div>
               </label>
@@ -227,7 +227,7 @@ export default function CheckoutAddress() {
                       checked={shippingMetode === item.value}
                     />
                     <div className="flex flex-col">
-                      <span className="font-semibold text-gray-800">{item.label}</span>
+                      <span className="text-sm font-semibold text-gray-800">{item.label}</span>
                       <span className="text-xs text-gray-500">{item.desc}</span>
                     </div>
                   </div>
@@ -237,7 +237,7 @@ export default function CheckoutAddress() {
             </div>
           </div>
 
-          <button type="submit" className="border p-4 rounded-xl bg-blue-500 text-white mt-4">
+          <button type="submit" className="border px-4 py-2.5 rounded-xl bg-blue-500 text-white mt-4">
             <span>Lanjutkan ke Pembayaran</span>
           </button>
         </form>
