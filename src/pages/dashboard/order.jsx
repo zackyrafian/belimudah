@@ -37,11 +37,11 @@ export default function DashboardOrderPage() {
         </button>
       </div>
 
-      <div className="flex gap-2">
-        <div className="rounded-xl border border-black/20 px-4 py-1">Semua</div>
-        <div className="rounded-xl border border-black/20 px-4 py-1">Pending</div>
-        <div className="rounded-xl border border-black/20 px-4 py-1">Dikirim</div>
-        <div className="rounded-xl border border-black/20 px-4 py-1">Terkirim</div>
+      <div className="flex gap-2 text-sm">
+        <div className="rounded-lg border border-black/20 px-4 py-1">Semua</div>
+        <div className="rounded-lg border border-black/20 px-4 py-1">Pending</div>
+        <div className="rounded-lg border border-black/20 px-4 py-1">Dikirim</div>
+        <div className="rounded-lg border border-black/20 px-4 py-1">Terkirim</div>
       </div>
 
       <div>
@@ -51,7 +51,7 @@ export default function DashboardOrderPage() {
         </div>
       </div>
       
-      <table className="w-full">
+      <table className="w-full text-sm">
         <thead className="border-b-2 border-b-black/20 border-t-2 border-t-black/20">
           <tr>
             <th className="text-left p-3">No Pesanan</th>
@@ -73,14 +73,14 @@ export default function DashboardOrderPage() {
         
               <td className="p-3">
                 <div className="flex flex-col">
-                  <span>{order.user.fullname}</span>
-                  <span>{order.user.email}</span>
+                  <span className="text-sm">{order.user.fullname}</span>
+                  <span className="text-xs">{order.user.email}</span>
                 </div>
               </td>
         
               <td className="p-3">
                 <div className="flex flex-col">
-                  <span>{formatDate(order.created_at)}</span>
+                  <span className="text-md">{formatDate(order.created_at)}</span>
                 </div>
               </td>
         
