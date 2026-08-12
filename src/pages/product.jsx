@@ -41,6 +41,7 @@ export default function Product() {
       .finally(() => setLoading(false));
   }, [params.id]);
 
+  console.log(variant)
   const handleCart = async () => {
     if (!user) { 
       navigate('/sign-in')
@@ -53,7 +54,7 @@ export default function Product() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${user.token}`
         },
-        body: JSON.stringify({ product_id: product.id, quantity })
+        body: JSON.stringify({ product_id: product.id, quantity, variant })
       });
       const json = await res.json();
       if (!res.ok) {
