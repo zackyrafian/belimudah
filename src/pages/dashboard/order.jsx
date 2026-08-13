@@ -1,4 +1,4 @@
-import Combobox from "@/components/combo-box";
+// import Combobox from "@/components/combo-box";
 import { useAuth } from "@/hooks/useAuth";
 import { formatDate, formatIDR } from "@/utils/format";
 import { Download, Search } from "lucide-react";
@@ -7,16 +7,16 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 const API = import.meta.env.VITE_SERVER_URL
 
-const statusOptions = [
-  {
-    id: "PENDING",
-    name: "PENDING",
-  },
-  {
-    id: "DONE",
-    name: "DONE",
-  },
-];
+// const statusOptions = [
+//   {
+//     id: "PENDING",
+//     name: "PENDING",
+//   },
+//   {
+//     id: "DONE",
+//     name: "DONE",
+//   },
+// ];
 
 export default function DashboardOrderPage() { 
   const { user } = useAuth(); 
