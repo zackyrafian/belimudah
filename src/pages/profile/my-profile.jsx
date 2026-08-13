@@ -3,7 +3,7 @@ import { Card } from "../../components";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
-import { ImageOff } from "lucide-react";
+import { ImageOff, ScanEye } from "lucide-react";
 
 
 const API = import.meta.env.VITE_SERVER_URL
@@ -11,13 +11,11 @@ const API = import.meta.env.VITE_SERVER_URL
 export default function MyProfile() { 
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [selectedOrder, setSelectedOrder] = useState([]);
+  const [modalPreview, setModalPreview] = useState(false);
 
-  console.log(user)
-  // const { order : orders } = user;
+  console.log(selectedOrder.items);
   const [orders, setOrders] = useState([]); 
-
-  console.log(orders)
-
   useEffect(() => { 
     const fetchData = async () => { 
       const res = await fetch(`${API}/users/orders`, { 
@@ -28,11 +26,33 @@ export default function MyProfile() {
     }
     fetchData();
   }, [])
-
-  console.log(orders)
   
   return (
     <div className="flex flex-col gap-4">
+      {modalPreview && ( 
+        <div className="fixed w-full z-50 inset-0 bg-black/20 items-center flex justify-center" onClick={() => setModalPreview(false)}>
+          <div className="" onClick={(e) => e.stopPropagation()}>
+            <Card className="w-6xl flex flex-col gap-4">
+              <div className="flex gap-2 items-center">
+                <ScanEye size={24} />
+                <h1 className="text-xl font-medium">Berikan Preview</h1>
+              </div>
+              {selectedOrder.items.map((item) => ( 
+                <div key={item.id} className="flex flex-col">
+                  <div className="flex gap-2 items-center">
+                    {item.product_image ? ( 
+                      <div className="bg-black w-12 h-12 "></div> 
+                    ) : (
+                      <div className="bg-black w-12 h-12 "></div> 
+                    )}
+                    <h1>{item.product_name}</h1>
+                  </div>
+                </div>
+              ))}
+            </Card>
+          </div>
+        </div>
+      )}
       <span className="text-2xl">Pesanan Saya</span>
 
       {orders?.map((order, i) => (
@@ -67,7 +87,12 @@ export default function MyProfile() {
             <div>Total: <span className="text-blue-500">{formatIDR(order.total_price)}</span></div>
             <div className="flex gap-2 text-sm">
               <button className="border border-blue-500 text-blue-500 rounded-xl py-1.5 px-4 ">Lacak</button>
-              <button className="border bg-blue-500  text-white not-first:border-blue-500 rounded-xl py-1.5 px-4">Beri Ulasan</button>
+              {order.status === "DONE" && ( 
+                <button onClick={() => { 
+                  setModalPreview(true); 
+                  setSelectedOrder(order)
+                }} className="border bg-blue-500  text-white not-first:border-blue-500 rounded-xl py-1.5 px-4">Beri Ulasan</button>
+              )}
               <button className="border border-black/40 text-black/70 rounded-xl py-1.5 px-4">Beli Lagi</button>
             </div>
           </div>
