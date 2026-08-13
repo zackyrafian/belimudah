@@ -4,183 +4,257 @@ import { useEffect, useState } from "react";
 import { useAlert } from "@/hooks/useAlert";
 import Alert from "@/components/ui/alert";
 import { useAuth } from "@/hooks/useAuth";
-import { useDispatch } from "react-redux";
-import { updateShippingAddress } from "@/features/auth/authSlice";
 
-const API = import.meta.env.VITE_SERVER_URL
+const API = import.meta.env.VITE_SERVER_URL;
 
-export default function ProfileAddress() { 
-  const { alert, showSuccess, clearAlert } = useAlert();
-  const [shippingAddress, setshippingAddress] = useState([]);
-  const [dialog, setDialog] = useState(false);
+const emptyAddress = {
+  recipient_name: "",
+  phone_number: "",
+  recipient_email: "",
+  recipient_address_full: "",
+  recipient_city: "",
+  recipient_province: "",
+  zip_code: "",
+};
+
+async function getAddresses(token) {
+  if (!token) return [];
+
+  const response = await fetch(`${API}/users/address`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await response.json();
+  return data.results || [];
+}
+
+export default function ProfileAddress() {
+  const { alert, showSuccess, showError, clearAlert } = useAlert();
   const { user } = useAuth();
-  const dispatch = useDispatch();
+  const [shippingAddress, setShippingAddress] = useState([]);
+  const [dialog, setDialog] = useState(false);
+  const [editingAddress, setEditingAddress] = useState(null);
+  const [formData, setFormData] = useState(emptyAddress);
+  const [loading, setLoading] = useState(false);
+
+  const fetchAddresses = async () => {
+    if (!user?.token) return;
+
+    const response = await fetch(`${API}/users/address`, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
+    const data = await response.json();
+    setShippingAddress(data.results || []);
+  };
 
   useEffect(() => {
-    if (!user?.token) return;
-    fetch(`${API}/users/address`, {
-      headers: { Authorization: `Bearer ${user.token}` }
-    })
-      .then(res => res.json())
-      .then(data => setshippingAddress(data.results || []))
-      .catch(err => console.error(err));
-  }, [user]);
+    let active = true;
 
+    getAddresses(user?.token)
+      .then((addresses) => {
+        if (active) setShippingAddress(addresses);
+      })
+      .catch(() => {});
 
-  const handleForm = (e) => { 
-    const data = Object.fromEntries(new FormData(e.currentTarget));
-    const currentShipping = user?.shipping_address || [];
-    const updatedShipping = [...currentShipping, data]; 
-    dispatch(updateShippingAddress(updatedShipping));
-    showSuccess("Berhasil menambahkan Alamat")
-  }
-  return ( 
-    <div className="flex flex-col gap-2">
-      <div>
-        {alert && (
-          <Alert
-            title={"Profile Address"}
-            key={new Date}
-            type={alert.type}
-            message={alert.message}
-            onClose={() => clearAlert()}
-          />
+    return () => {
+      active = false;
+    };
+  }, [user?.token]);
+
+  const openAddDialog = () => {
+    setEditingAddress(null);
+    setFormData(emptyAddress);
+    setDialog(true);
+  };
+
+  const openEditDialog = (address) => {
+    setEditingAddress(address);
+    setFormData({
+      recipient_name: address.recipient_name || "",
+      phone_number: address.phone_number || "",
+      recipient_email: address.recipient_email || "",
+      recipient_address_full: address.recipient_address_full || "",
+      recipient_city: address.recipient_city || "",
+      recipient_province: address.recipient_province || "",
+      zip_code: address.zip_code || "",
+    });
+    setDialog(true);
+  };
+
+  const closeDialog = () => {
+    if (loading) return;
+    setDialog(false);
+    setEditingAddress(null);
+    setFormData(emptyAddress);
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((current) => ({ ...current, [name]: value }));
+  };
+
+  const handleForm = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        editingAddress
+          ? `${API}/users/address/${editingAddress.id}`
+          : `${API}/users/address`,
+        {
+          method: editingAddress ? "PATCH" : "POST",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Gagal menyimpan alamat");
+      }
+
+      await fetchAddresses();
+      closeDialog();
+      showSuccess(editingAddress ? "Alamat berhasil diubah" : "Alamat berhasil ditambahkan");
+    } catch (error) {
+      showError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`${API}/users/address/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.message || "Gagal menghapus alamat");
+      }
+
+      setShippingAddress((addresses) => addresses.filter((address) => address.id !== id));
+      showSuccess("Alamat berhasil dihapus");
+    } catch (error) {
+      showError(error.message);
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-4">
+      {alert && (
+        <Alert
+          title="Profile Address"
+          type={alert.type}
+          message={alert.message}
+          onClose={clearAlert}
+        />
       )}
+
       {dialog && (
-        <div className="fixed inset-0 bg-black/50 items-center justify-center z-50 flex">
-          <Card className="p-6 flex flex-col min-w-1/2 gap-4">
-            <div className="flex justify-between items-center">
-              <div className="flex gap-4 items-center">
-                <MapPin/>
-                <h1 className="text-xl font-medium">Alamat Pengiriman</h1>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <Card className="w-full max-w-xl">
+            <div className="mb-5 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <MapPin size={20} />
+                <h1 className="text-lg font-medium">
+                  {editingAddress ? "Edit Alamat" : "Tambah Alamat"}
+                </h1>
               </div>
-              <button onClick={() => setDialog(false)}>
-                <X/>
+              <button type="button" onClick={closeDialog}>
+                <X size={20} />
               </button>
             </div>
-            <form onSubmit={handleForm} className="flex flex-col gap-6 text-sm">
-              <div className="flex gap-4">
-                <div className="flex flex-col w-1/2">
-                  <label htmlFor="">Nama Pengirim *</label>
-                  <input required name="recipient_name" type="text" placeholder="Nama Penerima" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
-                </div>
-                <div className="flex flex-col w-1/2">
-                  <label htmlFor="">Nomer Telepon *</label>
-                  <input required name="phone_number" type="number" placeholder="Nomer telepon" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
-                </div>
+
+            <form onSubmit={handleForm} className="flex flex-col gap-4 text-sm">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="flex flex-col gap-1">
+                  Nama Penerima
+                  <input required name="recipient_name" value={formData.recipient_name} onChange={handleChange} className="rounded-xl border border-black/20 px-4 py-2" />
+                </label>
+                <label className="flex flex-col gap-1">
+                  Nomor Telepon
+                  <input required name="phone_number" type="tel" value={formData.phone_number} onChange={handleChange} className="rounded-xl border border-black/20 px-4 py-2" />
+                </label>
               </div>
 
-              <div className="flex flex-col">
-                <label htmlFor="">Email *</label>
-                <input name="recipient_email" type="text" placeholder="Email penerima" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
+              <label className="flex flex-col gap-1">
+                Email
+                <input required name="recipient_email" type="email" value={formData.recipient_email} onChange={handleChange} className="rounded-xl border border-black/20 px-4 py-2" />
+              </label>
+
+              <label className="flex flex-col gap-1">
+                Alamat Lengkap
+                <input required name="recipient_address_full" value={formData.recipient_address_full} onChange={handleChange} className="rounded-xl border border-black/20 px-4 py-2" />
+              </label>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="flex flex-col gap-1">
+                  Kota
+                  <input required name="recipient_city" value={formData.recipient_city} onChange={handleChange} className="rounded-xl border border-black/20 px-4 py-2" />
+                </label>
+                <label className="flex flex-col gap-1">
+                  Provinsi
+                  <input required name="recipient_province" value={formData.recipient_province} onChange={handleChange} className="rounded-xl border border-black/20 px-4 py-2" />
+                </label>
               </div>
 
-              <div className="flex flex-col">
-                <label htmlFor="">Alamat Lengkap *</label>
-                <input required name="recipient_address_full" type="text" placeholder="Alamat lengkap" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
-              </div>
+              <label className="flex flex-col gap-1">
+                Kode Pos
+                <input required name="zip_code" value={formData.zip_code} onChange={handleChange} className="rounded-xl border border-black/20 px-4 py-2" />
+              </label>
 
-              <div className="flex gap-4">
-                <div className="flex flex-col w-1/2">
-                  <label htmlFor="">Kota *</label>
-                  <input required name="recipient_city" type="text" placeholder="Kota" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
-                </div>
-                <div className="flex flex-col w-1/2">
-                  <label htmlFor="">Provinsi *</label>
-                  <input required name="recipient_province" type="text" placeholder="Provinsi" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="flex flex-col w-1/2">
-                  <label htmlFor="">Kode Pos *</label>
-                  <input required name="zip_code" type="text" placeholder="Kode pos" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
-                </div>
-                <div className="flex flex-col w-1/2">
-                  <label htmlFor="">Catatan (opsional)</label>
-                  <input name="note" type="text" placeholder="Catatan tambahan" className="border border-black/20 px-4 py-2 rounded-xl bg-black/5"/>
-                </div>
-              </div>
-              <button className="bg-blue-500 py-3 rounded-xl text-white text-center">Save</button>
+              <button disabled={loading} className="rounded-xl bg-blue-500 py-3 text-white disabled:opacity-50">
+                {loading ? "Menyimpan..." : "Simpan"}
+              </button>
             </form>
           </Card>
         </div>
       )}
-      <div className="flex justify-between">
+
+      <div className="flex items-center justify-between">
         <span className="text-2xl font-medium">Alamat Pengiriman</span>
-        <button onClick={() => setDialog(true)} className="flex text-gray-500 border-black/20 border text-sm px-4 py-2 rounded-xl items-center gap-2">
-          <PlusIcon size={18}/>
-          <span>Alamat Pengiriman</span>
+        <button type="button" onClick={openAddDialog} className="flex items-center gap-2 rounded-xl border border-black/20 px-4 py-2 text-sm text-gray-500">
+          <PlusIcon size={18} />
+          <span>Tambah Alamat</span>
         </button>
       </div>
 
-        <div className="flex flex-col gap-4 pt-4">
-          {shippingAddress?.map((address) => (
-            <Card className="flex flex-col gap-4">
-              <div className="flex justify-between items-center">
-                <div className="flex gap-2 font-bold items-center">
-                  <span>Rumah Utama</span>
-                  <div className="h-4 rounded-full text-[8px] font-normal flex items-center bg-blue-500 text-white px-2">Utama</div>
-                </div>
-                <div className="flex gap-4">
-                  <Edit size={15}/>
-                  <Trash2 size={15}/>
-                </div>
+      <div className="flex flex-col gap-4 pt-2">
+        {shippingAddress.map((address) => (
+          <Card key={address.id} className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 font-bold">
+                <span>Alamat</span>
+                <div className="flex h-4 items-center rounded-full bg-blue-500 px-2 text-[8px] font-normal text-white">Utama</div>
               </div>
-      
-              <div className="flex flex-col gap-0.5">
-                <div className="flex items-center gap-3">
-                  <h3 className="font-semibold">{address.recipient_name}</h3>
-                  <span className="text-xs text-gray-500">{address.phone_number}</span>
-                </div>
-                <div className="text-xs font-medium text-gray-700 leading-relaxed">
-                  {address.recipient_address_full}
-                </div>
-                <span className="text-xs text-gray-400">{address.recipient_city}, {address.recipient_province} - {address.zip_code}</span>
+              <div className="flex gap-4">
+                <button type="button" onClick={() => openEditDialog(address)}>
+                  <Edit size={15} />
+                </button>
+                <button type="button" onClick={() => handleDelete(address.id)}>
+                  <Trash2 size={15} />
+                </button>
               </div>
-            </Card>
-          ))}
-        </div>
-      
-      {/* <Card className="flex flex-col gap-4">
-        <div className="flex justify-between items-center">
-          <div className="flex gap-2 font-bold">
-            <span>Rumah Utama</span>
-            <div className="rounded-full text-xs flex items-center bg-blue-500 text-white px-4">Utama</div>
-          </div>
-          <div className="flex gap-4">
-            <Edit size={15}/>
-            <Trash2 size={15}/>
-          </div>
-        </div>
+            </div>
 
-        <div>
-          <div>Budi Santoso · 0812-3456-7890</div>
-          <div>Jl. Kebon Jeruk No. 15, RT.003/RW.002</div>
-          <div>Jakarta Barat, DKI Jakarta 11530</div>
-        </div>
-      </Card>*/}
-
-      {/* <Card className="flex flex-col gap-4">
-        <div className="flex justify-between items-center">
-          <div className="flex gap-2 font-bold">
-            <span>Kantor</span>
-          </div>
-          <div className="flex gap-4">
-            <Edit size={15}/>
-            <Trash2 size={15}/>
-          </div>
-        </div>
-
-        <div>
-          <div>Budi Santoso · 0812-3456-7890</div>
-          <div>Jl. Kebon Jeruk No. 15, RT.003/RW.002</div>
-          <div>Jakarta Barat, DKI Jakarta 11530</div>
-        </div>
-        <div>
-          <span>Jadikan Alamat Utama</span>
-        </div>
-      </Card>*/}
+            <div className="flex flex-col gap-0.5">
+              <div className="flex items-center gap-3">
+                <h3 className="font-semibold">{address.recipient_name}</h3>
+                <span className="text-xs text-gray-500">{address.phone_number}</span>
+              </div>
+              <div className="text-xs font-medium leading-relaxed text-gray-700">{address.recipient_address_full}</div>
+              <span className="text-xs text-gray-400">{address.recipient_city}, {address.recipient_province} - {address.zip_code}</span>
+              <span className="text-xs text-gray-500">{address.recipient_email}</span>
+            </div>
+          </Card>
+        ))}
       </div>
     </div>
-  )
+  );
 }
