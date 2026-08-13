@@ -1,16 +1,49 @@
+import Combobox from "@/components/combo-box";
 import { useAuth } from "@/hooks/useAuth";
 import { formatDate, formatIDR } from "@/utils/format";
 import { Download, Search } from "lucide-react";
+import { useRef } from "react";
 import { useEffect, useState } from "react";
-
+import { io } from "socket.io-client";
 const API = import.meta.env.VITE_SERVER_URL
+
+const statusOptions = [
+  {
+    id: "PENDING",
+    name: "PENDING",
+  },
+  {
+    id: "DONE",
+    name: "DONE",
+  },
+];
 
 export default function DashboardOrderPage() { 
   const { user } = useAuth(); 
   const [orders, setOrders] = useState([]);
+  const socketRef = useRef(null)
 
   console.log(orders)
   useEffect(() => { 
+    socketRef.current = io(API); 
+    socketRef.current.on("connection", () => { 
+      
+    })
+
+    socketRef.current.on("new_orders", (response) => { 
+      const newOrder = response.results; 
+      console.log(newOrder)
+      if (!newOrder || !newOrder.user) return;
+      setOrders((prev) => [newOrder, ...prev])
+    })
+
+    return () => { 
+      socketRef.current.off("new_orders");
+      socketRef.current.disconnect();
+    }
+  },[])
+  useEffect(() => { 
+    if (!user) return;
     const fetchOrdeers = async () => { 
       try { 
         const res = await fetch(`${API}/users/orders`, { 
@@ -26,7 +59,7 @@ export default function DashboardOrderPage() {
      }
     }
     fetchOrdeers();
-  }, [])
+  }, [user])
 
   const updateOrderStatus = async (orderId, status) => {
     try {
@@ -98,15 +131,15 @@ export default function DashboardOrderPage() {
       
         <tbody>
           {orders.map((order) => (
-            <tr key={order.id} className="border-t border-black/10">
+            <tr key={order?.id} className="border-t border-black/10">
               <td className="p-3">
-                #{order.id}
+                #{order?.id}
               </td>
         
               <td className="p-3">
                 <div className="flex flex-col">
-                  <span className="text-sm">{order.user.fullname}</span>
-                  <span className="text-xs">{order.user.email}</span>
+                  <span className="text-sm">{order.user?.fullname}</span>
+                  <span className="text-xs">{order.user?.email}</span>
                 </div>
               </td>
         
@@ -116,12 +149,12 @@ export default function DashboardOrderPage() {
                 </div>
               </td>
         
-              <td className="p-3">{order.items.length}</td>
+              <td className="p-3">{order.items?.length}</td>
         
               <td className="p-3">{formatIDR(order.total_price)}</td>
         
               <td className="p-3">
-                Gopay
+                {order.payment?.method || "-"}
               </td>
         
               <td className="p-3">
@@ -131,18 +164,26 @@ export default function DashboardOrderPage() {
                   </button>
                 </div>*/}
 
+                {/* <Combobox
+                  options={statusOptions}
+                  value={order.status || ""}
+                  placeholder="Pilih status"
+                  onChange={(selected) => {
+                    if (selected) {
+                      updateOrderStatus(order.id, selected.name);
+                    }
+                  }}
+                />*/}
+
                 <div>
                   <select
                     value={order.status}
                     onChange={(e) => updateOrderStatus(order.id, e.target.value)}
                   >
-                    <option value={order.status}>{order.status}</option>
+                    <option className="bg-blue" value="PENDING">PENDING</option>
                     <option value="DONE">DONE</option>
                   </select>
                 </div>
-                {/* <div>
-                  {order.status}
-                </div>*/}
               </td>
             </tr>
           ))}
