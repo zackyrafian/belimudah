@@ -101,13 +101,13 @@ export default function ProfileSetting() {
               {/* <div className="rounded-full w-20 h-20 bg-fuchsia-100 flex items-center justify-center"></div>*/}
               <div onClick={() => {
                 photoRef.current.click();
-              }} className="rounded-full w-20 h-20 items-center bg-fuchsia-100 justify-center flex overflow-hidden">
+              }} className="rounded-full w-20 h-20 items-center bg-blue-500 justify-center flex overflow-hidden">
                 {prewviewPhoto ? (
                   <img src={prewviewPhoto} alt="preview" className="w-full h-full object-cover" />
                 ) : userData?.image_profile ? (
                   <img src={`${API}/${userData.image_profile}`} alt="profile" className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-xs text-gray-400">Foto</span>
+                      <span className="text-2xl font-bold text-white">{userData?.fullname[0]}</span>
                 )}
                 
                 <input className="hidden" ref={photoRef} type="file" accept="image/*" onChange={handlePhotoChange}/>

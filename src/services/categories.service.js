@@ -1,9 +1,7 @@
 import { api } from './api.js'; 
 
 const CategoriesService = { 
-  getAll: (signal) => { 
-    api.get(`/categories`, {signal}); 
-  },
+  getAll: (signal) => api.get(`/categories`, { signal }),
   delete: (id, token) => api.delete(`/categories/${id}`, {
     headers: { Authorization: `Bearer ${token}`}
   }),
