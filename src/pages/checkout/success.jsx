@@ -1,6 +1,6 @@
 import { MainLayout } from "@/components/layouts"
 import { Card } from "@/components"
-import { MapPin, Truck, CircleCheckBig, ArrowRight, Tags, PackageSearch, GalleryVerticalEndIcon, Search, DollarSign } from "lucide-react"
+import { MapPin, CircleCheckBig, Tags, PackageSearch, GalleryVerticalEndIcon, Search, DollarSign } from "lucide-react"
 import { formatIDR } from "@/utils/format";
 import { Link } from "react-router";
 import { useAuth } from "@/hooks/useAuth";

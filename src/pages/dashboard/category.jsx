@@ -11,7 +11,6 @@ export default function DashboardCategoryPage() {
       .then((data) => setCategories(data.results))
   }, [])
 
-  console.log(categories)
   return (
     <div>
       <h1 className="text-2xl">Categories</h1>
