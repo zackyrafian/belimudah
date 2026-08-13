@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import { formatDate, formatIDR } from "@/utils/format";
-import { Download, Eye, Search } from "lucide-react";
+import { Download, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const API = import.meta.env.VITE_SERVER_URL
@@ -8,6 +8,8 @@ const API = import.meta.env.VITE_SERVER_URL
 export default function DashboardOrderPage() { 
   const { user } = useAuth(); 
   const [orders, setOrders] = useState([]);
+
+  console.log(orders)
   useEffect(() => { 
     const fetchOrdeers = async () => { 
       try { 
@@ -25,6 +27,37 @@ export default function DashboardOrderPage() {
     }
     fetchOrdeers();
   }, [])
+
+  const updateOrderStatus = async (orderId, status) => {
+    try {
+      const response = await fetch(
+        `${API}/admin/orders/${orderId}/status`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({ status }),
+        }
+      );
+  
+      const result = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(result.message);
+      }
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === orderId
+            ? { ...order, status }
+            : order
+        )
+      );
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -92,11 +125,24 @@ export default function DashboardOrderPage() {
               </td>
         
               <td className="p-3">
-                <div className="flex gap-4 items-center">
+                {/* <div className="flex gap-4 items-center">
                   <button className="text-blue-600">
                     <Eye size={15} />
                   </button>
+                </div>*/}
+
+                <div>
+                  <select
+                    value={order.status}
+                    onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                  >
+                    <option value={order.status}>{order.status}</option>
+                    <option value="DONE">DONE</option>
+                  </select>
                 </div>
+                {/* <div>
+                  {order.status}
+                </div>*/}
               </td>
             </tr>
           ))}
