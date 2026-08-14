@@ -25,10 +25,10 @@ export default function DashboardLayout() {
   )?.name || 'Dashboard';
 
   useEffect(() => {
-    if (!auth?.role) {
+    if (auth && !auth.role) {
       dispatch(userInfoAsync());
     }
-  }, [dispatch, auth?.role])
+  }, [dispatch, auth])
 
   useEffect(() => {
     if (!loading && auth && auth.role !== "ADMIN") {
