@@ -6,7 +6,6 @@ import { API } from "@/services/api";
 
 export default function ProductCard({product}) { 
   const { finalPrice } = calculateDiscount(product.price, product.discount)
-  console.log(product)
   return ( 
     <Link  to={`/product/${product.id}`}>
       <div className='bg-white flex flex-col rounded-xl border border-black/20  overflow-hidden'>
