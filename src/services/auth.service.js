@@ -62,9 +62,9 @@ const AuthService = {
       if (!res.ok) { 
         throw new Error(resData.message)
       }
-      const token = resData.data.token
+      const { token, ...userData } = resData.data
       localStorage.setItem("token", `Bearer ${token}`)
-      return resData.data
+      return { ...userData, token }
 
       // const { token, ...userData } = resData.data
       // localStorage.setItem("token", `Bearer ${token}`)
