@@ -22,6 +22,9 @@ export default function Product() {
   const [variant, setVariantSelect] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [activeTab, setActiveTab] = useState('deskripsi');
+  
+  console.log(product)
 
   useEffect(() => {
     fetch(`${API}/products/${params.id}`)
@@ -41,7 +44,6 @@ export default function Product() {
       .finally(() => setLoading(false));
   }, [params.id]);
 
-  console.log(variant)
   const handleCart = async () => {
     if (!user) { 
       navigate('/sign-in')
@@ -251,20 +253,90 @@ export default function Product() {
           </div>
         </div>
 
-        <section className= 'lg:bg-white lg:border lg:border-black/20 rounded-xl'>
+        <section className='lg:bg-white lg:border lg:border-black/20 rounded-xl'>
           <header className='flex gap-4 text-sm p-4 border-b border-b-black/20'>
-            <div>Deksripsi</div>
-            <div>Spesifikasi</div>
-            <div>Ulasan (2)</div>
+            {[
+              { key: 'deskripsi', label: 'Deskripsi' },
+              { key: 'spesifikasi', label: 'Spesifikasi' },
+              { key: 'ulasan', label: `Ulasan (${product.reviews?.length ?? 0})` },
+            ].map(tab => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`pb-1 cursor-pointer transition-colors ${
+                  activeTab === tab.key
+                    ? 'border-b-2 border-blue-500 text-blue-500 font-medium'
+                    : 'text-gray-500 hover:text-gray-800'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </header>
 
           <main className='p-6 flex flex-col gap-4'>
-            <h2 className='font-medium text-xl'>{product.name}</h2>
-            <div className='flex flex-col'>
-              <span> Brand: {product.brand} </span>
-              <span>Category: {product.category}</span>
-            </div>
-            <p className='text-justify'>{product.description}</p>
+            {activeTab === 'deskripsi' && (
+              <>
+                <h2 className='font-medium text-xl'>{product.name}</h2>
+                <div className='flex flex-col gap-1'>
+                  <span>Brand: {product.brand}</span>
+                  <span>Category: {product.category}</span>
+                </div>
+                <p className='text-justify'>{product.description}</p>
+              </>
+            )}
+
+            {activeTab === 'spesifikasi' && (
+              <div className='flex flex-col gap-2'>
+                <h2 className='font-medium text-xl'>Spesifikasi</h2>
+                {product.specifications && Object.keys(product.specifications).length > 0 ? (
+                  <table className='w-full text-sm'>
+                    <tbody>
+                      {Object.entries(product.specifications).map(([key, val]) => (
+                        <tr key={key} className='border-b border-black/10'>
+                          <td className='py-2 pr-4 font-medium text-gray-600 w-1/3'>{key}</td>
+                          <td className='py-2'>{val}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p className='text-gray-400 text-sm'>Spesifikasi belum tersedia.</p>
+                )}
+              </div>
+            )}
+
+            {activeTab === 'ulasan' && (
+              <div className='flex flex-col gap-4'>
+                <h2 className='font-medium text-xl'>Ulasan Pembeli</h2>
+                {product.reviews && product.reviews.length > 0 ? (
+                  product.reviews.map((review, i) => (
+                    <div key={i} className='flex flex-col gap-1 border-b border-black/10 pb-4'>
+                      <div className='flex items-center gap-2'>
+                        <div className='w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 font-semibold text-sm'>
+                          {review.fullname?.[0]?.toUpperCase() ?? 'U'}
+                        </div>
+                        <span className='font-medium text-sm'>{review.fullname ?? 'Pengguna'}</span>
+                      </div>
+                      <div className='flex pl-10 gap-2 flex-col'>
+                        <div className='flex gap-0.5'>
+                          {Array.from({ length: 5 }).map((_, idx) => (
+                            <Star
+                              key={idx}
+                              size={14}
+                              className={idx < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
+                            />
+                          ))}
+                        </div>
+                        <p className='text-sm text-gray-700'>{review.comment}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className='text-gray-400 text-sm'>Belum ada ulasan untuk produk ini.</p>
+                )}
+              </div>
+            )}
           </main>
         </section>
 
