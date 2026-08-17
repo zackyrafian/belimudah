@@ -1,9 +1,10 @@
 export const API = import.meta.env.VITE_SERVER_URL; 
 
 async function request(path, options = {}) {
+  const { headers: optHeaders, ...restOptions } = options;
   const res = await fetch(`${API}${path}`, {
-    headers: { 'Content-Type': 'application/json', ...options.headers },
-    ...options,
+    ...restOptions,
+    headers: { 'Content-Type': 'application/json', ...optHeaders },
   });
 
   if (!res.ok) {
