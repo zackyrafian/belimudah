@@ -8,15 +8,24 @@ const API = import.meta.env.VITE_SERVER_URL
 
 export default function BrowserProductPage(){
   const [products, setProducts] = useState([])
+  const [allProducts, setAllProducts] = useState([])
   const [limit, setLimit] = useState(12); 
-  const [params] = useSearchParams();
-  // const [selectedBrands, setSelectedBrands] = useState([]);
-  // const [brands, setBrands] = useState();
+  const [params, setParams] = useSearchParams();
   const search = params.get('search') || '';
   const category = params.get('category') || '';
   const brand = params.get('brand') || '';
-  
-  console.log()
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const query = new URLSearchParams()
+    if (search) query.set('search[name]', search)
+    if (category) query.set('search[category]', category)
+    fetch(`${API}/products?${query.toString()}`, { signal: controller.signal })
+      .then(res => res.json())
+      .then(json => setAllProducts(json.results || []))
+      .catch(err => { if (err.name !== 'AbortError') console.error(err) })
+    return () => controller.abort();
+  }, [search, category])
 
   useEffect(() => {
     const controller = new AbortController(); 
@@ -27,24 +36,21 @@ export default function BrowserProductPage(){
     fetch(`${API}/products?${query.toString()}`, { signal: controller.signal })
       .then(res => res.json())
       .then(json => setProducts(json.results || []))
-      .catch(err => console.error(err))
-
+      .catch(err => { if (err.name !== 'AbortError') console.error(err) })
     return () => controller.abort();
   }, [search, category, brand])
 
-  // useEffect(() => { 
-  //   const controller = new AbortController(); 
-  //   fetch(`${API}/brands`, { signal: controller.signal })
-  //     .then(res => res.json())
-  //     .then(json => setBrands(json.results || []))
-  //     .catch(error => {
-  //       if (error.name !== 'AbortError') console.log(error)
-  //     });
-  //   return () => controller.abort();
-  // }, [])
+  const brands = [...new Set(allProducts.map(p => p.brand).filter(Boolean))];
 
-  const filteredProducts = products;
-  console.log(filteredProducts)
+  const handleBrandClick = (b) => {
+    const next = new URLSearchParams(params);
+    if (brand === b) {
+      next.delete('brand');
+    } else {
+      next.set('brand', b);
+    }
+    setParams(next);
+  };
 
   return (
     <MainLayout>
@@ -62,11 +68,11 @@ export default function BrowserProductPage(){
             <div className='flex flex-col gap-4'>
               <h3 className='text-xl font-semibold'>Merek</h3>
               <div className='flex flex-col gap-1'>
-                {filteredProducts.map((b) => (
-                <div className='flex gap-2 items-center'>
-                  <input type="checkbox" />
-                    <span>{b.brand}</span>
-                </div>
+                {brands.map((b) => (
+                  <div key={b} className='flex gap-2 items-center cursor-pointer' onClick={() => handleBrandClick(b)}>
+                    <input type="checkbox" readOnly checked={brand === b} />
+                    <span>{b}</span>
+                  </div>
                 ))}
               </div>
             </div>
@@ -119,9 +125,9 @@ export default function BrowserProductPage(){
           </aside>
   
           <section className='w-full flex-1 gap-2 flex flex-col'>
-            <span>18 produk ditemukan</span>
+            <span>{products.length} produk ditemukan</span>
             <div className='grid grid-cols-4 gap-4'>
-            {filteredProducts.slice(0, limit).map((w) => (
+            {products.slice(0, limit).map((w) => (
                   <ProductCard
                     key={w.id}
                     product={w}
@@ -129,7 +135,7 @@ export default function BrowserProductPage(){
                 ))
               }
             </div>
-            {limit < filteredProducts.length && (
+            {limit < products.length && (
               <div className='flex justify-center'>
                 <button
                   onClick={() => setLimit(prev => prev + 6)}
