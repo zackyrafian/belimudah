@@ -58,7 +58,7 @@ export default function MyProfile() {
     try {
       const requests = selectedOrder.items.map((item) => {
         const review = reviews[item.id];
-        console.log(review.variant_id)
+        // console.log(review)
         return fetch(`${API}/products/${item.product_id}/reviews`, {
           method: "POST",
           headers: {
@@ -68,7 +68,7 @@ export default function MyProfile() {
           body: JSON.stringify({
             rating: review.rating,
             comment: review.comment,
-            variant_id: review.variant_id,
+            variant_id: item.variant_id,
           }),
         });
       });
