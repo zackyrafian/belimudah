@@ -5,6 +5,9 @@ const ProductService = {
   delete: (id, token) => api.delete(`/products/${id}`, { 
     headers: { Authorization: `Bearer ${token}`}
   }),
+  update: (id, body, token) => api.patch(`/products/${id}`, body, {
+    headers: { Authorization: `Bearer ${token}` }
+  }),
 }
 
 export { ProductService }
