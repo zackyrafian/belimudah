@@ -30,10 +30,10 @@ export default function SignIn() {
   const onSubmit = async (data) => { 
     dispatch(loginAsync(data))
       .unwrap()
-      .then(() => { 
+      .then((userData) => { 
         showSuccess("You have successfully signed in.")
         setTimeout(() => { 
-          navigate('/');
+          navigate(userData?.role === 'ADMIN' ? '/dashboard' : '/');
         }, 500)
       })
       .catch((err) => { 
